@@ -39,3 +39,22 @@ def delete_user(db: Session, user_id: int):
     res = db.query(models.User).filter(models.User.id == user_id).delete()
     db.commit()
     return res
+
+
+
+# projects
+
+def add_project(db: Session, user_id: int, name: str):
+    db_project = models.Project(
+        name=name,
+        create_uid=user_id
+    )
+    db.add(db_project)
+    db.commit()
+    db.refresh(db_project)
+    return db_project
+
+def delete_project(db: Session, project_id: int):
+    res = db.query(models.Project).filter(models.Project.id == project_id).delete()
+    db.commit()
+    return res

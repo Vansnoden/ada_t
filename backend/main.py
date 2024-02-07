@@ -124,7 +124,8 @@ def validate_user(user: User):
     else:
         return False
 
-############################################################################################
+
+# users
 
 @app.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
@@ -176,4 +177,22 @@ async def delete_user(user_id: int, db: Session = Depends(get_db)):
     response = crud.delete_user(db, user_id=user_id)
     if response is None:
         raise HTTPException(status_code=404, detail="User not found")
+    return response
+
+
+# projects
+
+@app.post("/projects/", response_model=schemas.Project)
+def create_project(project: schemas.ProjectBase, db: Session = Depends(get_db)):
+    if project.name and project.create_uid:
+        return crud.add_project(db, name=project.name, user_id=project.create_uid)
+    else:
+        raise HTTPException(status_code=400, detail="Missing required information: name, create_uid")
+    
+
+@app.get("/projects/delete/{project_id}")
+def delete_project(project_id: int, db: Session = Depends(get_db)):
+    response = crud.delete_project(db, project_id=project_id)
+    if response is None:
+        raise HTTPException(status_code=404, detail="Project not found")
     return response

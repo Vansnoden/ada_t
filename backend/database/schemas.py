@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel
 
 
@@ -12,6 +13,20 @@ class UserCreate(UserBase):
 
 
 class User(UserBase):
+    id: int
+    is_active: bool
+
+    class Config:
+        from_attributes = True
+
+
+
+class ProjectBase(BaseModel):
+    name: str
+    create_date: datetime
+    create_uid: int
+
+class Project(ProjectBase):
     id: int
     is_active: bool
 
