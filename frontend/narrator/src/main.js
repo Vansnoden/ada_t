@@ -11,7 +11,7 @@ import { registerPlugins } from '@/plugins'
 import App from './App.vue'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
-import Home from '@/pages/Home.vue'
+import Project from '@/pages/Projects.vue'
 import Login from '@/pages/Login.vue'
 import Register from '@/pages/Register.vue'
 import Account from '@/pages/Account.vue'
@@ -28,7 +28,7 @@ import { useUserStore } from './stores/UserStore'
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        { path: '/', name: 'Home', component: Home},
+        { path: '/', name: 'Projects', component: Projects},
         { path: '/login', name: 'Login', component: Login},
         { path: '/register', name: 'Register', component: Register}
     ]

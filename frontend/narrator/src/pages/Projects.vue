@@ -2,7 +2,7 @@
     <v-navigation-drawer>
         <v-list-item title="Narrator" subtitle="automatic data abstraction tool"></v-list-item>
         <v-divider></v-divider>
-        <v-list-item link title="projects"></v-list-item>
+        <v-list-item link active title="projects"></v-list-item>
         <v-list-item link title="account settings"></v-list-item>
         <v-list-item link title="userguide"></v-list-item>
         <v-list-item link title="help?"></v-list-item>
@@ -11,7 +11,7 @@
         <v-list-item link title="logout" @click="logout"></v-list-item>
     </v-navigation-drawer>
     <!-- <Header></Header> -->
-    <div class="home">
+    <div class="projects">
         welcome to the home page,<b>--{{ userStore.user }}</b>
     </div>
     <Footer></Footer>
@@ -43,7 +43,7 @@ export default {
 
 
 <style lang="scss">
-.home{
+.projects{
     color: #000;
     min-height: 93vh!important;
 }
