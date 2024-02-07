@@ -1,0 +1,27 @@
+backend/venv/
+backend/__pycache__/
+backend/alembic/__pycache__/
+backend/*/__pycache__/
+
+frontend/narrator/.DS_Store
+frontend/narrator/node_modules
+frontend/narrator/dist
+
+# local env files
+frontend/narrator/.env.local
+frontend/narrator/.env.*.local
+
+# Log files
+frontend/narrator/npm-debug.log*
+frontend/narrator/yarn-debug.log*
+frontend/narrator/yarn-error.log*
+frontend/narrator/pnpm-debug.log*
+
+# Editor directories and files
+frontend/narrator/.idea
+frontend/narrator/.vscode
+frontend/narrator/*.suo
+frontend/narrator/*.ntvs*
+frontend/narrator/*.njsproj
+frontend/narrator/*.sln
+frontend/narrator/*.sw?
