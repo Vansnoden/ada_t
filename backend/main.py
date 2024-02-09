@@ -181,14 +181,12 @@ async def delete_user(user_id: int, db: Session = Depends(get_db)):
 
 
 # projects
-
 @app.get("/projects/", response_model=list[schemas.Project])
 def get_user_projects(user:Annotated[User, Depends(get_current_active_user)], db: Session = Depends(get_db)):
     if user:
         return crud.get_projects(db, user_id=user.id)
     else:
         raise HTTPException(status_code=400, detail="User not found")
-
 
 @app.post("/projects/", response_model=schemas.Project)
 def create_project(project: schemas.ProjectBase, db: Session = Depends(get_db)):
@@ -197,10 +195,29 @@ def create_project(project: schemas.ProjectBase, db: Session = Depends(get_db)):
     else:
         raise HTTPException(status_code=400, detail="Missing required information: name, create_uid")
     
-
 @app.get("/projects/delete/{project_id}")
 def delete_project(project_id: int, db: Session = Depends(get_db)):
     response = crud.delete_project(db, project_id=project_id)
     if response is None:
         raise HTTPException(status_code=404, detail="Project not found")
+    return response
+
+
+# questions
+@app.get("/questions/{project_id}", response_model=list[schemas.Question])
+def get_project_questions(project_id: int, db: Session = Depends(get_db)):
+    return crud.get_project_questions(db, project_id=project_id)
+
+@app.post("/questions/", response_model=schemas.Question)
+def create_project_question(question: schemas.QuestionBase, db: Session = Depends(get_db)):
+    if question.name and question.project_id:
+        return crud.add_project_question(db, name=question.name, project_id=question.project_id)
+    else:
+        raise HTTPException(status_code=400, detail="Missing required information: name or project")
+    
+@app.get("/questions/delete/{question_id}")
+def delete_project(question_id: int, db: Session = Depends(get_db)):
+    response = crud.delete_question(db, id=question_id)
+    if response is None:
+        raise HTTPException(status_code=404, detail="Question not found")
     return response

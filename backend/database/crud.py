@@ -1,3 +1,4 @@
+from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
 from . import models, schemas
@@ -43,7 +44,6 @@ def delete_user(db: Session, user_id: int):
 
 
 # projects
-
 def get_projects(db: Session, user_id: int,  skip: int = 0, limit: int = 0):
     if skip and limit:
         return db.query(models.Project).filter(user_id == user_id).offset(skip).limit(limit).all()
@@ -62,5 +62,25 @@ def add_project(db: Session, user_id: int, name: str):
 
 def delete_project(db: Session, project_id: int):
     res = db.query(models.Project).filter(models.Project.id == project_id).delete()
+    db.commit()
+    return res
+
+
+# questions
+def get_project_questions(db: Session, project_id: int):
+    return db.query(models.Question).filter_by(project_id=project_id,is_active=True).all()
+
+def add_project_question(db: Session, project_id: int, name:str):
+    db_question = models.Question(
+        name=name,
+        project_id=project_id
+    )
+    db.add(db_question)
+    db.commit()
+    db.refresh(db_question)
+    return db_question
+
+def delete_question(db: Session, id: int):
+    res = db.query(models.Question).filter(models.Question.id == id).delete()
     db.commit()
     return res

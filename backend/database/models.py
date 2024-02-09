@@ -22,7 +22,18 @@ class Project(Base):
     __tablename__ = "projects"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    create_uid = mapped_column(ForeignKey("users.id"))
-    create_date = Column(DateTime, default=datetime.datetime.now())
-    is_active = Column(Boolean, default=True)
+    name = Column(String, nullable=False)
+    create_uid = Column(Integer, ForeignKey("users.id"), nullable=False)
+    create_date = Column(DateTime, default=datetime.datetime.now(), nullable=False)
+    is_active = Column(Boolean, default=True, nullable=False)
+
+
+class Question(Base):
+    __tablename__ = 'questions'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    project_id = Column(Integer, ForeignKey("projects.id"), nullable=False)
+    create_date = Column(DateTime, default=datetime.datetime.now(), nullable=False)
+    is_active = Column(Boolean, default=True, nullable=False)
+    

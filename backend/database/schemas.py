@@ -32,3 +32,17 @@ class Project(ProjectBase):
 
     class Config:
         from_attributes = True
+
+
+
+class QuestionBase(BaseModel):
+    name: str
+    project_id: int
+    create_date: datetime
+
+class Question(QuestionBase):
+    id: int
+    is_active: bool
+
+    class Config:
+        from_attributes = True
