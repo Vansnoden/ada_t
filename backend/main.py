@@ -182,6 +182,14 @@ async def delete_user(user_id: int, db: Session = Depends(get_db)):
 
 # projects
 
+@app.get("/projects/", response_model=list[schemas.Project])
+def get_user_projects(user:Annotated[User, Depends(get_current_active_user)], db: Session = Depends(get_db)):
+    if user:
+        return crud.get_projects(db, user_id=user.id)
+    else:
+        raise HTTPException(status_code=400, detail="User not found")
+
+
 @app.post("/projects/", response_model=schemas.Project)
 def create_project(project: schemas.ProjectBase, db: Session = Depends(get_db)):
     if project.name and project.create_uid:
