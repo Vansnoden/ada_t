@@ -38,8 +38,9 @@
                                         sm="6"
                                         md="4">
                                         <v-text-field
-                                        label="Project name*"
-                                        required
+                                            label="Project name*"
+                                            required
+                                            v-model="pname"
                                         ></v-text-field>
                                     </v-col>
                                     <v-col
@@ -61,15 +62,13 @@
                         <v-btn
                             color="blue-darken-1"
                             variant="text"
-                            @click="dialog = false"
-                        >
+                            @click="dialog = false">
                             Close
                         </v-btn>
                         <v-btn
                             color="blue-darken-1"
                             variant="text"
-                            @click="dialog = false"
-                        >
+                            @click="addProject">
                             Save
                         </v-btn>
                     </v-card-actions>
@@ -78,8 +77,27 @@
             </v-row>
         </div>
         <div class="content">
-            welcome back dear <b><i>{{ userStore.user.username }}</i></b> !<br/>
-            <p class="hint">You haven't initiated any project yet ...</p>
+            <div style="margin-bottom:2em">
+                Welcome back dear <b><i>{{ userStore.user.username }}</i></b> !<br/>
+            </div>
+            <p class="hint" v-if="!projectStore.getProjectsList">You haven't initiated any project yet ...</p>
+            <v-container fluid>
+                <v-row no-gutters>
+                <v-col
+                    v-for="(item, index) in projectStore.getProjectsList"
+                    :key="item.id"
+                    :index="index"
+                    cols="12"
+                    sm="3">
+                    <v-sheet class="ma-2 pa-2">
+                        <ProjectItem 
+                            :name="item.name"
+                            :create_date="item.create_date">
+                        </ProjectItem>
+                    </v-sheet>
+                </v-col>
+                </v-row>
+            </v-container>
         </div>
     </div>
     <Footer></Footer>
@@ -88,18 +106,23 @@
 <script>
 // 
 import { useUserStore } from "@/stores/UserStore";
+import { useProjectStore } from "@/stores/ProjectStore";
+
 export default {
     setup() {
         const userStore = useUserStore();
-        const user = userStore.getUser
+        const projectStore = useProjectStore();
+        projectStore.getProjects(userStore.getToken);
         return { 
-            userStore
+            userStore,
+            projectStore
         };
     },
 
     data(){
         return {
             dialog: false,
+            pname: null,
         }
     },
 
@@ -108,6 +131,10 @@ export default {
             await this.userStore.logOut().then(() => {
                 this.$router.push(this.$route.query.redirect || '/login');
             });
+        },
+        async addProject(){
+            this.projectStore.addProject(this.pname, this.userStore.getToken);
+            this.dialog = false;
         }
     }
 

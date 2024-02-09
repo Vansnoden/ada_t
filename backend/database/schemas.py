@@ -23,12 +23,13 @@ class User(UserBase):
 
 class ProjectBase(BaseModel):
     name: str
-    create_date: datetime
-    create_uid: int
+    
 
 class Project(ProjectBase):
     id: int
     is_active: bool
+    create_uid: int
+    create_date: datetime
 
     class Config:
         from_attributes = True

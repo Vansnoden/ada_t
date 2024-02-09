@@ -5,7 +5,7 @@ import { defineStore } from 'pinia'
 // but it's best to use the name of the store and surround it with `use`
 // and `Store` (e.g. `useUserStore`, `useCartStore`, `useProductStore`)
 // the first argument is a unique id of the store across your application
-const BASE_URL = 'http://localhost:8000'
+import {BASE_URL} from "@/stores/contants.js"
 
 export const useUserStore = defineStore({
     // id
@@ -21,7 +21,6 @@ export const useUserStore = defineStore({
     persist: true,
     // actions
     actions:{
-        
         async signUp(username, fullname, email, password) {
             fetch(BASE_URL + "/users", {
                 method: "POST",

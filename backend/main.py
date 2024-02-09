@@ -189,9 +189,9 @@ def get_user_projects(user:Annotated[User, Depends(get_current_active_user)], db
         raise HTTPException(status_code=400, detail="User not found")
 
 @app.post("/projects/", response_model=schemas.Project)
-def create_project(project: schemas.ProjectBase, db: Session = Depends(get_db)):
-    if project.name and project.create_uid:
-        return crud.add_project(db, name=project.name, user_id=project.create_uid)
+def create_project(project: schemas.ProjectBase,user:Annotated[User, Depends(get_current_active_user)], db: Session = Depends(get_db)):
+    if project.name and user:
+        return crud.add_project(db, name=project.name, user_id=user.id)
     else:
         raise HTTPException(status_code=400, detail="Missing required information: name, create_uid")
     
