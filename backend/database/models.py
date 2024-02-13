@@ -28,6 +28,7 @@ class Project(Base):
     is_active = Column(Boolean, default=True, nullable=False)
     documents_location = Column(String, nullable=False, default='.')
     grammars_location = Column(String, nullable=False, default='.')
+    extraction_results_location = Column(String, nullable=False, default='.')
 
 
 

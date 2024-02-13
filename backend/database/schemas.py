@@ -32,6 +32,7 @@ class Project(ProjectBase):
     create_date: datetime
     documents_location: str
     grammars_location: str
+    extraction_results_location: str
 
     class Config:
         from_attributes = True

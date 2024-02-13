@@ -177,12 +177,15 @@ async def read_users_me(current_user: Annotated[User, Depends(get_current_active
     return current_user
 
 
-@app.get("/users/delete/{user_id}")
-async def delete_user(user_id: int, db: Session = Depends(get_db)):
-    response = crud.delete_user(db, user_id=user_id)
-    if response is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    return response
+@app.post("/users/delete/{user_id}")
+async def delete_user(user: Annotated[User, Depends(get_current_active_user)], db: Session = Depends(get_db)):
+    if user:
+        response = crud.delete_user(db, user_id=user.id)
+        if response is None:
+            raise HTTPException(status_code=404, detail="User not found")
+        return response
+    else:
+        raise HTTPException(status_code=403, detail="Unauthorized action")
 
 
 # projects
@@ -225,45 +228,52 @@ def delete_project(
 @app.post("/project/{project_id}/upload")
 def upload_project_documents(
     project_id: int, 
+    user: Annotated[User, Depends(get_current_active_user)],
     files: List[UploadFile] = File(...),
     db: Session = Depends(get_db)):
-    project = crud.get_single_project(project_id=project_id, db=db)
-    if project:
-        for file in files:
-            try:
-                contents = file.file.read()
-                with open(os.path.join(project.documents_location, file.filename), 'wb') as f:
-                    f.write(contents)
-            except Exception:
-                return {"message": "There was an error uploading the file(s)"}
-            finally:
-                file.file.close()
-        return {"message": f"Successfuly uploaded {[file.filename for file in files]}"}   
+    if user:
+        project = crud.get_single_project(project_id=project_id, db=db)
+        if project:
+            for file in files:
+                try:
+                    contents = file.file.read()
+                    with open(os.path.join(project.documents_location, file.filename), 'wb') as f:
+                        f.write(contents)
+                except Exception:
+                    return {"message": "There was an error uploading the file(s)"}
+                finally:
+                    file.file.close()
+            return {"message": f"Successfuly uploaded {[file.filename for file in files]}"}   
+        else:
+            raise HTTPException(status_code=404, detail="Project not found")
     else:
-         raise HTTPException(status_code=404, detail="Project not found")
+        raise HTTPException(status_code=403, detail="Unauthorized access")
 
 
 @app.post("/project/{project_id}/files")
 def get_project_files(
     project_id: int, 
+    user: Annotated[User, Depends(get_current_active_user)],
     db: Session = Depends(get_db)):
     project = crud.get_single_project(project_id=project_id, db=db)
-    if project:
-        list_of_files = [] #paths
-        files = []
-        for (dirpath, dirnames, filenames) in os.walk(project.documents_location):
-            for filename in filenames:
-                if filename.endswith('.pdf'): 
-                    file_path = os.sep.join([dirpath, filename])
-                    file_obj = {
-                        "name": filename,
-                        "server_path": file_path.replace("\\","/")
-                    }
-                    files.append(file_obj)
-        return JSONResponse(content=jsonable_encoder(files))
+    if user:
+        if project:
+            list_of_files = [] #paths
+            files = []
+            for (dirpath, dirnames, filenames) in os.walk(project.documents_location):
+                for filename in filenames:
+                    if filename.endswith('.pdf'): 
+                        file_path = os.sep.join([dirpath, filename])
+                        file_obj = {
+                            "name": filename,
+                            "server_path": file_path.replace("\\","/")
+                        }
+                        files.append(file_obj)
+            return JSONResponse(content=jsonable_encoder(files))
+        else:
+            raise HTTPException(status_code=404, detail="Project not found")
     else:
-        raise HTTPException(status_code=404, detail="Project not found")
-
+        raise HTTPException(status_code=403, detail="Unauthorized access")
 
 @app.post("/download")
 def main(file_path:str):
@@ -273,7 +283,8 @@ def main(file_path:str):
 
 # questions
 @app.get("/questions/{project_id}", response_model=list[schemas.Question])
-def get_project_questions(project_id: int, db: Session = Depends(get_db)):
+def get_project_questions(project_id: int, user: Annotated[User, Depends(get_current_active_user)], db: Session = Depends(get_db)):
+    
     return crud.get_project_questions(db, project_id=project_id)
 
 

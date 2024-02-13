@@ -48,7 +48,6 @@ def delete_user(db: Session, user_id: int):
     return res
 
 
-
 # projects
 def get_projects(db: Session, user_id: int,  skip: int = 0, limit: int = 0):
     if skip and limit:
@@ -71,10 +70,13 @@ def add_project(db: Session, user_id: int, name: str):
     # the curent directory is the one of the main.py file
     documentsPath = Path(f"./database/resources/{db_project.id}/documents")
     grammarsPath = Path(f"./database/resources/{db_project.id}/grammars")
+    resultsPath = Path(f"./database/resources/{db_project.id}/results")
     documentsPath.mkdir(parents=True, exist_ok=True)
     grammarsPath.mkdir(parents=True, exist_ok=True)
+    resultsPath.mkdir(parents=True, exist_ok=True)
     db_project.documents_location = os.path.join(Path('.').parent.absolute(), documentsPath)
     db_project.grammars_location = os.path.join(Path('.').parent.absolute(), grammarsPath)
+    db_project.extraction_results_location = os.path.join(Path('.').parent.absolute(), resultsPath)
     db.commit()
     db.refresh(db_project)
     return db_project
