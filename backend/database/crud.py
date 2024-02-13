@@ -4,6 +4,8 @@ import shutil
 from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
+from .utilities.grammar import gbnf_from_json
+
 from . import models, schemas
 from passlib.context import CryptContext
 from pathlib import Path
@@ -92,19 +94,38 @@ def get_project_questions(db: Session, project_id: int):
 def add_project_question(db: Session, project_id: int, label:str, answer_format:str):
     try:
         test = json.loads(answer_format)
-        db_question = models.Question(
-            label=label,
-            answer_format=answer_format,
-            project_id=project_id
-        )
-        db.add(db_question)
-        db.commit()
-        db.refresh(db_question)
-        return db_question
+        db_project_rec = db.query(models.Project).filter(models.Project.id == project_id).first()
+        if db_project_rec:
+
+            db_question = models.Question(
+                label=label,
+                answer_format=answer_format,
+                project_id=project_id
+            )
+            db.add(db_question)
+            db.commit()
+            db.refresh(db_question)
+            # generate grammar file
+            with open(os.path.join(db_project_rec.grammars_location, f"{db_question.id}.gbnf"), "w+") as f:
+                f.write(gbnf_from_json(db_question.answer_format))
+                f.close()
+            db_question.anwser_grammar = os.path.join(db_project_rec.grammars_location, f"{db_question.id}.gbnf")
+            db.commit()
+            db.refresh(db_question)
+            return db_question
     except Exception as e:
         print(e)
 
+
 def delete_question(db: Session, id: int):
-    res = db.query(models.Question).filter(models.Question.id == id).delete()
-    db.commit()
-    return res
+    db_question_rec = db.query(models.Question).filter(models.Question.id == id).first()
+    if db_question_rec:
+        print(db_question_rec)
+        print(db_question_rec.anwser_grammar)
+        # shutil.rmtree(db_question_rec.anwser_grammar)
+        os.chmod(db_question_rec.anwser_grammar, 0o777)
+        os.remove(db_question_rec.anwser_grammar)
+        res = db.query(models.Question).filter(models.Question.id == id).delete()
+        db.commit()
+        return res
+    return 0

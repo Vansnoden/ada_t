@@ -13,19 +13,25 @@ list ::=
 object_base = """ "{{"({lines})"}}" """
 
 base_gbnf_struct = """
-root  ::= sites
+root  ::= {option}
 
 {list}
 
 object ::= {object}
 
-string  ::=
-  "\"" (
-    [^"\\] |
-    "\\" (["\\/bfnrt] | "u" [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F]) # escapes
-  )* "\"" ws
+array  ::=
+  \"[\" ws (
+            string
+    (\",\" ws string)*
+  )? \"]\"
 
-ws ::= ([ \t\n] ws)?
+string  ::=
+  \"\\"\" (
+    [^\"\\] |
+    "\\\\" (["\\/bfnrt] | "u" [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F])
+  )* \"\\"\" ws
+
+ws ::= ([ \\t\\n] ws)?
 """
 
 def gbnf_from_json(base_json: str):
@@ -39,17 +45,17 @@ def gbnf_from_json(base_json: str):
         if type(json_obj) == type([]):
             lines = ""
             for label,dtype in json_obj[0].items():
-                line = "\"\\"+label+"\"\\" ":"+ dtype + "\",\""
+                line = "\"\\\""+label+"\\\"\" \":\" "+ dtype + " \",\""
                 lines += line
             derived_object = object_base.format(lines=lines)
-            grammar = base_gbnf_struct.format(list=base_list, object=derived_object)
+            grammar = base_gbnf_struct.format(option="list", list=base_list, object=derived_object)
         elif type(json_obj) == type({}):
             lines = ""
             for label,dtype in json_obj.items():
                 line = "\"\\\""+label+"\\\"\" \":\" "+ dtype + " \",\""
                 lines += line
             derived_object = object_base.format(lines=lines)
-            grammar = base_gbnf_struct.format(list="", object=derived_object)
+            grammar = base_gbnf_struct.format(option="object", list="", object=derived_object)
         return grammar
     except Exception as e:
         print(e)

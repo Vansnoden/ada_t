@@ -40,4 +40,5 @@ class Question(Base):
     project_id = Column(Integer, ForeignKey("projects.id"), nullable=False)
     create_date = Column(DateTime, default=datetime.datetime.now(), nullable=False)
     is_active = Column(Boolean, default=True, nullable=False)
+    anwser_grammar = Column(String, default=".", nullable=True)
     

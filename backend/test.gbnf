@@ -1,5 +1,5 @@
 
-root  ::= sites
+root  ::= list
 
 
 list ::= 
@@ -9,13 +9,18 @@ list ::=
         )? "]"
 
 
-object ::=  "{"("\firstname"\:string",""\lastname"\:string",""\phone"\:number",")"}" 
+object ::=  "{"("\"firstname\"" ":" string ",""\"lastname\"" ":" string ",""\"phone\"" ":" number ",")"}" 
+
+array  ::=
+  "[" ws (
+            string
+    ("," ws string)*
+  )? "]"
 
 string  ::=
-  """ (
+  "\"" (
     [^"\] |
-    "\" (["\/bfnrt] | "u" [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F]) # escapes
-  )* """ ws
+    "\\" (["\/bfnrt] | "u" [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F])
+  )* "\"" ws
 
-ws ::= ([ 	
-] ws)?
+ws ::= ([ \t\n] ws)?

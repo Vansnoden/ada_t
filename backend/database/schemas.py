@@ -47,6 +47,7 @@ class Question(QuestionBase):
     id: int
     is_active: bool
     create_date: datetime
+    anwser_grammar: str
 
     class Config:
         from_attributes = True
