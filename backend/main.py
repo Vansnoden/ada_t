@@ -1,5 +1,6 @@
 from datetime import timedelta, timezone, datetime
 import os
+from pathlib import Path
 from typing import Annotated, List
 
 from fastapi import Depends, FastAPI, HTTPException, status, File, UploadFile
@@ -13,6 +14,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from database import crud, models, schemas
 from database.database import SessionLocal, engine
 from sqlalchemy.orm import Session
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.encoders import jsonable_encoder
 
 
 # models.Base.metadata.create_all(bind=engine)
@@ -192,6 +195,7 @@ def get_user_projects(
     else:
         raise HTTPException(status_code=400, detail="User not found")
 
+
 @app.post("/projects/", response_model=schemas.Project)
 def create_project(
     project: schemas.ProjectBase,
@@ -201,7 +205,8 @@ def create_project(
         return crud.add_project(db, name=project.name, user_id=user.id)
     else:
         raise HTTPException(status_code=400, detail="Missing required information: name, create_uid")
-    
+
+
 @app.get("/projects/delete/{project_id}")
 def delete_project(
     project_id: int, 
@@ -215,6 +220,7 @@ def delete_project(
         return response
     else:
        raise HTTPException(status_code=403, detail="Unauthorized action") 
+
 
 @app.post("/project/{project_id}/upload")
 def upload_project_documents(
@@ -235,6 +241,34 @@ def upload_project_documents(
         return {"message": f"Successfuly uploaded {[file.filename for file in files]}"}   
     else:
          raise HTTPException(status_code=404, detail="Project not found")
+
+
+@app.post("/project/{project_id}/files")
+def get_project_files(
+    project_id: int, 
+    db: Session = Depends(get_db)):
+    project = crud.get_single_project(project_id=project_id, db=db)
+    if project:
+        list_of_files = [] #paths
+        files = []
+        for (dirpath, dirnames, filenames) in os.walk(project.documents_location):
+            for filename in filenames:
+                if filename.endswith('.pdf'): 
+                    file_path = os.sep.join([dirpath, filename])
+                    file_obj = {
+                        "name": filename,
+                        "server_path": file_path.replace("\\","/")
+                    }
+                    files.append(file_obj)
+        return JSONResponse(content=jsonable_encoder(files))
+    else:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+
+@app.post("/download")
+def main(file_path:str):
+    fpath = Path(file_path)
+    return FileResponse(path=fpath, filename=os.path.basename(fpath), media_type='application/octet-stream')
 
 
 # questions

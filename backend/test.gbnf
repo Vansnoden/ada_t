@@ -1,0 +1,21 @@
+
+root  ::= sites
+
+
+list ::= 
+    "[" ws (
+        object
+        ("," ws object)*
+        )? "]"
+
+
+object ::=  "{"("\firstname"\:string",""\lastname"\:string",""\phone"\:number",")"}" 
+
+string  ::=
+  """ (
+    [^"\] |
+    "\" (["\/bfnrt] | "u" [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F]) # escapes
+  )* """ ws
+
+ws ::= ([ 	
+] ws)?
