@@ -134,6 +134,7 @@ export default {
         },
         async addProject(){
             this.projectStore.addProject(this.pname, this.userStore.getToken);
+            this.projectStore.getProjects(this.userStore.getToken);
             this.dialog = false;
         }
     }

@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import {BASE_URL} from "@/stores/contants.js"
-import { useUserStore } from './UserStore';
 
 export const useProjectStore = defineStore({
     id: "ProjectStore",
@@ -46,7 +45,10 @@ export const useProjectStore = defineStore({
 
             fetch(BASE_URL+"/projects", requestOptions)
             .then((res) => {
-                this.projects.append(res.json())
+                let response = res.json();
+                for(let i=0; i<response.length; i++){
+                    this.projects.push(response[i])
+                }
             })
             .catch(error => console.log('error', error));
         }
