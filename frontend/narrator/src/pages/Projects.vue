@@ -16,7 +16,7 @@
                 <v-dialog
                     v-model="dialog"
                     persistent
-                    width="1024">
+                    width="512">
                     <template v-slot:activator="{ props }">
                         <v-btn
                             color="primary"
@@ -35,23 +35,13 @@
                                 <v-row>
                                     <v-col
                                         cols="12"
-                                        sm="6"
-                                        md="4">
+                                        sm="12"
+                                        md="12">
                                         <v-text-field
                                             label="Project name*"
                                             required
                                             v-model="pname"
                                         ></v-text-field>
-                                    </v-col>
-                                    <v-col
-                                        cols="12"
-                                        sm="6"
-                                        md="4">
-                                        <v-file-input
-                                        multiple
-                                        label="Documents"
-                                        hint="upload the pdf documents you want to extract information from"
-                                        ></v-file-input>
                                     </v-col>
                                 </v-row>
                             </v-container>
@@ -91,8 +81,12 @@
                     sm="3">
                     <v-sheet class="ma-2 pa-2">
                         <ProjectItem 
+                            :id="item.id"
                             :name="item.name"
-                            :create_date="item.create_date">
+                            :create_date="item.create_date"
+                            :on_delete="deleteProject(item.id)"
+                            :on_edit="editProject(item.id)"
+                            >
                         </ProjectItem>
                     </v-sheet>
                 </v-col>
@@ -136,6 +130,12 @@ export default {
             this.projectStore.addProject(this.pname, this.userStore.getToken);
             this.projectStore.getProjects(this.userStore.getToken);
             this.dialog = false;
+        },
+        async deleteProject(pid){
+            this.projectStore.removeProject(pid, this.userStore.getToken);
+        },
+        async editProject(pid){
+            console.log('attempting project edition'+ pid);
         }
     }
 

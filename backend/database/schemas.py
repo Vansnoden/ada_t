@@ -30,6 +30,8 @@ class Project(ProjectBase):
     is_active: bool
     create_uid: int
     create_date: datetime
+    documents_location: str
+    grammars_location: str
 
     class Config:
         from_attributes = True
@@ -37,13 +39,14 @@ class Project(ProjectBase):
 
 
 class QuestionBase(BaseModel):
-    name: str
+    label: str
+    answer_format: str
     project_id: int
-    create_date: datetime
 
 class Question(QuestionBase):
     id: int
     is_active: bool
+    create_date: datetime
 
     class Config:
         from_attributes = True

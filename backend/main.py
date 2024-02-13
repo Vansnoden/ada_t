@@ -1,7 +1,8 @@
 from datetime import timedelta, timezone, datetime
-from typing import Annotated
+import os
+from typing import Annotated, List
 
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException, status, File, UploadFile
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel
@@ -12,6 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from database import crud, models, schemas
 from database.database import SessionLocal, engine
 from sqlalchemy.orm import Session
+
 
 # models.Base.metadata.create_all(bind=engine)
 
@@ -182,25 +184,57 @@ async def delete_user(user_id: int, db: Session = Depends(get_db)):
 
 # projects
 @app.get("/projects/", response_model=list[schemas.Project])
-def get_user_projects(user:Annotated[User, Depends(get_current_active_user)], db: Session = Depends(get_db)):
+def get_user_projects(
+    user:Annotated[User, Depends(get_current_active_user)], 
+    db: Session = Depends(get_db)):
     if user:
         return crud.get_projects(db, user_id=user.id)
     else:
         raise HTTPException(status_code=400, detail="User not found")
 
 @app.post("/projects/", response_model=schemas.Project)
-def create_project(project: schemas.ProjectBase,user:Annotated[User, Depends(get_current_active_user)], db: Session = Depends(get_db)):
+def create_project(
+    project: schemas.ProjectBase,
+    user:Annotated[User, Depends(get_current_active_user)], 
+    db: Session = Depends(get_db)):
     if project.name and user:
         return crud.add_project(db, name=project.name, user_id=user.id)
     else:
         raise HTTPException(status_code=400, detail="Missing required information: name, create_uid")
     
 @app.get("/projects/delete/{project_id}")
-def delete_project(project_id: int, db: Session = Depends(get_db)):
-    response = crud.delete_project(db, project_id=project_id)
-    if response is None:
-        raise HTTPException(status_code=404, detail="Project not found")
-    return response
+def delete_project(
+    project_id: int, 
+    user:Annotated[User, Depends(get_current_active_user)], 
+    db: Session = Depends(get_db)
+    ):
+    if user:
+        response = crud.delete_project(db, project_id=project_id)
+        if response is None:
+            raise HTTPException(status_code=404, detail="Project not found")
+        return response
+    else:
+       raise HTTPException(status_code=403, detail="Unauthorized action") 
+
+@app.post("/project/{project_id}/upload")
+def upload_project_documents(
+    project_id: int, 
+    files: List[UploadFile] = File(...),
+    db: Session = Depends(get_db)):
+    project = crud.get_single_project(project_id=project_id, db=db)
+    if project:
+        for file in files:
+            try:
+                contents = file.file.read()
+                with open(os.path.join(project.documents_location, file.filename), 'wb') as f:
+                    f.write(contents)
+            except Exception:
+                return {"message": "There was an error uploading the file(s)"}
+            finally:
+                file.file.close()
+        return {"message": f"Successfuly uploaded {[file.filename for file in files]}"}   
+    else:
+         raise HTTPException(status_code=404, detail="Project not found")
 
 
 # questions
@@ -208,15 +242,29 @@ def delete_project(project_id: int, db: Session = Depends(get_db)):
 def get_project_questions(project_id: int, db: Session = Depends(get_db)):
     return crud.get_project_questions(db, project_id=project_id)
 
+
 @app.post("/questions/", response_model=schemas.Question)
-def create_project_question(question: schemas.QuestionBase, db: Session = Depends(get_db)):
-    if question.name and question.project_id:
-        return crud.add_project_question(db, name=question.name, project_id=question.project_id)
+def create_project_question(
+    question: schemas.QuestionBase, 
+    user:Annotated[User, Depends(get_current_active_user)], 
+    db: Session = Depends(get_db)
+    ):
+    if user:
+        if question.label and question.project_id and question.answer_format:
+            return crud.add_project_question(
+                db, 
+                label=question.label, 
+                answer_format=question.answer_format, 
+                project_id=question.project_id
+                )
+        else:
+            raise HTTPException(status_code=400, detail="Missing required fields")
     else:
-        raise HTTPException(status_code=400, detail="Missing required information: name or project")
+       raise HTTPException(status_code=403, detail="Unauthorized action")
+
     
 @app.get("/questions/delete/{question_id}")
-def delete_project(question_id: int, db: Session = Depends(get_db)):
+def delete_project_question(question_id: int, db: Session = Depends(get_db)):
     response = crud.delete_question(db, id=question_id)
     if response is None:
         raise HTTPException(status_code=404, detail="Question not found")

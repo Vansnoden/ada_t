@@ -4,11 +4,11 @@
             :title="name" 
             :text="'created on: '+create_date" prepend-icon="mdi-content-paste">
             <v-card-actions>
-                <v-btn class="btn-danger" elevation="2">
+                <v-btn class="btn-danger" elevation="2" @click="on_delete">
                     <v-icon>mdi-delete-forever</v-icon>
                     Delete
                 </v-btn>
-                <v-btn class="btn-success" elevation="2">
+                <v-btn class="btn-success" elevation="2" @click="on_edit">
                     <v-icon>mdi-open-in-new</v-icon>
                     Open
                 </v-btn>
@@ -20,7 +20,7 @@
 
 <script>
 export default {
-    props: ['name', 'create_date'],
+    props: ['id', 'name', 'create_date', 'on_delete', 'on_edit'],
     setup(props) {
         
     },

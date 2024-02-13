@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
-import {BASE_URL} from "@/stores/contants.js"
+import {BASE_URL} from "@/stores/contants.js";
+import {useUserStore} from "@/stores/UserStore.js"; 
 
 export const useProjectStore = defineStore({
     id: "ProjectStore",
@@ -49,6 +50,24 @@ export const useProjectStore = defineStore({
                 for(let i=0; i<response.length; i++){
                     this.projects.push(response[i])
                 }
+            })
+            .catch(error => console.log('error', error));
+        },
+
+        async removeProject(id, token){
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Authorization", token);
+
+            var requestOptions = {
+                method: 'GET',
+                headers: myHeaders,
+            };
+
+            fetch(BASE_URL+"/projects/delete/"+id, requestOptions)
+            .then((res) => {
+                // this.getProjects(token);
+                console.log(res.text());
             })
             .catch(error => console.log('error', error));
         }
