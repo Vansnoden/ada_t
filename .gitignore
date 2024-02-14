@@ -4,7 +4,8 @@ backend/alembic/__pycache__/
 backend/*/__pycache__/
 backend/database/resources/
 backend/*.db
-backend/alembic/versions
+backend/alembic/versions/
+backend/database/utilities/ai_model/
 
 frontend/narrator/.DS_Store
 frontend/narrator/node_modules
