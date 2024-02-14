@@ -11,6 +11,7 @@ import sys, pathlib
 from pdfminer.high_level import extract_text
 from pathlib import Path
 import shutil
+from tqdm import tqdm
 
 
 def pdf_to_images(pdf_path:str, output_in=None):
@@ -142,5 +143,5 @@ def extract_pdf_text(pdf_path, output_path=None):
     
 
 # just for tests
-if __name__ == '__main__':
-    extract_pdf_text("E:/programs/experimentations/pdfs/89.pdf")
+# if __name__ == '__main__':
+#     extract_pdf_text("E:/programs/experimentations/pdfs/89.pdf")
