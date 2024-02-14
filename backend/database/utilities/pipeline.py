@@ -17,6 +17,11 @@ from langchain_core.runnables import RunnableParallel, RunnablePassthrough
 from .pdf_preprocessing import *
 
 
+dir_path = os.path.dirname(os.path.realpath(__file__))
+parent_dir = Path(dir_path).parent
+MODEL_PATH = os.path.join(parent_dir, 'utilities/ai_model/ggml-model-f16.gguf')
+
+
 class CustomLlamaCppEmbeddings(LlamaCppEmbeddings):
     def embed_documents(self, texts: List[str]) -> List[List[float]]:
         """Embed a list of documents using the Llama model.
@@ -98,7 +103,7 @@ def refresh_gramma(grammar_path=None):
     # gllm("Describe a Sample study in JSON", grammar=vector_grammar)
     if grammar_path:
         gllm = LlamaCpp(
-            model_path="./ai_model/ggml-model-f16.gguf",
+            model_path=MODEL_PATH,
             n_gpu_layers=n_gpu_layers,
             n_batch=n_batch,
             n_ctx=4096,
@@ -114,7 +119,7 @@ def refresh_gramma(grammar_path=None):
         return gllm
     else: 
         gllm = LlamaCpp(
-            model_path="./ai_model/ggml-model-f16.gguf",
+            model_path=MODEL_PATH,
             n_gpu_layers=n_gpu_layers,
             n_batch=n_batch,
             n_ctx=4096,

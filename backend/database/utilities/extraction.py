@@ -1,6 +1,12 @@
 from tqdm import tqdm
 from . import pipeline 
+import os
+from pathlib import Path
 
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
+parent_dir = Path(dir_path).parent
+MODEL_PATH = os.path.join(parent_dir, 'utilities/ai_model/ggml-model-f16.gguf')
 
 data_extraction_prompt_template = """
     {context}
@@ -32,16 +38,16 @@ questionnaire = [
 
 
 embedding_fn = pipeline.CustomLlamaCppEmbeddings(
-    model_path="E:/programs/llama.cpp/models/llama-2-7b-chat/ggml-model-f16.gguf", n_ctx=4096, n_gpu_layers=10,
+    model_path=MODEL_PATH, n_ctx=4096, n_gpu_layers=10,
 )
 
 def run_exp(pdfPaths):
     global embedding_fn, data_extraction_prompt_template, questionnaire
     for pdf_path in tqdm(pdfPaths,position=0, leave=True):
         try:
-            pipeline.data_auto_extract(pdf_path, 
-                              embedding_fn, 
-                              data_extraction_prompt_template, questionnaire)
+            pipeline.data_auto_extract(pdf_path,
+                            embedding_fn, 
+                            data_extraction_prompt_template, questionnaire)
         except Exception as e:
             print(e)
             continue
