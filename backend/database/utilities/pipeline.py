@@ -14,6 +14,8 @@ from typing import List
 from langchain_core.runnables import RunnablePassthrough 
 from langchain.prompts import PromptTemplate
 from langchain_core.runnables import RunnableParallel, RunnablePassthrough
+
+from database.schemas import Question
 from .pdf_preprocessing import *
 
 
@@ -135,38 +137,44 @@ def refresh_gramma(grammar_path=None):
         return gllm
     
 
-def data_auto_extract(file_path, embedding_fn, prompt_template, questionnaire):
+def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:List[Question]):
     Answers = []
-    basename = os.path.basename(file_path).split(".")[0]
+    basename = os.path.basename(pdf_path).split(".")[0]
     basename = "_".join(basename.lower().split(" "))
+    file_path = os.path.join(Path(pdf_path).parent,f"{basename}_ext/text.txt")
+    results_path = os.path.join(Path(pdf_path).parent, "results")
     begin = datetime.datetime.now()
     # 1. clean and embed text
+    """
     if not os.path.exists(file_path):
         print(f"### text file not found: {file_path}")
-        extract_pdf_text(pdf_path=file_path)
+        extract_pdf_text(pdf_path=pdf_path)
     m_text = inline_text(file_path).encode("utf8").decode("utf8")
     try:
-        with open(f"{basename}.txt", "w+", encoding='utf-8') as f:
+        with open(file_path, "w+", encoding='utf-8') as f:
             f.write(m_text)
     except Exception as e:
-        with open(f"{basename}.txt", "w+", encoding='latin1') as f:
+        with open(file_path, "w+", encoding='latin1') as f:
             f.write(m_text)
-    vectorstore, retriever = build_retriever(embedding_fn, f"{basename}.txt", chunk_size=1024, chunk_overlap=10)
-    os.remove(f"{basename}.txt")
+    vectorstore, retriever = build_retriever(embedding_fn, file_path, chunk_size=1024, chunk_overlap=10)
+    """
+    # os.remove(f"{basename}.txt")
     first_stop = datetime.datetime.now()
     # 2. extract informations based on questionnaire
     for question in tqdm(questionnaire, position=0, leave=True):
         res_format_ok = False
-        grammar_path=f"E:/programs/experimentations/exp_src/custom_grammars/{questionnaire.index(question) + 1}.gbnf"
+        grammar_path=question.anwser_grammar
         gllm = refresh_gramma(grammar_path)
         # llm = refresh_gramma()
         # data_extraction_prompt_template
+        """
         chain = setchain(prompt_template, retriever, gllm)
         while not res_format_ok:
-            ans = chain.invoke(question)
+            ans = chain.invoke(question.label)
             try:
                 ans_check = json.loads(str(ans))
-                if not ans_check and questionnaire.index(question) < 9: #10 question
+                if not ans_check:
+                    # and questionnaire.index(question) < 9: #10 question
                     res_format_ok=False
                     print(f"###>>> FALSE: ANSWER TO QUESTION SHOULDN'T BE ENTY.")
                 else:
@@ -180,7 +188,7 @@ def data_auto_extract(file_path, embedding_fn, prompt_template, questionnaire):
                 continue
     end = datetime.datetime.now()
     vectorstore.delete_collection()
-    with open(f"auto_extractions/{basename}.json", "w+") as f:
+    with open(os.path.join(results_path, f"{basename}.json"), "w+") as f:
         seconds_in_day = 24 * 60 * 60
         embedding_time = first_stop - begin
         extraction_time = end - first_stop
@@ -189,4 +197,4 @@ def data_auto_extract(file_path, embedding_fn, prompt_template, questionnaire):
         Answers.append({"embedding_time": [minutes_em, seconds_em]})
         Answers.append({"extraction_time": [minutes_ex, seconds_ex]})
         Answers.append({"pdf_id": basename})
-        json.dump(Answers, f, indent = 4) 
+        json.dump(Answers, f, indent = 4) """

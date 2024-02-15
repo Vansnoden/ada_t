@@ -2,6 +2,8 @@ from datetime import timedelta, timezone, datetime
 import os
 from pathlib import Path
 from typing import Annotated, List
+from database.utilities.extraction import run_exp
+from database.utils import walkpath_get_files
 
 from fastapi import Depends, FastAPI, HTTPException, status, File, UploadFile
 from fastapi.security import OAuth2PasswordBearer
@@ -274,6 +276,24 @@ def get_project_files(
             raise HTTPException(status_code=404, detail="Project not found")
     else:
         raise HTTPException(status_code=403, detail="Unauthorized access")
+
+
+@app.post("/projects/{project_id}/run")
+def run_project(project_id: int, 
+    user: Annotated[User, Depends(get_current_active_user)],
+    db: Session = Depends(get_db)
+    ):
+    project = crud.get_single_project(project_id=project_id, db=db)
+    if user:
+        if project:
+            documents = walkpath_get_files(project.documents_location)
+            questions = crud.get_project_questions(db, project_id)
+            run_exp(documents, questions)
+        else:
+            raise HTTPException(status_code=404, detail="Project not found")
+    else:
+        raise HTTPException(status_code=403, detail="Unauthorized access")
+
 
 @app.post("/download")
 def main(file_path:str):

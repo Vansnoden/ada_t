@@ -1,4 +1,7 @@
+from typing import List
 from tqdm import tqdm
+
+from database.schemas import Question
 from . import pipeline 
 import os
 from pathlib import Path
@@ -41,8 +44,8 @@ embedding_fn = pipeline.CustomLlamaCppEmbeddings(
     model_path=MODEL_PATH, n_ctx=4096, n_gpu_layers=10,
 )
 
-def run_exp(pdfPaths):
-    global embedding_fn, data_extraction_prompt_template, questionnaire
+def run_exp(pdfPaths, questionnaire: List[Question]):
+    global embedding_fn, data_extraction_prompt_template
     for pdf_path in tqdm(pdfPaths,position=0, leave=True):
         try:
             pipeline.data_auto_extract(pdf_path,

@@ -10,25 +10,28 @@ list ::=
         )? "]"
 """
 
-object_base = """ "{{"({lines})"}}" """
+object_base = """ 
+    "{{"(
+        {lines}
+    )"}}" """
 
 base_gbnf_struct = """
-root  ::= {option}
+root ::= {option}
 
 {list}
 
 object ::= {object}
 
-array  ::=
+array ::=
   \"[\" ws (
-            string
+        string
     (\",\" ws string)*
   )? \"]\"
 
-string  ::=
+string ::=
   \"\\"\" (
     [^\"\\] |
-    "\\\\" (["\\/bfnrt] | "u" [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F])
+    "\\\\" (["\\\\/bfnrt] | "u" [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F])
   )* \"\\"\" ws
 
 ws ::= ([ \\t\\n] ws)?
@@ -53,7 +56,7 @@ def gbnf_from_json(base_json: str):
             lines = ""
             for label,dtype in json_obj.items():
                 line = "\"\\\""+label+"\\\"\" \":\" "+ dtype + " \",\""
-                lines += line
+                lines += '\n'+line
             derived_object = object_base.format(lines=lines)
             grammar = base_gbnf_struct.format(option="object", list="", object=derived_object)
         return grammar
