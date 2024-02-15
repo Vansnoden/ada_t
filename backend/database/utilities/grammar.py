@@ -30,7 +30,7 @@ array ::=
 
 string ::=
   \"\\"\" (
-    [^\"\\] |
+    [^\"\\\\] |
     "\\\\" (["\\\\/bfnrt] | "u" [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F])
   )* \"\\"\" ws
 
@@ -49,7 +49,7 @@ def gbnf_from_json(base_json: str):
             lines = ""
             for label,dtype in json_obj[0].items():
                 line = "\"\\\""+label+"\\\"\" \":\" "+ dtype + " \",\""
-                lines += line
+                lines += '\n'+line
             derived_object = object_base.format(lines=lines)
             grammar = base_gbnf_struct.format(option="list", list=base_list, object=derived_object)
         elif type(json_obj) == type({}):
@@ -66,9 +66,8 @@ def gbnf_from_json(base_json: str):
 
 if __name__ == "__main__":
     res = gbnf_from_json(json.dumps([{
-        "firstname": "string",
-        "lastname": "string",
-        "phone": "number"
+        "site name": "string",
+        "specie name": "string"
     }]))
     with open("test.gbnf","w+") as f:
         f.write(res)

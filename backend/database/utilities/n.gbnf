@@ -1,0 +1,26 @@
+# question : 6.	What mosquitoes or species was reported in each study sites?
+# answer grammar
+
+root  ::= sites
+
+sites ::= 
+    "[" ws (
+        object
+        ("," ws object)*
+        )? "]"
+
+object ::= 
+    "{" (
+        "\"site name\"" ":" string ","
+        "\"specie name\"" ":" string
+        ) "}"
+
+string  ::=
+  "\"" (
+    [^"\\] |
+    "\\" (["\\/bfnrt] | "u" [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F]) # escapes
+  )* "\"" ws
+
+
+# # Optional space: by convention, applied in this grammar after literal chars when allowed
+ws ::= ([ \t\n] ws)?

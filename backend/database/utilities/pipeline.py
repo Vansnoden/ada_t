@@ -145,7 +145,6 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
     results_path = os.path.join(Path(pdf_path).parent, "results")
     begin = datetime.datetime.now()
     # 1. clean and embed text
-    """
     if not os.path.exists(file_path):
         print(f"### text file not found: {file_path}")
         extract_pdf_text(pdf_path=pdf_path)
@@ -157,7 +156,6 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
         with open(file_path, "w+", encoding='latin1') as f:
             f.write(m_text)
     vectorstore, retriever = build_retriever(embedding_fn, file_path, chunk_size=1024, chunk_overlap=10)
-    """
     # os.remove(f"{basename}.txt")
     first_stop = datetime.datetime.now()
     # 2. extract informations based on questionnaire
@@ -167,7 +165,6 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
         gllm = refresh_gramma(grammar_path)
         # llm = refresh_gramma()
         # data_extraction_prompt_template
-        """
         chain = setchain(prompt_template, retriever, gllm)
         while not res_format_ok:
             ans = chain.invoke(question.label)
@@ -197,4 +194,4 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
         Answers.append({"embedding_time": [minutes_em, seconds_em]})
         Answers.append({"extraction_time": [minutes_ex, seconds_ex]})
         Answers.append({"pdf_id": basename})
-        json.dump(Answers, f, indent = 4) """
+        json.dump(Answers, f, indent = 4)

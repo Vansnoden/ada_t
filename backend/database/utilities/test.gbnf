@@ -1,0 +1,31 @@
+
+root ::= list
+
+
+list ::= 
+    "[" ws (
+        object
+        ("," ws object)*
+        )? "]"
+
+
+object ::=  
+    "{"(
+        
+"\"site name\"" ":" string ","
+"\"specie name\"" ":" string ","
+    )"}" 
+
+array ::=
+  "[" ws (
+        string
+    ("," ws string)*
+  )? "]"
+
+string ::=
+  "\"" (
+    [^"\\] |
+    "\\" (["\\/bfnrt] | "u" [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F] [0-9a-fA-F])
+  )* "\"" ws
+
+ws ::= ([ \t\n] ws)?
