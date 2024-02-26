@@ -19,10 +19,24 @@
 
 
 <script>
+import { useUserStore } from "@/stores/UserStore";
+import { useProjectStore } from "@/stores/ProjectStore";
+import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
+
 export default {
-    props: ['id', 'name', 'create_date', 'on_delete', 'on_edit'],
+    props: ['id', 'name', 'create_date'],
     setup(props) {
-        
+        const userStore = useUserStore();
+        const projectStore = useProjectStore();
+        const token = userStore.getToken;
+        projectStore.getProjects(token);
+        return {
+            props,
+            useUserStore,
+            projectStore,
+            token
+        }
     },
 
     data(){
@@ -32,7 +46,16 @@ export default {
     methods:{
         async details(){
             console.log('open details page...');
+        },
+
+        deleteProject(){
+            this.projectStore.removeProject(id, this.token);
+        },
+
+        editProject(){
+            console.log('attempting project edition'+ id);
         }
+
     }
 };
 </script>

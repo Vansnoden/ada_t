@@ -6,7 +6,7 @@ export const useProjectStore = defineStore({
     id: "ProjectStore",
 
     state: ()=>({
-        projects: [] 
+        projects: []
     }),
 
     persist: true,
@@ -17,16 +17,12 @@ export const useProjectStore = defineStore({
             myHeaders.append("Authorization", token);
             var requestOptions = {
                 method: 'GET',
-                headers: myHeaders,
-                redirect: 'follow'
+                headers: myHeaders
             };
-
-            fetch(BASE_URL+"/projects", requestOptions)
-                .then(response => response.json())
-                .then(result => {
-                    this.projects = result
-                })
-                .catch(error => console.log('error', error));
+            const res = await fetch(BASE_URL+"/projects", requestOptions);
+            const data = await res.json();
+            this.projects = data;
+            return data;
         },
 
         async addProject(name, token){
@@ -44,14 +40,19 @@ export const useProjectStore = defineStore({
                 body: raw
             };
 
-            fetch(BASE_URL+"/projects", requestOptions)
+            await fetch(BASE_URL+"/projects", requestOptions)
             .then((res) => {
                 let response = res.json();
                 for(let i=0; i<response.length; i++){
                     this.projects.push(response[i])
                 }
             })
-            .catch(error => console.log('error', error));
+            .catch(error => {
+                console.log('error', error);
+                return false;
+            });
+            
+            return true;
         },
 
         async removeProject(id, token){
@@ -64,12 +65,16 @@ export const useProjectStore = defineStore({
                 headers: myHeaders,
             };
 
-            fetch(BASE_URL+"/projects/delete/"+id, requestOptions)
+            await fetch(BASE_URL+"/projects/delete/"+id, requestOptions)
             .then((res) => {
-                // this.getProjects(token);
+                this.projects = this.getProjects(token);
                 console.log(res.text());
             })
-            .catch(error => console.log('error', error));
+            .catch(error => {
+                console.log('error', error);
+                return false;
+            });
+            return true;
         }
     },
 

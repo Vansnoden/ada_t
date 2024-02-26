@@ -30,31 +30,33 @@
 <script>
 // 
 import { useUserStore } from "@/stores/UserStore";
+import { storeToRefs } from 'pinia';
+
 export default {
     setup() {
         const userStore = useUserStore();
-        return { userStore };
+        const user = storeToRefs(userStore.getUser);
+        return { userStore , user};
     },
+
     data() {
         return {
             username: "",
             password: "",
-            errors: null
+            errors: null,
+            user: null
         };
     },
-
-    // TODO: solve the double-click before redirection problem
 
     methods: {
         async login() {
             await this.userStore.signIn(this.username, this.password)
             .then(()=>{
-                if(this.userStore.getUser.username){
-                    this.$router.push(this.$route.query.redirect || '/');
+                if(this.user){
+                    this.$router.push({ name:'projects'});
                 }else{
                     this.errors="\n Wrong login or password";
                 }
-                // 
             }).catch(error => { 
                 this.errors = error;
             })

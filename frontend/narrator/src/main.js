@@ -5,6 +5,55 @@ import { loadFonts } from './plugins/webfontloader'
 
 loadFonts()
 
-createApp(App)
-  .use(vuetify)
-  .mount('#app')
+// Plugins
+import { registerPlugins } from '@/plugins'
+
+// Components
+import Header from '@/components/Header.vue'
+import Footer from '@/components/Footer.vue'
+import Projects from '@/pages/Projects.vue'
+import Login from '@/pages/Login.vue'
+import Register from '@/pages/Register.vue'
+import Account from '@/pages/Account.vue'
+import ProjectItem from '@/components/ProjectItem.vue'
+
+// Composables
+
+import { createPinia } from 'pinia'
+
+// Router
+import {createRouter, createWebHistory} from 'vue-router'
+import { useUserStore } from './stores/UserStore'
+import { useProjectStore } from './stores/ProjectStore'
+
+const router = createRouter({
+    history: createWebHistory(),
+    routes: [
+        { name: 'projects', path: '/projects', component: Projects},
+        { name: 'login', path: '/login', component: Login},
+        { name: 'register', path: '/register', component: Register}
+    ]
+})
+
+router.beforeEach(async (to) => {
+    // redirect to login page if not logged in and trying to access a restricted page
+    const publicPages = ['/login', '/register'];
+    const authRequired = !publicPages.includes(to.path);
+    const auth = useUserStore();
+
+    if (authRequired && !auth.user) {
+        auth.returnUrl = to.fullPath;
+        return '/login';
+    }
+});
+
+const pinia = createPinia()
+const app = createApp(App)
+
+app.use(pinia)
+app.use(router)
+app.use(vuetify)
+
+registerPlugins(app)
+
+app.mount('#app')

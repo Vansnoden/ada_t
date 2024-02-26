@@ -40,7 +40,11 @@ export const useUserStore = defineStore({
                 }else{
                     this.error = res.detail
                 }
-            }).catch(error=>console.log('error getting user details', error))
+            }).catch(error=>{
+                console.log('error getting user details', error)
+                return false;
+            })
+            return true
         },
 
         async signIn(username, password) {
@@ -70,7 +74,11 @@ export const useUserStore = defineStore({
                     }
                 }).catch(error => console.log('error getting user details', error));
             })
-            .catch(error => console.log('authentication error', error));
+            .catch(error => {
+                console.log('authentication error', error);
+                return false;
+            });
+            return true;
         },
 
         async logOut(){
@@ -82,7 +90,7 @@ export const useUserStore = defineStore({
     // getters
     getters: {
         getUser: (state) => state.user,
-        getToken: (state) => state.token_type + " " + state.token,
+        getToken: (state) => "" + state.token_type + " " + state.token,
         getError:  (state) => state.error
     }
 })

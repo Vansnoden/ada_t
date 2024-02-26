@@ -2,7 +2,7 @@
     <v-navigation-drawer>
         <v-list-item title="Narrator" subtitle="automatic data abstraction tool"></v-list-item>
         <v-divider></v-divider>
-        <v-list-item link active title="projects" to="/"></v-list-item>
+        <v-list-item link active title="projects" to="/projects"></v-list-item>
         <v-list-item link title="account settings"></v-list-item>
         <v-list-item link title="userguide"></v-list-item>
         <v-list-item link title="help?"></v-list-item>
@@ -74,20 +74,26 @@
             <v-container fluid>
                 <v-row no-gutters>
                 <v-col
-                    v-for="(item, index) in projectStore.getProjectsList"
+                    v-for="item in projectStore.getProjectsList"
                     :key="item.id"
-                    :index="index"
+                    :index="item.id"
                     cols="12"
                     sm="3">
                     <v-sheet class="ma-2 pa-2">
-                        <ProjectItem 
-                            :id="item.id"
-                            :name="item.name"
-                            :create_date="item.create_date"
-                            :on_delete="deleteProject(item.id)"
-                            :on_edit="editProject(item.id)"
-                            >
-                        </ProjectItem>
+                        <v-card 
+                            :title="item.name" 
+                            :text="'created on: '+item.create_date" prepend-icon="mdi-content-paste">
+                            <v-card-actions>
+                                <v-btn class="btn-danger" elevation="2">
+                                    <v-icon>mdi-delete-forever</v-icon>
+                                    Delete
+                                </v-btn>
+                                <v-btn class="btn-success" elevation="2">
+                                    <v-icon>mdi-open-in-new</v-icon>
+                                    Open
+                                </v-btn>
+                            </v-card-actions>
+                        </v-card>
                     </v-sheet>
                 </v-col>
                 </v-row>
@@ -101,17 +107,24 @@
 // 
 import { useUserStore } from "@/stores/UserStore";
 import { useProjectStore } from "@/stores/ProjectStore";
+import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
 
 export default {
     setup() {
         const userStore = useUserStore();
         const projectStore = useProjectStore();
-        projectStore.getProjects(userStore.getToken);
+        const token = userStore.getToken;
+        projectStore.getProjects(token);
+        // const projects = computed(() => projectStore.getProjectsList);
+        // const { getProjectsList } = storeToRefs(projectStore);
         return { 
             userStore,
-            projectStore
+            projectStore,
+            token
         };
     },
+
 
     data(){
         return {
@@ -121,22 +134,16 @@ export default {
     },
 
     methods:{
-        async logout(){
-            await this.userStore.logOut().then(() => {
+        logout(){
+            this.userStore.logOut().then(() => {
                 this.$router.push(this.$route.query.redirect || '/login');
             });
         },
-        async addProject(){
-            this.projectStore.addProject(this.pname, this.userStore.getToken);
-            this.projectStore.getProjects(this.userStore.getToken);
+        addProject(){
+            this.projectStore.addProject(this.pname, this.token);
+            // this.projectStore.getProjects(this.token);
             this.dialog = false;
         },
-        async deleteProject(pid){
-            this.projectStore.removeProject(pid, this.userStore.getToken);
-        },
-        async editProject(pid){
-            console.log('attempting project edition'+ pid);
-        }
     }
 
 };
@@ -162,6 +169,20 @@ export default {
     .hint{
         color: grey;
         font-size: 0.8rem;
+    }
+    .title{
+        font-weight: 600;
+    }
+    .date{
+        font-weight: lighter;
+    }
+    .btn-danger{
+        background-color:rgb(252, 155, 155);
+        // color: #fff;
+    }
+    .btn-success{
+        background-color: rgb(108, 224, 108);
+        // color: #fff;
     }
 }
 </style>
