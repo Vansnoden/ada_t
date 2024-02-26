@@ -8,11 +8,9 @@ import time, os, datetime, json
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.llms import LlamaCpp
-from langchain.prompts import PromptTemplate
 from tqdm import tqdm
 from typing import List
 from langchain_core.runnables import RunnablePassthrough 
-from langchain.prompts import PromptTemplate
 from langchain_core.runnables import RunnableParallel, RunnablePassthrough
 
 from database.schemas import Question
@@ -72,16 +70,16 @@ def inline_text(file_path):
         # exclude document references section and subsequent sections
         if line.lower().strip().startswith("references"):
             break
-        nline = line.replace("-\n", " ")
+        nline = line.replace("-\n", "")
         nline = nline.replace("\n", " ")
-        nline = nline.replace("| ", "")
-        nline = nline.replace("\'", "")
-        nline = nline.replace("  ", " ")
-        nline = nline.replace("\t", " ")
-        if nline.lower().strip().startswith("key"):
-            nline = "MAIN BODY: \n" + nline
+        # nline = nline.replace("| ", "")
+        # nline = nline.replace("\'", "")
+        # nline = nline.replace("  ", " ")
+        # nline = nline.replace("\t", " ")
+        # if nline.lower().strip().startswith("key"):
+        #     nline = "MAIN BODY: \n" + nline
         res += nline
-    res = "HEADER: \n" + res 
+    # res = "HEADER: \n" + res 
     return res
 
 
@@ -116,7 +114,7 @@ def refresh_gramma(grammar_path=None):
             # return_full_text=False, # to not repeat the question, set to False
             # top_k=10, # default=10
             # top_p=0.1, # default=0.9
-            temperature=0.3 # default=0.
+            # temperature=0.3 # default=0.
         )
         return gllm
     else: 

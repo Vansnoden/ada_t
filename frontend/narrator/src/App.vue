@@ -1,18 +1,23 @@
 <template>
   <v-app>
-      <v-main class="main-page">
-        <router-view></router-view>
-      </v-main>
+    <v-main>
+      <HelloWorld/>
+    </v-main>
   </v-app>
 </template>
 
-<script setup>
-  import {useUserStore} from "@/stores/UserStore";
-  const user = useUserStore();
-</script>
+<script>
+import HelloWorld from './components/HelloWorld.vue'
 
-<style lang="scss">
-.main-page{
-  min-height: 80vh;
+export default {
+  name: 'App',
+
+  components: {
+    HelloWorld,
+  },
+
+  data: () => ({
+    //
+  }),
 }
-</style>
+</script>

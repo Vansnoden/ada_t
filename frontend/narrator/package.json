@@ -2,25 +2,31 @@
   "name": "narrator",
   "version": "0.0.0",
   "scripts": {
-    "dev": "cross-env NODE_OPTIONS='--no-warnings' vite",
+    "serve": "vite preview",
     "build": "vite build",
+    "dev": "vite",
     "preview": "vite preview"
   },
   "dependencies": {
     "@mdi/font": "7.0.96",
     "pinia": "^2.1.7",
     "roboto-fontface": "*",
-    "vue": "^3.3.0",
+    "vue": "^3.4.20",
+    "vue-cli": "^2.9.6",
     "vue-router": "^4.2.5",
-    "vuetify": "^3.0.0"
+    "vuetify": "^3.0.0",
+    "webfontloader": "^1.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.0",
     "cross-env": "^7.0.3",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.22.0",
     "sass": "^1.69.0",
     "unplugin-fonts": "^1.1.0",
     "unplugin-vue-components": "^0.26.0",
-    "vite": "^5.0.0",
-    "vite-plugin-vuetify": "^2.0.0"
+    "vite": "^5.1.4",
+    "vite-plugin-vuetify": "^2.0.0",
+    "vue-cli-plugin-vuetify": "~2.5.8"
   }
 }

@@ -64,10 +64,10 @@ def gbnf_from_json(base_json: str):
         print(e)
         return "---" 
 
-if __name__ == "__main__":
-    res = gbnf_from_json(json.dumps([{
-        "site name": "string",
-        "specie name": "string"
-    }]))
-    with open("test.gbnf","w+") as f:
-        f.write(res)
+# if __name__ == "__main__":
+#     res = gbnf_from_json(json.dumps([{
+#         "site name": "string",
+#         "specie name": "string"
+#     }]))
+#     with open("test.gbnf","w+") as f:
+#         f.write(res)

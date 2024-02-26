@@ -40,12 +40,11 @@ questionnaire = [
 ]
 
 
-embedding_fn = pipeline.CustomLlamaCppEmbeddings(
-    model_path=MODEL_PATH, n_ctx=4096, n_gpu_layers=10,
-)
-
 def run_exp(pdfPaths, questionnaire: List[Question]):
-    global embedding_fn, data_extraction_prompt_template
+    embedding_fn = pipeline.CustomLlamaCppEmbeddings(
+        model_path=MODEL_PATH, n_ctx=4096, n_gpu_layers=10,
+    )
+    global data_extraction_prompt_template
     for pdf_path in tqdm(pdfPaths,position=0, leave=True):
         try:
             pipeline.data_auto_extract(pdf_path,
