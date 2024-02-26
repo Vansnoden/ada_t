@@ -85,11 +85,7 @@ export default {
             token
         };
     },
-    data(){
-        return{
-            project
-        }
-    },
+    
     async beforeRouteUpdate(to, from) {
         // react to route changes...
         this.project = this.projectStore.getSingleProject(this.token, to.params.id)
