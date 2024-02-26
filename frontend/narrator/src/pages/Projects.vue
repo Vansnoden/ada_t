@@ -145,8 +145,9 @@ export default {
             // this.projectStore.getProjects(this.token);
             this.dialog = false;
         },
-        async details(){
-            console.log('open details page...');
+        
+        details(id){
+            this.$router.push('/projects/'+id);
         },
 
         deleteProject(id){

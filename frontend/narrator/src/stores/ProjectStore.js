@@ -25,6 +25,18 @@ export const useProjectStore = defineStore({
             return data;
         },
 
+        async getSingleProject(token, id){
+            var myHeaders = new Headers();
+            myHeaders.append("Authorization", token);
+            var requestOptions = {
+                method: 'GET',
+                headers: myHeaders
+            };
+            const res = await fetch(BASE_URL+"/projects/"+id, requestOptions);
+            const data = await res.json();
+            return data;
+        },
+
         async addProject(name, token){
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");

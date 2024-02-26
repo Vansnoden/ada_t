@@ -16,20 +16,23 @@ import Login from '@/pages/Login.vue'
 import Register from '@/pages/Register.vue'
 import Account from '@/pages/Account.vue'
 import ProjectItem from '@/components/ProjectItem.vue'
+import ProjectDetails from '@/pages/ProjectDetails.vue'
 
 // Composables
 
 import { createPinia } from 'pinia'
 
 // Router
-import {createRouter, createWebHistory} from 'vue-router'
-import { useUserStore } from './stores/UserStore'
-import { useProjectStore } from './stores/ProjectStore'
+import {createRouter, createWebHistory} from 'vue-router';
+import { useUserStore } from './stores/UserStore';
+import { useProjectStore } from './stores/ProjectStore';
+
 
 const router = createRouter({
     history: createWebHistory(),
     routes: [
         { name: 'projects', path: '/projects', component: Projects},
+        { name: 'project_details', path: '/projects/:id', component: ProjectDetails},
         { name: 'login', path: '/login', component: Login},
         { name: 'register', path: '/register', component: Register}
     ]
