@@ -40,7 +40,7 @@ export const useProjectStore = defineStore({
                 body: raw
             };
 
-            const res = await fetch(BASE_URL+"/projects", requestOptions)
+            const res = await fetch(BASE_URL+"/projects", requestOptions);
             const data = await res.json();
             for(let i=0; i<data.length; i++){
                 this.projects.push(data[i])
@@ -53,22 +53,14 @@ export const useProjectStore = defineStore({
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("Authorization", token);
-
             var requestOptions = {
                 method: 'GET',
                 headers: myHeaders,
             };
-
-            await fetch(BASE_URL+"/projects/delete/"+id, requestOptions)
-            .then((res) => {
-                this.projects = this.getProjects(token);
-                console.log(res.text());
-            })
-            .catch(error => {
-                console.log('error', error);
-                return false;
-            });
-            return true;
+            const res = await fetch(BASE_URL+"/projects/delete/"+id, requestOptions);
+            const data = await res.json();
+            this.getProjects(token);
+            return data;
         }
     },
 
