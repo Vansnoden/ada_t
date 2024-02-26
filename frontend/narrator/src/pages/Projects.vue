@@ -82,13 +82,14 @@
                     <v-sheet class="ma-2 pa-2">
                         <v-card 
                             :title="item.name" 
-                            :text="'created on: '+item.create_date" prepend-icon="mdi-content-paste">
+                            :text="'created on: '+item.create_date" 
+                            prepend-icon="mdi-content-paste">
                             <v-card-actions>
-                                <v-btn class="btn-danger" elevation="2">
+                                <v-btn class="btn-danger" elevation="2" @click="deleteProject(item.id)">
                                     <v-icon>mdi-delete-forever</v-icon>
                                     Delete
                                 </v-btn>
-                                <v-btn class="btn-success" elevation="2">
+                                <v-btn class="btn-success" elevation="2" @click="details(item.id)">
                                     <v-icon>mdi-open-in-new</v-icon>
                                     Open
                                 </v-btn>
@@ -144,6 +145,17 @@ export default {
             // this.projectStore.getProjects(this.token);
             this.dialog = false;
         },
+        async details(){
+            console.log('open details page...');
+        },
+
+        deleteProject(id){
+            this.projectStore.removeProject(id, this.token);
+        },
+
+        editProject(id){
+            console.log('attempting project edition'+ id);
+        }
     }
 
 };

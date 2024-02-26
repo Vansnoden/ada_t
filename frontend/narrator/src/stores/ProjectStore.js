@@ -40,19 +40,13 @@ export const useProjectStore = defineStore({
                 body: raw
             };
 
-            await fetch(BASE_URL+"/projects", requestOptions)
-            .then((res) => {
-                let response = res.json();
-                for(let i=0; i<response.length; i++){
-                    this.projects.push(response[i])
-                }
-            })
-            .catch(error => {
-                console.log('error', error);
-                return false;
-            });
-            
-            return true;
+            const res = await fetch(BASE_URL+"/projects", requestOptions)
+            const data = await res.json();
+            for(let i=0; i<data.length; i++){
+                this.projects.push(data[i])
+            }
+            this.projects.push(data);
+            return data;
         },
 
         async removeProject(id, token){
