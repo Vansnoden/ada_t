@@ -26,21 +26,26 @@
                 <v-card-text>
                     <v-window v-model="tab">
                         <v-window-item value="1">
-                            <DataTable :data="data" class="display" :options="options">
+                            <DataTable class="display" 
+                                :options="options"
+                                :columns="dataDocCols"
+                                :data="dataDoc">
                                 <thead>
                                     <tr>
-                                        <th>First</th>
-                                        <th>Second</th>
+                                        <th>Name</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                             </DataTable>
                         </v-window-item>
                         <v-window-item value="2">
-                            <DataTable :data="data" class="display" :options="options">
+                            <DataTable 
+                                :columns="dataQaCols" 
+                                :data="dataQa" class="display" 
+                                :options="options">
                                 <thead>
                                     <tr>
-                                        <th>First</th>
-                                        <th>Second</th>
+                                        <th>Label</th>
                                     </tr>
                                 </thead>
                             </DataTable>
@@ -63,21 +68,57 @@ import DataTablesCore from 'datatables.net';
 import 'datatables.net-select';
 import 'datatables.net-responsive';
 import { ref } from 'vue';
+import { useRoute } from "vue-router";
 
 DataTable.use(DataTablesCore);
+
 
 const userStore = useUserStore();
 const projectStore = useProjectStore();
 const token = userStore.getToken;
-const data = [
-    [1, 2],
-    [3, 4],
+const route = useRoute();
+const project = projectStore.getSingleProject(route.params.id);
+
+// document data
+const dataDocCols = [
+    { data: 'name' },
+    { data: 'status' },
+]
+const dataDoc = [
+    {
+        'name': 'first document', 
+        'status': "draft",
+    },
+    {
+        'name': 'second document', 
+        'status': "draft",
+    }
 ];
+
+// question data
+const dataQaCols = [
+    { data: 'label' },
+]
+const dataQa = [
+    {
+        'label': 'what is the title of this study?', 
+    },
+    {
+        'label': 'who are th autors of this study?', 
+    }
+];
+
+
 const options = {
     responsive: true,
-    select: true,
+    select: false,
 };
 const tab = ref('');
+
+const download = (id) => {
+    console.log('download')
+}
+
 </script>
 
 

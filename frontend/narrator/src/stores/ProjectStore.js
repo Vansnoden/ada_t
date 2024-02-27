@@ -25,16 +25,13 @@ export const useProjectStore = defineStore({
             return data;
         },
 
-        async getSingleProject(token, id){
-            var myHeaders = new Headers();
-            myHeaders.append("Authorization", token);
-            var requestOptions = {
-                method: 'GET',
-                headers: myHeaders
-            };
-            const res = await fetch(BASE_URL+"/projects/"+id, requestOptions);
-            const data = await res.json();
-            return data;
+        getSingleProject(id){
+            for (let i=0; i<this.projects.length; i++){
+                if(this.projects[i].id === parseInt(id)){
+                    return this.projects[i];
+                }
+            }
+            return null;
         },
 
         async addProject(name, token){
