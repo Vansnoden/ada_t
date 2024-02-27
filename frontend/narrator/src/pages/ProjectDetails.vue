@@ -12,120 +12,115 @@
     </v-navigation-drawer>
     <div class="project_page">
         <div class="toolbar">
-            <v-row>
-                <v-dialog
-                    v-model="dialog"
-                    persistent
-                    width="512">
-                    <template v-slot:activator="{ props }">
-                        <v-btn
-                            color="primary"
-                            v-bind="props"
-                            prepend-icon="mdi-plus"
-                        >
-                        New project
-                        </v-btn>
-                    </template>
-                    <v-card>
-                        <v-card-title>
-                            <span class="text-h5">Project details</span>
-                        </v-card-title>
-                        <v-card-text>
-                            <v-container>
-                                <v-row>
-                                    <v-col
-                                        cols="12"
-                                        sm="12"
-                                        md="12">
-                                        <v-text-field
-                                            label="Project name*"
-                                            required
-                                            v-model="pname"
-                                        ></v-text-field>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
-                            <small>*indicates required field</small>
-                        </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                            color="blue-darken-1"
-                            variant="text"
-                            @click="dialog = false">
-                            Close
-                        </v-btn>
-                        <v-btn
-                            color="blue-darken-1"
-                            variant="text"
-                            @click="addProject">
-                            Save
-                        </v-btn>
-                    </v-card-actions>
-                </v-card>
-                </v-dialog>
-            </v-row>
+            <v-btn density="compact" icon="mdi-upload" title="upload your documents here"></v-btn>
+            <v-btn density="compact" icon="mdi-play" class="success" title="run extraction here"></v-btn>
+            <v-btn density="compact" icon="mdi-stop" class="danger" title="stop all extractions here"></v-btn>
+            <v-btn density="compact" icon="mdi-download" title="download extraction results here"></v-btn>
+        </div>
+        <div class="content">
+            <v-card>
+                <v-tabs v-model="tab" bg-color="secondary" align-tabs="center">
+                    <v-tab value="1">Documents</v-tab>
+                    <v-tab value="2">Questionnaire</v-tab>
+                </v-tabs>
+                <v-card-text>
+                    <v-window v-model="tab">
+                        <v-window-item value="1">
+                            <DataTable :data="data" class="display" :options="options">
+                                <thead>
+                                    <tr>
+                                        <th>First</th>
+                                        <th>Second</th>
+                                    </tr>
+                                </thead>
+                            </DataTable>
+                        </v-window-item>
+                        <v-window-item value="2">
+                            <DataTable :data="data" class="display" :options="options">
+                                <thead>
+                                    <tr>
+                                        <th>First</th>
+                                        <th>Second</th>
+                                    </tr>
+                                </thead>
+                            </DataTable>
+                        </v-window-item>
+                    </v-window>
+                </v-card-text>
+            </v-card>
         </div>
     </div>
 </template>
-<script>
+
+<script setup>
 import { useUserStore } from "@/stores/UserStore";
 import { useProjectStore } from "@/stores/ProjectStore";
-import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
+// import { storeToRefs } from 'pinia';
+// import { computed } from 'vue';
+// others
+import DataTable from 'datatables.net-vue3';
+import DataTablesCore from 'datatables.net';
+import 'datatables.net-select';
+import 'datatables.net-responsive';
+import { ref } from 'vue';
 
-export default {
-    setup() {
-        const userStore = useUserStore();
-        const projectStore = useProjectStore();
-        const token = userStore.getToken;
-        return { 
-            userStore,
-            projectStore,
-            token
-        };
-    },
-    
-    async beforeRouteUpdate(to, from) {
-        // react to route changes...
-        this.project = this.projectStore.getSingleProject(this.token, to.params.id)
-    },
-    methods:{
+DataTable.use(DataTablesCore);
 
-    }
-}
+const userStore = useUserStore();
+const projectStore = useProjectStore();
+const token = userStore.getToken;
+const data = [
+    [1, 2],
+    [3, 4],
+];
+const options = {
+    responsive: true,
+    select: true,
+};
+const tab = ref('');
 </script>
+
+
 <style lang="scss">
-.project_page{
+@import 'datatables.net-dt';
+
+.project_page {
     color: #000;
-    min-height: 93vh!important;
-    .toolbar{
+    min-height: 93vh !important;
+
+    .toolbar {
         border-bottom: 1px solid lightgrey;
         padding: 1em;
         display: flex;
         flex-direction: row;
-        justify-content: start;
+        justify-content: center;
         align-items: center;
-        gap: 0.8em;
+        gap: 2em;
     }
-    .content{
+
+    .content {
         padding: 1em;
     }
-    .hint{
+
+    .hint {
         color: grey;
         font-size: 0.8rem;
     }
-    .title{
+
+    .title {
         font-weight: 600;
     }
-    .date{
+
+    .date {
         font-weight: lighter;
     }
-    .btn-danger{
-        background-color:rgb(252, 155, 155);
+
+    .danger {
+        background-color: rgb(252, 155, 155);
         // color: #fff;
     }
-    .btn-success{
+
+    .success {
         background-color: rgb(108, 224, 108);
         // color: #fff;
     }
