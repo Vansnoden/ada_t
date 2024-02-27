@@ -12,7 +12,38 @@
     </v-navigation-drawer>
     <div class="project_page">
         <div class="toolbar">
-            <v-btn density="compact" icon="mdi-upload" title="upload your documents here"></v-btn>
+            <div>
+                <v-dialog v-model="fu_dialog" persistent width="512">
+                    <template v-slot:activator="{ props }">
+                        <v-btn density="compact" v-bind="props" icon="mdi-upload"
+                            title="upload your documents here"></v-btn>
+                    </template>
+                    <v-card>
+                        <v-card-title>
+                            <span class="text-h5">Upload files</span>
+                        </v-card-title>
+                        <v-card-text>
+                            <v-container>
+                                <v-form @submit.prevent="uploadFiles">
+                                    <v-row>
+                                        <v-col cols="12" sm="12" md="12">
+                                            <v-file-input required="true" name="files" show-size counter multiple
+                                                label="Upload all the files of these project" :rules="rules"
+                                                accept="application/pdf">
+                                            </v-file-input>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row>
+                                        <v-col>
+                                            <v-btn color="primary" variant="text" type="submit">Submit</v-btn>
+                                        </v-col>
+                                    </v-row>
+                                </v-form>
+                            </v-container>
+                        </v-card-text>
+                    </v-card>
+                </v-dialog>
+            </div>
             <v-btn density="compact" icon="mdi-play" class="success" title="run extraction here"></v-btn>
             <v-btn density="compact" icon="mdi-stop" class="danger" title="stop all extractions here"></v-btn>
             <v-btn density="compact" icon="mdi-download" title="download extraction results here"></v-btn>
@@ -26,10 +57,7 @@
                 <v-card-text>
                     <v-window v-model="tab">
                         <v-window-item value="1">
-                            <DataTable class="display" 
-                                :options="options"
-                                :columns="dataDocCols"
-                                :data="dataDoc">
+                            <DataTable class="display" :options="options" :columns="dataDocCols" :data="dataDoc">
                                 <thead>
                                     <tr>
                                         <th>Name</th>
@@ -39,10 +67,7 @@
                             </DataTable>
                         </v-window-item>
                         <v-window-item value="2">
-                            <DataTable 
-                                :columns="dataQaCols" 
-                                :data="dataQa" class="display" 
-                                :options="options">
+                            <DataTable :columns="dataQaCols" :data="dataQa" class="display" :options="options">
                                 <thead>
                                     <tr>
                                         <th>Label</th>
@@ -78,6 +103,7 @@ const projectStore = useProjectStore();
 const token = userStore.getToken;
 const route = useRoute();
 const project = projectStore.getSingleProject(route.params.id);
+const projectDocs = projectStore.getProjectDocuments(route.params.id, token);
 
 // document data
 const dataDocCols = [
@@ -86,11 +112,11 @@ const dataDocCols = [
 ]
 const dataDoc = [
     {
-        'name': 'first document', 
+        'name': 'first document',
         'status': "draft",
     },
     {
-        'name': 'second document', 
+        'name': 'second document',
         'status': "draft",
     }
 ];
@@ -101,10 +127,10 @@ const dataQaCols = [
 ]
 const dataQa = [
     {
-        'label': 'what is the title of this study?', 
+        'label': 'what is the title of this study?',
     },
     {
-        'label': 'who are th autors of this study?', 
+        'label': 'who are th autors of this study?',
     }
 ];
 
@@ -113,11 +139,26 @@ const options = {
     responsive: true,
     select: false,
 };
-const tab = ref('');
+const tab = ref('tab');
+const fu_dialog = ref('fu_dialog');
+const files = ref('files'); //files to be uploaded
+fu_dialog.value = false;
 
 const download = (id) => {
     console.log('download')
 }
+
+const uploadFiles = (id) => {
+    console.log(files);
+    fu_dialog.value = false;
+}
+
+const rules = [
+    value => {
+        if (value) return true
+        return 'You must provide at least one file'
+    },
+]
 
 </script>
 
