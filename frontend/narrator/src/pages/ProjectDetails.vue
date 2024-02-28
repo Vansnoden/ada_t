@@ -25,11 +25,11 @@
                         </v-card-title>
                         <v-card-text>
                             <v-container>
-                                <v-form @submit.prevent="uploadFiles">
+                                <v-form @submit.prevent="uploadFiles" enctype="multipart/form-data">
                                     <v-row>
                                         <v-col cols="12" sm="12" md="12">
-                                            <v-file-input required="true" name="files" show-size counter multiple
-                                                label="Upload all the files of these project" :rules="rules"
+                                            <v-file-input required="true" name="files" @change="getFileInputValue" show-size counter
+                                                multiple label="Upload all the files of these project" :rules="rules"
                                                 accept="application/pdf">
                                             </v-file-input>
                                         </v-col>
@@ -180,9 +180,9 @@ import DataTable from 'datatables.net-vue3';
 import DataTablesCore from 'datatables.net';
 import 'datatables.net-select';
 import 'datatables.net-responsive';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRoute } from "vue-router";
-import {BASE_URL} from "@/stores/contants.js";
+import { BASE_URL } from "@/stores/contants.js";
 
 DataTable.use(DataTablesCore);
 
@@ -196,6 +196,7 @@ const docs = ref("docs");
 docs.value = [];
 const qa = ref("qa");
 qa.value = [];
+const formUpload = ref('formUpload');
 
 const getProjectDocuments = (id, token) => {
     var myHeaders = new Headers();
@@ -205,10 +206,10 @@ const getProjectDocuments = (id, token) => {
         headers: myHeaders
     };
     fetch(BASE_URL + "/project/" + id + "/files", requestOptions)
-    .then(res => res.json())
-    .then((response) => {
-        docs.value = response;
-    });
+        .then(res => res.json())
+        .then((response) => {
+            docs.value = response;
+        });
 }
 
 const getProjectQuestions = (id, token) => {
@@ -219,10 +220,10 @@ const getProjectQuestions = (id, token) => {
         headers: myHeaders
     };
     fetch(BASE_URL + "/questions/" + id, requestOptions)
-    .then(res => res.json())
-    .then((response) => {
-        qa.value = response;
-    });
+        .then(res => res.json())
+        .then((response) => {
+            qa.value = response;
+        });
 }
 getProjectDocuments(route.params.id, token);
 getProjectQuestions(route.params.id, token);
@@ -267,13 +268,8 @@ eqa_dialog.value = false;
 const dd_dialog = ref('dd_dialog');
 dd_dialog.value = false;
 const editedItem = ref('editedItem');
-const files = ref('files'); //files to be uploaded
+const files = ref(); //files to be uploaded
 
-
-const uploadFiles = (id) => {
-    console.log(files);
-    fu_dialog.value = false;
-}
 
 const closeFU = () => {
     fu_dialog.value = false;
@@ -327,6 +323,48 @@ const initializeDocs = () => {
 
 const initializeQA = () => {
     getProjectDocuments(route.params.id, token);
+}
+
+const getFileInputValue = (event) => {
+    //get the file input value
+    const mfiles = event.target.files;
+    console.log("M-files");
+    console.log(mfiles);
+    //assign it to our reactive reference value 
+    files.value = mfiles;
+}
+
+const uploadFiles = (id) => {
+    fu_dialog.value = false;
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", token);
+
+    const formdata = new FormData();
+
+    console.log("FILESSSS");
+    console.log(files.value);
+
+    for(let i=0; i<files.value.length; i++){
+        console.log("FILE X");
+        console.log(files.value[i]);
+        formdata.append("files", files.value[i], files.value[i].name);
+    }
+    console.log(formdata);
+    
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: formdata,
+        redirect: "follow"
+    };
+
+    fetch(BASE_URL + "/project/"+ route.params.id +"/upload", requestOptions)
+        .then((response) => response.text())
+        .then((result) => {
+            console.log(result);
+            initializeDocs();
+        })
+        .catch((error) => console.error(error));
 }
 </script>
 
