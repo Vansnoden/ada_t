@@ -34,18 +34,6 @@ export const useProjectStore = defineStore({
             return null;
         },
 
-        async getProjectDocuments(id, token){
-            var myHeaders = new Headers();
-            myHeaders.append("Authorization", token);
-            var requestOptions = {
-                method: 'POST',
-                headers: myHeaders
-            };
-            const res = await fetch(BASE_URL+"/project/"+id+"/files", requestOptions);
-            const data = await res.json();
-            return data;
-        },
-
         async addProject(name, token){
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");

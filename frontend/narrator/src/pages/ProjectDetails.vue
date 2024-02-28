@@ -88,8 +88,8 @@
                                     </v-dialog>
                                 </template>
                                 <template v-slot:no-data>
-                                    <v-btn color="primary" @click="initialize">
-                                        Reset
+                                    <v-btn color="primary" @click="initializeDocs">
+                                        Refresh
                                     </v-btn>
                                 </template>
                             </v-data-table>
@@ -112,10 +112,12 @@
                                                 <v-row dense>
                                                     <span>Define answer format below with keys and data types for each
                                                         keys.</span>
-                                                    <v-btn prepend-icon="mdi-plus" class="mr-1" @click="increment_keynum">add row</v-btn>
-                                                    <v-btn prepend-icon="mdi-minus" @click="decrement_keynum">remove last row</v-btn>
+                                                    <v-btn prepend-icon="mdi-plus" class="mr-1"
+                                                        @click="increment_keynum">add row</v-btn>
+                                                    <v-btn prepend-icon="mdi-minus" @click="decrement_keynum">remove last
+                                                        row</v-btn>
                                                 </v-row>
-                                                
+
                                                 <v-row class="stretch-row" v-for="i in keyNum">
                                                     <v-col cols="12" sm="6" md="6" xs="12">
                                                         <v-text-field label="Key" :name="'key' + i"></v-text-field>
@@ -155,8 +157,8 @@
                                     </v-dialog>
                                 </template>
                                 <template v-slot:no-data>
-                                    <v-btn color="primary" @click="initialize">
-                                        Reset
+                                    <v-btn color="primary" @click="initializeQA">
+                                        Refresh
                                     </v-btn>
                                 </template>
                             </v-data-table>
@@ -180,6 +182,7 @@ import 'datatables.net-select';
 import 'datatables.net-responsive';
 import { ref } from 'vue';
 import { useRoute } from "vue-router";
+import {BASE_URL} from "@/stores/contants.js";
 
 DataTable.use(DataTablesCore);
 
@@ -189,7 +192,41 @@ const projectStore = useProjectStore();
 const token = userStore.getToken;
 const route = useRoute();
 const project = projectStore.getSingleProject(route.params.id);
-const projectDocs = projectStore.getProjectDocuments(route.params.id, token);
+const docs = ref("docs");
+docs.value = [];
+const qa = ref("qa");
+qa.value = [];
+
+const getProjectDocuments = (id, token) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", token);
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders
+    };
+    fetch(BASE_URL + "/project/" + id + "/files", requestOptions)
+    .then(res => res.json())
+    .then((response) => {
+        docs.value = response;
+    });
+}
+
+const getProjectQuestions = (id, token) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", token);
+    var requestOptions = {
+        method: 'GET',
+        headers: myHeaders
+    };
+    fetch(BASE_URL + "/questions/" + id, requestOptions)
+    .then(res => res.json())
+    .then((response) => {
+        qa.value = response;
+    });
+}
+getProjectDocuments(route.params.id, token);
+getProjectQuestions(route.params.id, token);
+
 
 // using vuetify datatables
 
@@ -199,44 +236,10 @@ const doc_headers = [
     { title: 'Actions', key: 'actions', sortable: false },
 ]
 
-const docs = [
-    {
-        "name": "1877.pdf",
-        "server_path": "/home/adess/Documents/applications/ada_t/backend/database/resources/1/documents/1877.pdf"
-    },
-    {
-        "name": "2299.pdf",
-        "server_path": "/home/adess/Documents/applications/ada_t/backend/database/resources/1/documents/2299.pdf"
-    }
-]
-
-
-
 // question data
 const qa_headers = [
     { title: 'Label', key: 'label', sortable: true, align: 'start' },
     { title: 'Actions', key: 'actions', sortable: false },
-]
-
-const qa = [
-    {
-        "label": "what is the study title?",
-        "answer_format": "{\"title\":\"string\"}",
-        "project_id": 1,
-        "id": 2,
-        "is_active": true,
-        "create_date": "2024-02-28T06:12:14.750431",
-        "anwser_grammar": "/home/adess/Documents/applications/ada_t/backend/database/resources/1/grammars/2.gbnf"
-    },
-    {
-        "label": "who are the authors of this study?",
-        "answer_format": "[{\"name\":\"string\"}]",
-        "project_id": 1,
-        "id": 3,
-        "is_active": true,
-        "create_date": "2024-02-28T06:12:14.750431",
-        "anwser_grammar": "/home/adess/Documents/applications/ada_t/backend/database/resources/1/grammars/3.gbnf"
-    }
 ]
 
 const qa_types = ['string', 'array'];
@@ -244,30 +247,13 @@ const qa_types = ['string', 'array'];
 const keyNum = ref('keyNum');
 keyNum.value = 1;
 
-const increment_keynum = ()=>{
+const increment_keynum = () => {
     keyNum.value = keyNum.value + 1;
 }
 
-const decrement_keynum = ()=>{
+const decrement_keynum = () => {
     keyNum.value = keyNum.value - 1;
 }
-
-const dataQaCols = [
-    { data: 'label' },
-]
-const dataQa = [
-    {
-        'label': 'what is the title of this study?',
-    },
-    {
-        'label': 'who are th autors of this study?',
-    }
-];
-
-const options = {
-    responsive: true,
-    select: false,
-};
 
 const tab = ref('tab');
 const fu_dialog = ref('fu_dialog');
@@ -283,9 +269,6 @@ dd_dialog.value = false;
 const editedItem = ref('editedItem');
 const files = ref('files'); //files to be uploaded
 
-const download = (id) => {
-    console.log('download')
-}
 
 const uploadFiles = (id) => {
     console.log(files);
@@ -303,16 +286,6 @@ const rules = [
     },
 ]
 
-const closeDA = () => {
-    console.log('closing da');
-    da_dialog.value = false;
-}
-
-const saveDA = () => {
-    console.log("Saving file");
-    console.log(editedItem);
-    da_dialog.value = false;
-}
 
 const closeDeleteDoc = () => {
     dd_dialog.value = false;
@@ -321,16 +294,6 @@ const closeDeleteDoc = () => {
 const deleteDocConfirm = () => {
     console.log("document deletion confirmed ...");
     dd_dialog.value = false;
-}
-
-const editDocItem = (item) => {
-    console.log('attempting edition of:');
-    console.log(item);
-}
-
-const deleteDocItem = (item) => {
-    console.log('attemptin deletion of doc item:');
-    console.log(item);
 }
 
 // questions
@@ -352,7 +315,27 @@ const editQA = (item) => {
     eqa_dialog.value = false;
 }
 
+const logout = () => {
+    this.userStore.logOut().then(() => {
+        this.$router.push(this.$route.query.redirect || '/login');
+    });
+}
+
+const initializeDocs = () => {
+    getProjectDocuments(route.params.id, token);
+}
+
+const initializeQA = () => {
+    getProjectDocuments(route.params.id, token);
+}
 </script>
+
+
+
+
+
+
+
 
 
 <style lang="scss">
@@ -407,8 +390,8 @@ const editQA = (item) => {
         // color: #fff;
     }
 
-    .stretch-row{
-        margin:0!important;
+    .stretch-row {
+        margin: 0 !important;
         padding: 0 !important;
     }
 }
