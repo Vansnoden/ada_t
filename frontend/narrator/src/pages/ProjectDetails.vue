@@ -28,9 +28,9 @@
                                 <v-form @submit.prevent="uploadFiles" enctype="multipart/form-data">
                                     <v-row>
                                         <v-col cols="12" sm="12" md="12">
-                                            <v-file-input required="true" name="files" @change="getFileInputValue" show-size counter
-                                                multiple label="Upload all the files of these project" :rules="rules"
-                                                accept="application/pdf">
+                                            <v-file-input required="true" name="files" @change="getFileInputValue" show-size
+                                                counter multiple label="Upload all the files of these project"
+                                                :rules="rules" accept="application/pdf">
                                             </v-file-input>
                                         </v-col>
                                     </v-row>
@@ -68,24 +68,10 @@
                         <v-window-item value="1">
                             <v-data-table :headers="doc_headers" :items="docs" :sort-by="[{ key: 'name', order: 'asc' }]">
                                 <template v-slot:item.actions="{ item }">
-                                    <v-dialog v-model="dd_dialog" max-width="500px">
-                                        <template v-slot:activator="{ props: activatorProps }">
-                                            <v-btn size="small" color="red" prepend-icon="mdi-delete"
-                                                v-bind="activatorProps">
-                                                Delete
-                                            </v-btn>
-                                        </template>
-                                        <v-card prepend-icon="mdi-alert" color="#ffe5c1" title="Warning" text="Are you sure you want to delete this
-                                            item?">
-                                            <template v-slot:actions>
-                                                <v-spacer></v-spacer>
-                                                <v-btn color="blue-darken-1" variant="text"
-                                                    @click="closeDeleteDoc">Cancel</v-btn>
-                                                <v-btn color="blue-darken-1" variant="text"
-                                                    @click="deleteDocConfirm">OK</v-btn>
-                                            </template>
-                                        </v-card>
-                                    </v-dialog>
+                                    <v-btn size="small" color="red" prepend-icon="mdi-delete" v-bind="activatorProps"
+                                        @click="deleteDoc(item.server_path)">
+                                        Delete
+                                    </v-btn>
                                 </template>
                                 <template v-slot:no-data>
                                     <v-btn color="primary" @click="initializeDocs">
@@ -181,7 +167,7 @@ import DataTablesCore from 'datatables.net';
 import 'datatables.net-select';
 import 'datatables.net-responsive';
 import { ref, computed } from 'vue';
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { BASE_URL } from "@/stores/contants.js";
 
 DataTable.use(DataTablesCore);
@@ -191,6 +177,7 @@ const userStore = useUserStore();
 const projectStore = useProjectStore();
 const token = userStore.getToken;
 const route = useRoute();
+const router = useRouter();
 const project = projectStore.getSingleProject(route.params.id);
 const docs = ref("docs");
 docs.value = [];
@@ -283,8 +270,12 @@ const rules = [
 ]
 
 
-const closeDeleteDoc = () => {
-    dd_dialog.value = false;
+const deleteDoc = (id) => {
+    if (window.confirm('Do you confirm?')) {
+
+    } else {
+
+    }
 }
 
 const deleteDocConfirm = () => {
@@ -312,8 +303,8 @@ const editQA = (item) => {
 }
 
 const logout = () => {
-    this.userStore.logOut().then(() => {
-        this.$router.push(this.$route.query.redirect || '/login');
+    userStore.logOut().then(() => {
+        router.push('/login');
     });
 }
 
@@ -344,13 +335,13 @@ const uploadFiles = (id) => {
     console.log("FILESSSS");
     console.log(files.value);
 
-    for(let i=0; i<files.value.length; i++){
+    for (let i = 0; i < files.value.length; i++) {
         console.log("FILE X");
         console.log(files.value[i]);
         formdata.append("files", files.value[i], files.value[i].name);
     }
     console.log(formdata);
-    
+
     const requestOptions = {
         method: "POST",
         headers: myHeaders,
@@ -358,7 +349,7 @@ const uploadFiles = (id) => {
         redirect: "follow"
     };
 
-    fetch(BASE_URL + "/project/"+ route.params.id +"/upload", requestOptions)
+    fetch(BASE_URL + "/project/" + route.params.id + "/upload", requestOptions)
         .then((response) => response.text())
         .then((result) => {
             console.log(result);
