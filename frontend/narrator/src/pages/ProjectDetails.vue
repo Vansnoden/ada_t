@@ -15,8 +15,9 @@
             <div>
                 <v-dialog v-model="fu_dialog" persistent width="512">
                     <template v-slot:activator="{ props }">
-                        <v-btn density="compact" v-bind="props" icon="mdi-upload"
-                            title="upload your documents here"></v-btn>
+                        <v-btn size="small" v-bind="props" prepend-icon="mdi-upload">
+                            upload documents
+                        </v-btn>
                     </template>
                     <v-card>
                         <v-card-title>
@@ -35,7 +36,9 @@
                                     </v-row>
                                     <v-row>
                                         <v-col>
-                                            <v-btn color="primary" variant="text" type="submit">Submit</v-btn>
+                                            <v-btn color="danger" variant="text" type="cancel"
+                                                @click="closeFU">cancel</v-btn>
+                                            <v-btn color="success" variant="text" type="submit">Submit</v-btn>
                                         </v-col>
                                     </v-row>
                                 </v-form>
@@ -44,9 +47,15 @@
                     </v-card>
                 </v-dialog>
             </div>
-            <v-btn density="compact" icon="mdi-play" class="success" title="run extraction here"></v-btn>
-            <v-btn density="compact" icon="mdi-stop" class="danger" title="stop all extractions here"></v-btn>
-            <v-btn density="compact" icon="mdi-download" title="download extraction results here"></v-btn>
+            <v-btn size="small" prepend-icon="mdi-play" class="success">
+                run extraction
+            </v-btn>
+            <v-btn size="small" prepend-icon="mdi-stop" class="danger">
+                stop extraction
+            </v-btn>
+            <v-btn size="small" prepend-icon="mdi-download">
+                get results
+            </v-btn>
         </div>
         <div class="content">
             <v-card>
@@ -57,23 +66,100 @@
                 <v-card-text>
                     <v-window v-model="tab">
                         <v-window-item value="1">
-                            <DataTable class="display" :options="options" :columns="dataDocCols" :data="dataDoc">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                            </DataTable>
+                            <v-data-table :headers="doc_headers" :items="docs" :sort-by="[{ key: 'name', order: 'asc' }]">
+                                <template v-slot:item.actions="{ item }">
+                                    <v-dialog v-model="dd_dialog" max-width="500px">
+                                        <template v-slot:activator="{ props: activatorProps }">
+                                            <v-btn size="small" color="red" prepend-icon="mdi-delete"
+                                                v-bind="activatorProps">
+                                                Delete
+                                            </v-btn>
+                                        </template>
+                                        <v-card prepend-icon="mdi-alert" color="#ffe5c1" title="Warning" text="Are you sure you want to delete this
+                                            item?">
+                                            <template v-slot:actions>
+                                                <v-spacer></v-spacer>
+                                                <v-btn color="blue-darken-1" variant="text"
+                                                    @click="closeDeleteDoc">Cancel</v-btn>
+                                                <v-btn color="blue-darken-1" variant="text"
+                                                    @click="deleteDocConfirm">OK</v-btn>
+                                            </template>
+                                        </v-card>
+                                    </v-dialog>
+                                </template>
+                                <template v-slot:no-data>
+                                    <v-btn color="primary" @click="initialize">
+                                        Reset
+                                    </v-btn>
+                                </template>
+                            </v-data-table>
                         </v-window-item>
                         <v-window-item value="2">
-                            <DataTable :columns="dataQaCols" :data="dataQa" class="display" :options="options">
-                                <thead>
-                                    <tr>
-                                        <th>Label</th>
-                                    </tr>
-                                </thead>
-                            </DataTable>
+                            <v-data-table :headers="qa_headers" :items="qa">
+                                <template v-slot:item.actions="{ item }">
+                                    <v-dialog v-model="eqa_dialog" max-width="500px">
+                                        <template v-slot:activator="{ props: activatorProps }">
+                                            <v-btn size="small" class="default mr-1" color="grey" prepend-icon="mdi-pencil"
+                                                v-bind="activatorProps">
+                                                Edit
+                                            </v-btn>
+                                        </template>
+                                        <v-card prepend-icon="mdi-pencil" title="New question">
+                                            <v-card-text>
+                                                <v-row dense>
+                                                    <v-text-field label="Question label"></v-text-field>
+                                                </v-row>
+                                                <v-row dense>
+                                                    <span>Define answer format below with keys and data types for each
+                                                        keys.</span>
+                                                    <v-btn prepend-icon="mdi-plus" class="mr-1" @click="increment_keynum">add row</v-btn>
+                                                    <v-btn prepend-icon="mdi-minus" @click="decrement_keynum">remove last row</v-btn>
+                                                </v-row>
+                                                
+                                                <v-row class="stretch-row" v-for="i in keyNum">
+                                                    <v-col cols="12" sm="6" md="6" xs="12">
+                                                        <v-text-field label="Key" :name="'key' + i"></v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="12" sm="6" md="6" xs="12">
+                                                        <v-select label="Select" :name="'type' + i"
+                                                            :items="qa_types"></v-select>
+                                                    </v-col>
+                                                </v-row>
+
+                                            </v-card-text>
+                                            <template v-slot:actions>
+                                                <v-spacer></v-spacer>
+                                                <v-btn color="blue-darken-1" variant="text"
+                                                    @click="closeEditQA">Cancel</v-btn>
+                                                <v-btn color="blue-darken-1" variant="text" @click="editQA">OK</v-btn>
+                                            </template>
+                                        </v-card>
+                                    </v-dialog>
+                                    <v-dialog v-model="dqa_dialog" max-width="500px">
+                                        <template v-slot:activator="{ props: activatorProps }">
+                                            <v-btn size="small" color="red" prepend-icon="mdi-delete"
+                                                v-bind="activatorProps">
+                                                Delete
+                                            </v-btn>
+                                        </template>
+                                        <v-card prepend-icon="mdi-alert" color="#ffe5c1" title="Warning" text="Are you sure you want to delete this
+                                            question?">
+                                            <template v-slot:actions>
+                                                <v-spacer></v-spacer>
+                                                <v-btn color="blue-darken-1" variant="text"
+                                                    @click="closeDeleteQA">Cancel</v-btn>
+                                                <v-btn color="blue-darken-1" variant="text"
+                                                    @click="deleteQAConfirm">OK</v-btn>
+                                            </template>
+                                        </v-card>
+                                    </v-dialog>
+                                </template>
+                                <template v-slot:no-data>
+                                    <v-btn color="primary" @click="initialize">
+                                        Reset
+                                    </v-btn>
+                                </template>
+                            </v-data-table>
                         </v-window-item>
                     </v-window>
                 </v-card-text>
@@ -105,23 +191,67 @@ const route = useRoute();
 const project = projectStore.getSingleProject(route.params.id);
 const projectDocs = projectStore.getProjectDocuments(route.params.id, token);
 
-// document data
-const dataDocCols = [
-    { data: 'name' },
-    { data: 'status' },
+// using vuetify datatables
+
+// project documents
+const doc_headers = [
+    { title: 'Name', key: 'name', sortable: true, align: 'start' },
+    { title: 'Actions', key: 'actions', sortable: false },
 ]
-const dataDoc = [
+
+const docs = [
     {
-        'name': 'first document',
-        'status': "draft",
+        "name": "1877.pdf",
+        "server_path": "/home/adess/Documents/applications/ada_t/backend/database/resources/1/documents/1877.pdf"
     },
     {
-        'name': 'second document',
-        'status': "draft",
+        "name": "2299.pdf",
+        "server_path": "/home/adess/Documents/applications/ada_t/backend/database/resources/1/documents/2299.pdf"
     }
-];
+]
+
+
 
 // question data
+const qa_headers = [
+    { title: 'Label', key: 'label', sortable: true, align: 'start' },
+    { title: 'Actions', key: 'actions', sortable: false },
+]
+
+const qa = [
+    {
+        "label": "what is the study title?",
+        "answer_format": "{\"title\":\"string\"}",
+        "project_id": 1,
+        "id": 2,
+        "is_active": true,
+        "create_date": "2024-02-28T06:12:14.750431",
+        "anwser_grammar": "/home/adess/Documents/applications/ada_t/backend/database/resources/1/grammars/2.gbnf"
+    },
+    {
+        "label": "who are the authors of this study?",
+        "answer_format": "[{\"name\":\"string\"}]",
+        "project_id": 1,
+        "id": 3,
+        "is_active": true,
+        "create_date": "2024-02-28T06:12:14.750431",
+        "anwser_grammar": "/home/adess/Documents/applications/ada_t/backend/database/resources/1/grammars/3.gbnf"
+    }
+]
+
+const qa_types = ['string', 'array'];
+
+const keyNum = ref('keyNum');
+keyNum.value = 1;
+
+const increment_keynum = ()=>{
+    keyNum.value = keyNum.value + 1;
+}
+
+const decrement_keynum = ()=>{
+    keyNum.value = keyNum.value - 1;
+}
+
 const dataQaCols = [
     { data: 'label' },
 ]
@@ -134,15 +264,24 @@ const dataQa = [
     }
 ];
 
-
 const options = {
     responsive: true,
     select: false,
 };
+
 const tab = ref('tab');
 const fu_dialog = ref('fu_dialog');
-const files = ref('files'); //files to be uploaded
 fu_dialog.value = false;
+const da_dialog = ref('da_dialog');
+da_dialog.value = false;
+const dqa_dialog = ref('dqa_dialog');
+dqa_dialog.value = false;
+const eqa_dialog = ref('eqa_dialog');
+eqa_dialog.value = false;
+const dd_dialog = ref('dd_dialog');
+dd_dialog.value = false;
+const editedItem = ref('editedItem');
+const files = ref('files'); //files to be uploaded
 
 const download = (id) => {
     console.log('download')
@@ -153,12 +292,65 @@ const uploadFiles = (id) => {
     fu_dialog.value = false;
 }
 
+const closeFU = () => {
+    fu_dialog.value = false;
+}
+
 const rules = [
     value => {
         if (value) return true
         return 'You must provide at least one file'
     },
 ]
+
+const closeDA = () => {
+    console.log('closing da');
+    da_dialog.value = false;
+}
+
+const saveDA = () => {
+    console.log("Saving file");
+    console.log(editedItem);
+    da_dialog.value = false;
+}
+
+const closeDeleteDoc = () => {
+    dd_dialog.value = false;
+}
+
+const deleteDocConfirm = () => {
+    console.log("document deletion confirmed ...");
+    dd_dialog.value = false;
+}
+
+const editDocItem = (item) => {
+    console.log('attempting edition of:');
+    console.log(item);
+}
+
+const deleteDocItem = (item) => {
+    console.log('attemptin deletion of doc item:');
+    console.log(item);
+}
+
+// questions
+const closeDeleteQA = () => {
+    dqa_dialog.value = false;
+}
+
+const deleteQAConfirm = () => {
+    console.log("question deletion confirmed ...");
+    dqa_dialog.value = false;
+}
+
+const closeEditQA = () => {
+    eqa_dialog.value = false;
+}
+
+const editQA = (item) => {
+    console.log("question edition confirmed ...");
+    eqa_dialog.value = false;
+}
 
 </script>
 
@@ -180,6 +372,10 @@ const rules = [
         gap: 2em;
     }
 
+    .mr-1 {
+        margin-right: 1em !important;
+    }
+
     .content {
         padding: 1em;
     }
@@ -187,6 +383,10 @@ const rules = [
     .hint {
         color: grey;
         font-size: 0.8rem;
+    }
+
+    .mt-2 {
+        margin-top: 4em !important;
     }
 
     .title {
@@ -205,6 +405,11 @@ const rules = [
     .success {
         background-color: rgb(108, 224, 108);
         // color: #fff;
+    }
+
+    .stretch-row{
+        margin:0!important;
+        padding: 0 !important;
     }
 }
 </style>
