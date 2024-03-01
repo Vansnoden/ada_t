@@ -82,6 +82,55 @@
                         </v-window-item>
                         <v-window-item value="2">
                             <v-data-table :headers="qa_headers" :items="qa">
+                                <template v-slot:top>
+                                    <v-toolbar flat>
+                                        <v-toolbar-title></v-toolbar-title>
+                                        <v-spacer></v-spacer>
+                                        <v-dialog v-model="cqa_dialog" max-width="500px">
+                                            <template v-slot:activator="{ props: activatorProps }">
+                                                <v-btn size="small" class="default mr-1" color="primary"
+                                                    prepend-icon="mdi-plus" v-bind="activatorProps">
+                                                    New question
+                                                </v-btn>
+                                            </template>
+                                            <v-card prepend-icon="mdi-pencil" title="New question">
+                                                <v-card-text>
+                                                    <v-form @submit.prevent="closeCreateQA">
+                                                        <v-row dense>
+                                                            <v-text-field name="label" label="Question label"
+                                                                v-model="formAddQA.label"></v-text-field>
+                                                        </v-row>
+                                                        <v-row dense>
+                                                            <span>Define answer format below with keys and data types for
+                                                                each
+                                                                keys.</span>
+                                                            <v-btn prepend-icon="mdi-plus" class="mr-1"
+                                                                @click="increment_keynum">add row</v-btn>
+                                                            <v-btn prepend-icon="mdi-minus" @click="decrement_keynum">remove
+                                                                last
+                                                                row</v-btn>
+                                                        </v-row>
+
+                                                        <v-row class="stretch-row" v-for="i in keyNum">
+                                                            <v-col cols="12" sm="6" md="6" xs="12">
+                                                                <v-text-field label="Key"
+                                                                    v-model="formAddQA['key' + i]"></v-text-field>
+                                                            </v-col>
+                                                            <v-col cols="12" sm="6" md="6" xs="12">
+                                                                <v-select label="Select" v-model="formAddQA['type' + i]"
+                                                                    :items="qa_types"></v-select>
+                                                            </v-col>
+                                                        </v-row>
+                                                        <v-spacer></v-spacer>
+                                                        <v-btn color="blue-darken-1" type="reset" variant="text"
+                                                            @click="closeCreateQA">Cancel</v-btn>
+                                                        <v-btn color="blue-darken-1" variant="text" type="submit">OK</v-btn>
+                                                    </v-form>
+                                                </v-card-text>
+                                            </v-card>
+                                        </v-dialog>
+                                    </v-toolbar>
+                                </template>
                                 <template v-slot:item.actions="{ item }">
                                     <v-dialog v-model="eqa_dialog" max-width="500px">
                                         <template v-slot:activator="{ props: activatorProps }">
@@ -241,6 +290,9 @@ const increment_keynum = () => {
 
 const decrement_keynum = () => {
     keyNum.value = keyNum.value - 1;
+    if (keyNum.value < 0) {
+        keyNum.value = 0;
+    }
 }
 
 const tab = ref('tab');
@@ -252,11 +304,14 @@ const dqa_dialog = ref('dqa_dialog');
 dqa_dialog.value = false;
 const eqa_dialog = ref('eqa_dialog');
 eqa_dialog.value = false;
+const cqa_dialog = ref('cqa_dialog');
+cqa_dialog.value = false;
 const dd_dialog = ref('dd_dialog');
 dd_dialog.value = false;
 const editedItem = ref('editedItem');
 const files = ref(); //files to be uploaded
-
+const formAddQA = ref();
+formAddQA.value = {} //object to keep form values when creating question
 
 const closeFU = () => {
     fu_dialog.value = false;
@@ -289,7 +344,6 @@ const closeDeleteQA = () => {
 }
 
 const deleteQAConfirm = () => {
-    console.log("question deletion confirmed ...");
     dqa_dialog.value = false;
 }
 
@@ -297,10 +351,49 @@ const closeEditQA = () => {
     eqa_dialog.value = false;
 }
 
+
+const closeCreateQA = () => {
+    let label = formAddQA.value.label;
+    delete formAddQA.value['label'];
+    const myHeaders = new Headers();
+    let answer_format = {};
+    myHeaders.append("Authorization", token);
+    for (let i = 1; i <= keyNum.value; i++) {
+        answer_format[formAddQA.value['key' + i]] = formAddQA.value['type' + i];
+    }
+    answer_format = (JSON.stringify(answer_format));
+    console.log("FORMAT");
+    console.log(answer_format);
+    var raw = JSON.stringify({
+        "label": label,
+        "answer_format": answer_format,
+        "project_id": parseInt(route.params.id)
+    });
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
+    };
+    fetch(BASE_URL + "/questions/", requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+            initializeQA();
+            cqa_dialog.value = false;
+        })
+        .catch((error) => console.error(error));
+    cqa_dialog.value = false;
+}
+
 const editQA = (item) => {
-    console.log("question edition confirmed ...");
     eqa_dialog.value = false;
 }
+
+
+const createQA = (item) => {
+    cqa_dialog.value = false;
+}
+
 
 const logout = () => {
     userStore.logOut().then(() => {
@@ -313,7 +406,7 @@ const initializeDocs = () => {
 }
 
 const initializeQA = () => {
-    getProjectDocuments(route.params.id, token);
+    getProjectQuestions(route.params.id, token);
 }
 
 const getFileInputValue = (event) => {
@@ -423,5 +516,4 @@ const uploadFiles = (id) => {
         margin: 0 !important;
         padding: 0 !important;
     }
-}
-</style>
+}</style>
