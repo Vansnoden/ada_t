@@ -358,17 +358,22 @@ const closeCreateQA = () => {
     const myHeaders = new Headers();
     let answer_format = {};
     myHeaders.append("Authorization", token);
+    myHeaders.append("Content-Type", "application/json");
     for (let i = 1; i <= keyNum.value; i++) {
         answer_format[formAddQA.value['key' + i]] = formAddQA.value['type' + i];
     }
-    answer_format = (JSON.stringify(answer_format));
-    console.log("FORMAT");
-    console.log(answer_format);
+    answer_format = JSON.stringify(answer_format);
+    // JSON.stringify(answer_format).replace(/\\/g,"");
+    
     var raw = JSON.stringify({
         "label": label,
-        "answer_format": answer_format,
+        "answer_format": `${answer_format}`,
         "project_id": parseInt(route.params.id)
     });
+    // .replace(/\\/g,"");
+
+    console.log(raw);
+
     const requestOptions = {
         method: "POST",
         headers: myHeaders,
@@ -504,16 +509,17 @@ const uploadFiles = (id) => {
 
     .danger {
         background-color: rgb(252, 155, 155);
-        // color: #fff;
+        /* color: #fff; */
     }
 
     .success {
         background-color: rgb(108, 224, 108);
-        // color: #fff;
+        /* color: #fff; */
     }
 
     .stretch-row {
         margin: 0 !important;
         padding: 0 !important;
     }
-}</style>
+}
+</style>

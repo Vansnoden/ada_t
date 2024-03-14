@@ -20,6 +20,8 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.encoders import jsonable_encoder
 
 
+
+
 # models.Base.metadata.create_all(bind=engine)
 
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
@@ -312,7 +314,7 @@ def get_project_questions(project_id: int, user: Annotated[User, Depends(get_cur
 
 @app.post("/questions/", response_model=schemas.Question)
 def create_project_question(
-    question: schemas.QuestionBase, 
+    question: schemas.QuestionBase,  
     user:Annotated[User, Depends(get_current_active_user)], 
     db: Session = Depends(get_db)
     ):

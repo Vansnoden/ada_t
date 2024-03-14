@@ -98,7 +98,6 @@ def add_project_question(db: Session, project_id: int, label:str, answer_format:
         test = json.loads(answer_format)
         db_project_rec = db.query(models.Project).filter(models.Project.id == project_id).first()
         if db_project_rec:
-
             db_question = models.Question(
                 label=label,
                 answer_format=answer_format,
