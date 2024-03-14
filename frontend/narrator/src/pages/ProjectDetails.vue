@@ -47,15 +47,34 @@
                     </v-card>
                 </v-dialog>
             </div>
-            <v-btn size="small" prepend-icon="mdi-play" class="success">
+            <v-btn size="small" prepend-icon="mdi-play" class="success" @click="runExtraction">
                 run extraction
             </v-btn>
             <v-btn size="small" prepend-icon="mdi-stop" class="danger">
                 stop extraction
             </v-btn>
-            <v-btn size="small" prepend-icon="mdi-download">
-                get results
-            </v-btn>
+           
+            <v-menu>
+                <template v-slot:activator="{ props }">
+                    <v-btn size="small" v-bind="props" prepend-icon="mdi-download">
+                        get results
+                    </v-btn>
+                </template>
+                <v-list>
+                    <v-list-item
+                      :key="1"
+                      :value="json"
+                      @click='downloadJSON'>
+                      <v-list-item-title>Download JSON</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item
+                      :key="2"
+                      :value="csv"
+                      @click='downloadCSV'>
+                      <v-list-item-title>Download CSV</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+            </v-menu>
         </div>
         <div class="content">
             <v-card>
@@ -100,10 +119,22 @@
                                                             <v-text-field name="label" label="Question label"
                                                                 v-model="formAddQA.label"></v-text-field>
                                                         </v-row>
+
                                                         <v-row dense>
                                                             <span>Define answer format below with keys and data types for
-                                                                each
-                                                                keys.</span>
+                                                                each keys.
+                                                            </span>
+                                                        </v-row>
+
+                                                        <v-row dense>
+                                                            <!-- <span>Precise if answer should be mined as list or as object</span> -->
+                                                            <v-radio-group v-model="formAddQA.dType" inline>
+                                                                <v-radio  label="Format as List" value="list"></v-radio>
+                                                                <v-radio  label="Format as Object" value="object"></v-radio>
+                                                            </v-radio-group>
+                                                        </v-row>
+
+                                                        <v-row dense>
                                                             <v-btn prepend-icon="mdi-plus" class="mr-1"
                                                                 @click="increment_keynum">add row</v-btn>
                                                             <v-btn prepend-icon="mdi-minus" @click="decrement_keynum">remove
@@ -331,7 +362,14 @@ const closeEditQA = () => {
 
 const closeCreateQA = () => {
     let label = formAddQA.value.label;
+    let dType = formAddQA.value.dType;
+
+    console.log("DTYPE---");
+    console.log(dType);
+
     delete formAddQA.value['label'];
+    delete formAddQA.value['isList'];
+    delete formAddQA.value['isObject'];
     const myHeaders = new Headers();
     let answer_format = {};
     myHeaders.append("Authorization", token);
@@ -339,6 +377,11 @@ const closeCreateQA = () => {
     for (let i = 1; i <= keyNum.value; i++) {
         answer_format[formAddQA.value['key' + i]] = formAddQA.value['type' + i];
     }
+    
+    if(dType === 'list'){
+       answer_format = [answer_format];
+    }
+
     answer_format = JSON.stringify(answer_format);
     // JSON.stringify(answer_format).replace(/\\/g,"");
     
@@ -432,6 +475,23 @@ const uploadFiles = (id) => {
         })
         .catch((error) => console.error(error));
 }
+
+
+const runExtraction = ()=>{
+    
+}
+
+
+const downloadCSV = ()=>{
+
+}
+
+
+const downloadJSON = ()=>{
+
+}
+
+
 </script>
 
 
