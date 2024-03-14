@@ -9,7 +9,7 @@ from fastapi import Depends, FastAPI, HTTPException, status, File, UploadFile
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel
-from database.schemas import User
+from database.schemas import User, FileBase
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from fastapi.middleware.cors import CORSMiddleware
@@ -284,11 +284,11 @@ def get_project_files(
 
 @app.post("/delete_file")
 def delete_single_file(
-    file_path: str, 
+    file: FileBase, 
     user: Annotated[User, Depends(get_current_active_user)],
     db: Session = Depends(get_db)):
     if user:
-        crud.delete_single_file(file_path)
+        crud.delete_single_file(file.file_path)
         return True
     else:
         raise HTTPException(status_code=403, detail="Unauthorized access")

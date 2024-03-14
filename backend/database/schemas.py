@@ -23,6 +23,10 @@ class User(UserBase):
 
 class ProjectBase(BaseModel):
     name: str
+
+
+class FileBase(BaseModel):
+    file_path: str
     
 
 class Project(ProjectBase):
@@ -52,3 +56,5 @@ class Question(QuestionBase):
 
     class Config:
         from_attributes = True
+
+

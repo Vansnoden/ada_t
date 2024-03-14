@@ -271,9 +271,27 @@ const rules = [
 ]
 
 
-const deleteDoc = (id) => {
+const deleteDoc = (serverPath) => {
     if (window.confirm('Do you confirm?')) {
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", token);
+        myHeaders.append("Content-Type", "application/json");
 
+        const raw = JSON.stringify({
+            "file_path": serverPath
+        });
+
+        const requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow"
+        };
+
+        fetch(BASE_URL + "/delete_file", requestOptions)
+          .then((response) => response.text())
+          .then((result) => initializeDocs())
+          .catch((error) => console.error(error));
     } else {
 
     }
