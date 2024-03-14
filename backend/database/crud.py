@@ -89,6 +89,12 @@ def delete_project(db: Session, project_id: int):
     db.commit()
     return res
 
+
+def delete_single_file(file_path:str):
+    if os.path.isfile(file_path):
+        os.remove(file_path)
+
+
 # questions
 def get_project_questions(db: Session, project_id: int):
     return db.query(models.Question).filter_by(project_id=project_id,is_active=True).all()

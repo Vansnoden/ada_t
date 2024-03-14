@@ -282,10 +282,22 @@ def get_project_files(
         raise HTTPException(status_code=403, detail="Unauthorized access")
 
 
+@app.post("/delete_file")
+def delete_single_file(
+    file_path: str, 
+    user: Annotated[User, Depends(get_current_active_user)],
+    db: Session = Depends(get_db)):
+    if user:
+        crud.delete_single_file(file_path)
+        return True
+    else:
+        raise HTTPException(status_code=403, detail="Unauthorized access")
+
+
 @app.post("/projects/{project_id}/run")
 def run_project(project_id: int, 
     user: Annotated[User, Depends(get_current_active_user)],
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
     ):
     project = crud.get_single_project(project_id=project_id, db=db)
     if user:
