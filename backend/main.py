@@ -333,8 +333,11 @@ def create_project_question(
 
     
 @app.get("/questions/delete/{question_id}")
-def delete_project_question(question_id: int, db: Session = Depends(get_db)):
-    response = crud.delete_question(db, id=question_id)
-    if response is None:
-        raise HTTPException(status_code=404, detail="Question not found")
-    return response
+def delete_project_question(question_id: int, user:Annotated[User, Depends(get_current_active_user)], db: Session = Depends(get_db)):
+    if user:
+        response = crud.delete_question(db, id=question_id)
+        if response is None:
+            raise HTTPException(status_code=404, detail="Question not found")
+        return response
+    else:
+       raise HTTPException(status_code=403, detail="Unauthorized action")

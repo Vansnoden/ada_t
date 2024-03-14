@@ -132,64 +132,10 @@
                                     </v-toolbar>
                                 </template>
                                 <template v-slot:item.actions="{ item }">
-                                    <v-dialog v-model="eqa_dialog" max-width="500px">
-                                        <template v-slot:activator="{ props: activatorProps }">
-                                            <v-btn size="small" class="default mr-1" color="grey" prepend-icon="mdi-pencil"
-                                                v-bind="activatorProps">
-                                                Edit
-                                            </v-btn>
-                                        </template>
-                                        <v-card prepend-icon="mdi-pencil" title="New question">
-                                            <v-card-text>
-                                                <v-row dense>
-                                                    <v-text-field label="Question label"></v-text-field>
-                                                </v-row>
-                                                <v-row dense>
-                                                    <span>Define answer format below with keys and data types for each
-                                                        keys.</span>
-                                                    <v-btn prepend-icon="mdi-plus" class="mr-1"
-                                                        @click="increment_keynum">add row</v-btn>
-                                                    <v-btn prepend-icon="mdi-minus" @click="decrement_keynum">remove last
-                                                        row</v-btn>
-                                                </v-row>
-
-                                                <v-row class="stretch-row" v-for="i in keyNum">
-                                                    <v-col cols="12" sm="6" md="6" xs="12">
-                                                        <v-text-field label="Key" :name="'key' + i"></v-text-field>
-                                                    </v-col>
-                                                    <v-col cols="12" sm="6" md="6" xs="12">
-                                                        <v-select label="Select" :name="'type' + i"
-                                                            :items="qa_types"></v-select>
-                                                    </v-col>
-                                                </v-row>
-
-                                            </v-card-text>
-                                            <template v-slot:actions>
-                                                <v-spacer></v-spacer>
-                                                <v-btn color="blue-darken-1" variant="text"
-                                                    @click="closeEditQA">Cancel</v-btn>
-                                                <v-btn color="blue-darken-1" variant="text" @click="editQA">OK</v-btn>
-                                            </template>
-                                        </v-card>
-                                    </v-dialog>
-                                    <v-dialog v-model="dqa_dialog" max-width="500px">
-                                        <template v-slot:activator="{ props: activatorProps }">
-                                            <v-btn size="small" color="red" prepend-icon="mdi-delete"
-                                                v-bind="activatorProps">
-                                                Delete
-                                            </v-btn>
-                                        </template>
-                                        <v-card prepend-icon="mdi-alert" color="#ffe5c1" title="Warning" text="Are you sure you want to delete this
-                                            question?">
-                                            <template v-slot:actions>
-                                                <v-spacer></v-spacer>
-                                                <v-btn color="blue-darken-1" variant="text"
-                                                    @click="closeDeleteQA">Cancel</v-btn>
-                                                <v-btn color="blue-darken-1" variant="text"
-                                                    @click="deleteQAConfirm">OK</v-btn>
-                                            </template>
-                                        </v-card>
-                                    </v-dialog>
+                                    <v-btn size="small" color="red" prepend-icon="mdi-delete"
+                                        @click="deleteQA(item.id)">
+                                        Delete
+                                    </v-btn>
                                 </template>
                                 <template v-slot:no-data>
                                     <v-btn color="primary" @click="initializeQA">
@@ -339,13 +285,26 @@ const deleteDocConfirm = () => {
 }
 
 // questions
-const closeDeleteQA = () => {
-    dqa_dialog.value = false;
+const deleteQA = (id) => {
+    if (window.confirm('Are you sure you want to delete this question?')) {
+        const myHeaders = new Headers();
+        myHeaders.append("Authorization", token);
+
+        const requestOptions = {
+          method: "GET",
+          headers: myHeaders,
+          redirect: "follow"
+        };
+
+        fetch(BASE_URL + "/questions/delete/"+id, requestOptions)
+          .then((response) => response.text())
+          .then((result) => initializeQA())
+          .catch((error) => console.error(error));
+    } else {
+
+    }
 }
 
-const deleteQAConfirm = () => {
-    dqa_dialog.value = false;
-}
 
 const closeEditQA = () => {
     eqa_dialog.value = false;
