@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from datetime import timedelta, timezone, datetime
 import os
 from pathlib import Path
