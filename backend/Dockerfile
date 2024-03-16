@@ -6,19 +6,25 @@ COPY ./requirements.txt /code/requirements.txt
 
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-COPY . /code/app
+COPY . /code
 
-CMD ["mkdir", "-p", "/code/app/alembic/versions"]
+RUN ["mkdir", "-p", "database/ai_model"]
 
-CMD ["mkdir", "-p", "/code/app/database/ai_model"]
+RUN ["pip", "install", "-e", "."]
 
-RUN ["pip", "install", "-e", "/code/app"]
+RUN ["alembic", "init", "alembic"]
 
-CMD ["alembic", "revision", "--autogenerate"]
+# RUN ["mkdir", "-p", "alembic/versions"]
 
-CMD ["alembic", "upgrade", "head"]
+# RUN ["alembic", "revision", "-m", "initialization"]
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# RUN ["alembic", "upgrade", "head"]
+
+# RUN ["alembic", "revision", "--autogenerate"]
+
+# RUN ["alembic", "upgrade", "head"]
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 # If running behind a proxy like Nginx or Traefik add --proxy-headers
 # CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80", "--proxy-headers"]

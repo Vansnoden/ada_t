@@ -5,7 +5,9 @@ services:
     build: ./backend
     container_name: ada-t-backend
     volumes:
-      - ./backend/database/utilities/ai_model:/code/app/database/utilities/ai_model
+      - ./backend/database/utilities/ai_model:/code/database/utilities/ai_model
+      - ./backend/alembic:/code/alembic
+      - ./backend/alembic.ini:/code/alembic.ini
     ports:
       - 8000:8000
 
