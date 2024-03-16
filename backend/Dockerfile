@@ -8,11 +8,11 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 COPY . /code/app
 
-CMD ["pip", "install", "-e", "/code/app"]
-
 CMD ["mkdir", "-p", "/code/app/alembic/versions"]
 
 CMD ["mkdir", "-p", "/code/app/database/ai_model"]
+
+RUN ["pip", "install", "-e", "/code/app"]
 
 CMD ["alembic", "revision", "--autogenerate"]
 
