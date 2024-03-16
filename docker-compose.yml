@@ -1,0 +1,16 @@
+version: '3'
+services:
+
+  ada-t-backend:
+    build: ./backend
+    container_name: ada-t-backend
+    ports:
+      - 8000:8000
+
+  ada-t-frontend:
+    build: ./frontend/narrator
+    container_name: ada-t-frontend
+    ports:
+      - 8080:8080
+    links:
+      - ada-t-backend

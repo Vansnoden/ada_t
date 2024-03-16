@@ -364,8 +364,8 @@ const closeCreateQA = () => {
     let label = formAddQA.value.label;
     let dType = formAddQA.value.dType;
 
-    console.log("DTYPE---");
-    console.log(dType);
+    // console.log("DTYPE---");
+    // console.log(dType);
 
     delete formAddQA.value['label'];
     delete formAddQA.value['isList'];
@@ -392,7 +392,7 @@ const closeCreateQA = () => {
     });
     // .replace(/\\/g,"");
 
-    console.log(raw);
+    // console.log(raw);
 
     const requestOptions = {
         method: "POST",
