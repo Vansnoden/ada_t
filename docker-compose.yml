@@ -5,7 +5,7 @@ services:
     build: ./backend
     container_name: ada-t-backend
     volumes:
-      - /backend/utilities/ai_model: /code/app/database/utilities/ai_model
+      - ./backend/database/utilities/ai_model:/code/app/database/utilities/ai_model
     ports:
       - 8000:8000
 
