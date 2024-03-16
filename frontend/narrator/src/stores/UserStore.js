@@ -5,7 +5,7 @@ import { defineStore } from 'pinia'
 // but it's best to use the name of the store and surround it with `use`
 // and `Store` (e.g. `useUserStore`, `useCartStore`, `useProductStore`)
 // the first argument is a unique id of the store across your application
-const BASE_URL = 'http://localhost:8000'
+import {BASE_URL} from "@/stores/contants.js"
 
 export const useUserStore = defineStore({
     // id
@@ -21,7 +21,6 @@ export const useUserStore = defineStore({
     persist: true,
     // actions
     actions:{
-        
         async signUp(username, fullname, email, password) {
             fetch(BASE_URL + "/users", {
                 method: "POST",
@@ -41,7 +40,11 @@ export const useUserStore = defineStore({
                 }else{
                     this.error = res.detail
                 }
-            }).catch(error=>console.log('error getting user details', error))
+            }).catch(error=>{
+                console.log('error getting user details', error)
+                return false;
+            })
+            return true
         },
 
         async signIn(username, password) {
@@ -71,7 +74,11 @@ export const useUserStore = defineStore({
                     }
                 }).catch(error => console.log('error getting user details', error));
             })
-            .catch(error => console.log('authentication error', error));
+            .catch(error => {
+                console.log('authentication error', error);
+                return false;
+            });
+            return true;
         },
 
         async logOut(){
@@ -83,7 +90,7 @@ export const useUserStore = defineStore({
     // getters
     getters: {
         getUser: (state) => state.user,
-        getToken: (state) => state.token_type + " " + state.token,
+        getToken: (state) => "" + state.token_type + " " + state.token,
         getError:  (state) => state.error
     }
 })

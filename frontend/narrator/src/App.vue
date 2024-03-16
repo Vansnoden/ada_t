@@ -8,7 +8,7 @@
 
 <script setup>
   import {useUserStore} from "@/stores/UserStore";
-  const product = useUserStore();
+  const user = useUserStore();
 </script>
 
 <style lang="scss">

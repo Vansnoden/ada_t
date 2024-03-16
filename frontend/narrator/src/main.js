@@ -1,36 +1,40 @@
-/**
- * main.js
- *
- * Bootstraps Vuetify and other plugins then mounts the App`
- */
+import { createApp } from 'vue'
+import App from './App.vue'
+import vuetify from './plugins/vuetify'
+import { loadFonts } from './plugins/webfontloader'
+
+loadFonts()
 
 // Plugins
 import { registerPlugins } from '@/plugins'
 
 // Components
-import App from './App.vue'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
-import Home from '@/pages/Home.vue'
+import Projects from '@/pages/Projects.vue'
 import Login from '@/pages/Login.vue'
 import Register from '@/pages/Register.vue'
 import Account from '@/pages/Account.vue'
+import ProjectItem from '@/components/ProjectItem.vue'
+import ProjectDetails from '@/pages/ProjectDetails.vue'
 
 // Composables
-import { createApp } from 'vue'
 
 import { createPinia } from 'pinia'
 
 // Router
-import {createRouter, createWebHistory} from 'vue-router'
-import { useUserStore } from './stores/UserStore'
+import {createRouter, createWebHistory} from 'vue-router';
+import { useUserStore } from './stores/UserStore';
+import { useProjectStore } from './stores/ProjectStore';
+
 
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        { path: '/', name: 'Home', component: Home},
-        { path: '/login', name: 'Login', component: Login},
-        { path: '/register', name: 'Register', component: Register}
+        { name: 'projects', path: '/projects', component: Projects},
+        { name: 'project_details', path: '/projects/:id', component: ProjectDetails},
+        { name: 'login', path: '/login', component: Login},
+        { name: 'register', path: '/register', component: Register}
     ]
 })
 
@@ -51,6 +55,8 @@ const app = createApp(App)
 
 app.use(pinia)
 app.use(router)
+app.use(vuetify)
+
 registerPlugins(app)
 
 app.mount('#app')

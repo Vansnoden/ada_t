@@ -1,17 +1,28 @@
-from datetime import timedelta, timezone, datetime
-from typing import Annotated
+# -*- coding: utf-8 -*-
 
-from fastapi import Depends, FastAPI, HTTPException, status
+from datetime import timedelta, timezone, datetime
+import os
+from pathlib import Path
+from typing import Annotated, List
+from database.utilities.extraction import run_exp
+from database.utils import walkpath_get_files
+
+from fastapi import Depends, FastAPI, HTTPException, status, File, UploadFile
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel
-from database.schemas import User
+from database.schemas import User, FileBase
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 from fastapi.middleware.cors import CORSMiddleware
 from database import crud, models, schemas
 from database.database import SessionLocal, engine
 from sqlalchemy.orm import Session
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.encoders import jsonable_encoder
+
+
+
 
 # models.Base.metadata.create_all(bind=engine)
 
@@ -34,7 +45,9 @@ origins = [
     "https://localhost.tiangolo.com",
     "http://localhost",
     "http://localhost:8080",
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://localhost:5173/*"
 ]
 
 app.add_middleware(
@@ -124,7 +137,8 @@ def validate_user(user: User):
     else:
         return False
 
-############################################################################################
+
+# users
 
 @app.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
@@ -171,9 +185,173 @@ async def read_users_me(current_user: Annotated[User, Depends(get_current_active
     return current_user
 
 
-@app.get("/users/delete/{user_id}")
-async def delete_user(user_id: int, db: Session = Depends(get_db)):
-    response = crud.delete_user(db, user_id=user_id)
-    if response is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    return response
+@app.post("/users/delete/{user_id}")
+async def delete_user(user: Annotated[User, Depends(get_current_active_user)], db: Session = Depends(get_db)):
+    if user:
+        response = crud.delete_user(db, user_id=user.id)
+        if response is None:
+            raise HTTPException(status_code=404, detail="User not found")
+        return response
+    else:
+        raise HTTPException(status_code=403, detail="Unauthorized action")
+
+
+# projects
+@app.get("/projects/", response_model=list[schemas.Project])
+def get_user_projects(
+    user:Annotated[User, Depends(get_current_active_user)], 
+    db: Session = Depends(get_db)):
+    if user:
+        return crud.get_projects(db, user_id=user.id)
+    else:
+        raise HTTPException(status_code=400, detail="User not found")
+
+
+@app.post("/projects/", response_model=schemas.Project)
+def create_project(
+    project: schemas.ProjectBase,
+    user:Annotated[User, Depends(get_current_active_user)], 
+    db: Session = Depends(get_db)):
+    if project.name and user:
+        return crud.add_project(db, name=project.name, user_id=user.id)
+    else:
+        raise HTTPException(status_code=400, detail="Missing required information: name, create_uid")
+
+
+@app.get("/projects/delete/{project_id}")
+def delete_project(
+    project_id: int, 
+    user:Annotated[User, Depends(get_current_active_user)], 
+    db: Session = Depends(get_db)
+    ):
+    if user:
+        response = crud.delete_project(db, project_id=project_id)
+        if response is None:
+            raise HTTPException(status_code=404, detail="Project not found")
+        return response
+    else:
+       raise HTTPException(status_code=403, detail="Unauthorized action") 
+
+
+@app.post("/project/{project_id}/upload")
+def upload_project_documents(
+    project_id: int, 
+    user: Annotated[User, Depends(get_current_active_user)],
+    files: List[UploadFile] = File(...),
+    db: Session = Depends(get_db)):
+    if user:
+        project = crud.get_single_project(project_id=project_id, db=db)
+        if project:
+            for file in files:
+                try:
+                    contents = file.file.read()
+                    with open(os.path.join(project.documents_location, file.filename), 'wb') as f:
+                        f.write(contents)
+                except Exception:
+                    return {"message": "There was an error uploading the file(s)"}
+                finally:
+                    file.file.close()
+            return {"message": f"Successfuly uploaded {[file.filename for file in files]}"}   
+        else:
+            raise HTTPException(status_code=404, detail="Project not found")
+    else:
+        raise HTTPException(status_code=403, detail="Unauthorized access")
+
+
+@app.post("/project/{project_id}/files")
+def get_project_files(
+    project_id: int, 
+    user: Annotated[User, Depends(get_current_active_user)],
+    db: Session = Depends(get_db)):
+    project = crud.get_single_project(project_id=project_id, db=db)
+    if user:
+        if project:
+            list_of_files = [] #paths
+            files = []
+            for (dirpath, dirnames, filenames) in os.walk(project.documents_location):
+                for filename in filenames:
+                    if filename.endswith('.pdf'): 
+                        file_path = os.sep.join([dirpath, filename])
+                        file_obj = {
+                            "name": filename,
+                            "server_path": file_path.replace("\\","/")
+                        }
+                        files.append(file_obj)
+            return JSONResponse(content=jsonable_encoder(files))
+        else:
+            raise HTTPException(status_code=404, detail="Project not found")
+    else:
+        raise HTTPException(status_code=403, detail="Unauthorized access")
+
+
+@app.post("/delete_file")
+def delete_single_file(
+    file: FileBase, 
+    user: Annotated[User, Depends(get_current_active_user)],
+    db: Session = Depends(get_db)):
+    if user:
+        crud.delete_single_file(file.file_path)
+        return True
+    else:
+        raise HTTPException(status_code=403, detail="Unauthorized access")
+
+
+@app.post("/projects/{project_id}/run")
+def run_project(project_id: int, 
+    user: Annotated[User, Depends(get_current_active_user)],
+    db: Session = Depends(get_db),
+    ):
+    project = crud.get_single_project(project_id=project_id, db=db)
+    if user:
+        if project:
+            documents = walkpath_get_files(project.documents_location)
+            questions = crud.get_project_questions(db, project_id)
+            run_exp(documents, questions)
+        else:
+            raise HTTPException(status_code=404, detail="Project not found")
+    else:
+        raise HTTPException(status_code=403, detail="Unauthorized access")
+
+
+@app.post("/download")
+def main(file_path:str):
+    fpath = Path(file_path)
+    return FileResponse(path=fpath, filename=os.path.basename(fpath), media_type='application/octet-stream')
+
+
+# questions
+@app.get("/questions/{project_id}", response_model=list[schemas.Question])
+def get_project_questions(project_id: int, user: Annotated[User, Depends(get_current_active_user)], db: Session = Depends(get_db)):
+    
+    return crud.get_project_questions(db, project_id=project_id)
+
+
+@app.post("/questions/", response_model=schemas.Question)
+def create_project_question(
+    question: schemas.QuestionBase,  
+    user:Annotated[User, Depends(get_current_active_user)], 
+    db: Session = Depends(get_db)
+    ):
+    if user:
+        if question.label and question.project_id and question.answer_format:
+            return crud.add_project_question(
+                db, 
+                label=question.label, 
+                answer_format=question.answer_format, 
+                project_id=question.project_id
+                )
+        else:
+            raise HTTPException(status_code=400, detail="Missing required fields")
+    else:
+       raise HTTPException(status_code=403, detail="Unauthorized action")
+
+    
+@app.get("/questions/delete/{question_id}")
+def delete_project_question(question_id: int, user:Annotated[User, Depends(get_current_active_user)], db: Session = Depends(get_db)):
+    if user:
+        response = crud.delete_question(db, id=question_id)
+        if response is None:
+            raise HTTPException(status_code=404, detail="Question not found")
+        return response
+    else:
+       raise HTTPException(status_code=403, detail="Unauthorized action")
