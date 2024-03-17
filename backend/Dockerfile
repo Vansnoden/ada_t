@@ -1,8 +1,12 @@
-FROM python:3.11.6
+FROM python:3.11.6-slim
 
 WORKDIR /code
 
 COPY ./requirements.txt /code/requirements.txt
+
+RUN apt-get update
+
+RUN apt-get install build-essential libpoppler-cpp-dev pkg-config python3-dev -y
 
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
