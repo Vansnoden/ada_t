@@ -12,7 +12,7 @@ RUN ["mkdir", "-p", "database/ai_model"]
 
 RUN ["pip", "install", "-e", "."]
 
-RUN ["alembic", "init", "alembic"]
+# RUN ["alembic", "init", "alembic"]
 
 # RUN ["mkdir", "-p", "alembic/versions"]
 
