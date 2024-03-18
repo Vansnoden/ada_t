@@ -6,6 +6,7 @@ backend/database/resources/*
 backend/*.db
 backend/alembic/versions/*
 backend/database/utilities/ai_model/*
+backend/download/*
 
 frontend/narrator/.DS_Store
 frontend/narrator/node_modules
