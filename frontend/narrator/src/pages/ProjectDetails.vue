@@ -316,7 +316,7 @@ const files = ref(); //files to be uploaded
 const formAddQA = ref();
 formAddQA.value = {} //object to keep form values when creating question
 const running = ref();
-running.value = false;
+running.value = true;
 
 
 
@@ -517,6 +517,7 @@ const runExtraction = ()=>{
         redirect: "follow"
     };
 
+    running.value = true;
     fetch(BASE_URL + "/projects/"+route.params.id+"/run", requestOptions)
     .then((response) => response.text())
     .then((result) => console.log(result))
@@ -542,7 +543,9 @@ const extractionStatus = ()=>{
     
 }
 
-setInterval(extractionStatus, 5000);
+if(running.value){
+    setInterval(extractionStatus, 5000);
+}
 
 
 const downloadCSV = ()=>{
