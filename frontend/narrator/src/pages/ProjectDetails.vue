@@ -78,11 +78,11 @@
         </div>
         <div class="content">
             
-            <div class="pbar">
+            <div class="pbar"  v-if="running">
                 <span>
                     <b style="color:red">RUNNING!!!</b>
                 </span>
-                <v-progress-linear v-if="running"
+                <v-progress-linear
                     color="cyan"
                     indeterminate>
                 </v-progress-linear>
@@ -317,6 +317,7 @@ const formAddQA = ref();
 formAddQA.value = {} //object to keep form values when creating question
 const running = ref();
 running.value = false;
+
 
 
 const closeFU = () => {
@@ -561,7 +562,16 @@ const downloadJSON = ()=>{
 
     fetch(BASE_URL + "/projects/"+ route.params.id +"/results", requestOptions)
     .then((response) => response.json())
-    .then((result) => console.log(result))
+    .then((result) => {
+        const jsonString = JSON.stringify(result);
+        var a = document.createElement("a");
+        a.setAttribute("target", "_blank");
+        a.href = URL.createObjectURL(
+            new Blob([jsonString], {type:"application/json"})
+        )
+        a.download = "results.json"
+        a.click()
+    })
     .catch((error) => console.error(error));
 }
 
