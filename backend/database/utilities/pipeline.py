@@ -68,18 +68,19 @@ def inline_text(file_path):
         mfile = open(file_path,"r", encoding="latin1")
     for line in mfile.readlines():
         # exclude document references section and subsequent sections
-        if line.lower().strip().startswith("references"):
+        if line.lower().strip().startswith("references") or line.lower().strip().startswith("acknowledgement"):
             break
-        nline = line.replace("-\n", "")
-        nline = nline.replace("\n", " ")
+        nline = line
+        # nline = line.replace("-\n", "")
+        # nline = nline.replace("\n", " ")
         # nline = nline.replace("| ", "")
         # nline = nline.replace("\'", "")
         # nline = nline.replace("  ", " ")
         # nline = nline.replace("\t", " ")
-        # if nline.lower().strip().startswith("key"):
-        #     nline = "MAIN BODY: \n" + nline
+        if nline.lower().strip().startswith("introduction"):
+            nline = "MAIN BODY: \n" + nline
         res += nline
-    # res = "HEADER: \n" + res 
+    res = "HEADER: \n" + res 
     return res
 
 
@@ -140,7 +141,7 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
     basename = os.path.basename(pdf_path).split(".")[0]
     basename = "_".join(basename.lower().split(" "))
     file_path = os.path.join(Path(pdf_path).parent,f"{basename}_ext/text.txt")
-    results_path = os.path.join(Path(pdf_path).parent, "results")
+    results_path = os.path.join(Path(Path(pdf_path).parent).parent, "results")
     begin = datetime.datetime.now()
     # 1. clean and embed text
     if not os.path.exists(file_path):
@@ -166,6 +167,9 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
         chain = setchain(prompt_template, retriever, gllm)
         while not res_format_ok:
             ans = chain.invoke(question.label)
+            ans = ans.replace(",}","}")
+            ans = ans.replace("\":\":", "\":")
+            ans = ans.replace("\".", "\"")
             try:
                 ans_check = json.loads(str(ans))
                 if not ans_check:

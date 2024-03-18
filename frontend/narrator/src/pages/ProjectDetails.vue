@@ -77,6 +77,19 @@
             </v-menu>
         </div>
         <div class="content">
+            <div class="pbar">
+                <span>
+                    <b>Extraction progress</b> (percentage of extracted documents over all project documents)
+                </span>
+                <v-progress-linear
+                    v-model="ex_progress"
+                    color="blue-grey"
+                    height="25"
+                    >
+                    <strong>{{ Math.ceil(ex_progress) }}%</strong>
+                </v-progress-linear>
+            </div>
+            
             <v-card>
                 <v-tabs v-model="tab" bg-color="secondary" align-tabs="center">
                     <v-tab value="1">Documents</v-tab>
@@ -273,6 +286,8 @@ const decrement_keynum = () => {
 }
 
 const tab = ref('tab');
+const ex_progress = ref('ex_progress');
+ex_progress.value = 0;
 const fu_dialog = ref('fu_dialog');
 fu_dialog.value = false;
 const da_dialog = ref('da_dialog');
@@ -481,6 +496,26 @@ const runExtraction = ()=>{
     
 }
 
+const extractionStatus = ()=>{
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", token);
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        redirect: "follow"
+    };
+    // console.log("getting status...");
+    fetch(BASE_URL + "/projects/"+route.params.id+"/status", requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+        ex_progress.value = parseFloat(result);
+    })
+    .catch((error) => console.error(error));
+    
+}
+
+setInterval(extractionStatus, 30000);
+
 
 const downloadCSV = ()=>{
 
@@ -488,7 +523,19 @@ const downloadCSV = ()=>{
 
 
 const downloadJSON = ()=>{
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", token);
 
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        redirect: "follow"
+    };
+
+    fetch(BASE_URL + "/projects/"+ route.params.id +"/results", requestOptions)
+    .then((response) => response.json())
+    .then((result) => console.log(result))
+    .catch((error) => console.error(error));
 }
 
 
@@ -525,6 +572,9 @@ const downloadJSON = ()=>{
 
     .content {
         padding: 1em;
+        .pbar{
+            margin-bottom: 1em!important;
+        }
     }
 
     .hint {
