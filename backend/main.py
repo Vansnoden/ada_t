@@ -308,7 +308,11 @@ def run_project(project_id: int,
         if project:
             documents = walkpath_get_files(project.documents_location)
             questions = crud.get_project_questions(db, project_id)
-            run_exp(documents, questions)
+            project.is_running = True
+            db.commit()
+            if run_exp(documents, questions):
+                project.is_running = False
+                db.commit()
         else:
             raise HTTPException(status_code=404, detail="Project not found")
     else:
@@ -324,13 +328,16 @@ def project_extraction_progress(project_id: int,
     project = crud.get_single_project(project_id=project_id, db=db)
     if user:
         if project:
-            documents = walkpath_get_files(project.documents_location)
-            results = walkpath_get_files(project.extraction_results_location)
+            documents = walkpath_get_files(project.documents_location, extension='.pdf')
+            results = walkpath_get_files(project.extraction_results_location, extension='.json')
             doc_count = len(documents)
             res_count = len(results)
-            result = 0
+            result = {
+                "percentage": 0,
+                "running": project.is_running
+            }
             if res_count:
-                result = ( doc_count / res_count ) * 100 
+                result["percentage"] = ( doc_count / res_count ) * 100 
             return result
         else:
             raise HTTPException(status_code=404, detail="Project not found")
@@ -347,7 +354,7 @@ def project_extraction_results(project_id: int,
     project = crud.get_single_project(project_id=project_id, db=db)
     if user:
         if project:
-            results = walkpath_get_files(project.extraction_results_location)
+            results = walkpath_get_files(project.extraction_results_location, extension='.json')
             merged_results = {}
             for file_path in results:
                 with open(file_path) as user_file:

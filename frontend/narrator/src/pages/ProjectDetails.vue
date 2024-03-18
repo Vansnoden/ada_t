@@ -77,6 +77,17 @@
             </v-menu>
         </div>
         <div class="content">
+            
+            <div class="pbar">
+                <span>
+                    <b style="color:red">RUNNING!!!</b>
+                </span>
+                <v-progress-linear v-if="running"
+                    color="cyan"
+                    indeterminate>
+                </v-progress-linear>
+            </div>
+
             <div class="pbar">
                 <span>
                     <b>Extraction progress</b> (percentage of extracted documents over all project documents)
@@ -304,6 +315,9 @@ const editedItem = ref('editedItem');
 const files = ref(); //files to be uploaded
 const formAddQA = ref();
 formAddQA.value = {} //object to keep form values when creating question
+const running = ref();
+running.value = false;
+
 
 const closeFU = () => {
     fu_dialog.value = false;
@@ -493,7 +507,19 @@ const uploadFiles = (id) => {
 
 
 const runExtraction = ()=>{
-    
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", token);
+
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        redirect: "follow"
+    };
+
+    fetch(BASE_URL + "/projects/"+route.params.id+"/run", requestOptions)
+    .then((response) => response.text())
+    .then((result) => console.log(result))
+    .catch((error) => console.error(error));
 }
 
 const extractionStatus = ()=>{
@@ -506,15 +532,16 @@ const extractionStatus = ()=>{
     };
     // console.log("getting status...");
     fetch(BASE_URL + "/projects/"+route.params.id+"/status", requestOptions)
-    .then((response) => response.text())
+    .then((response) => response.json())
     .then((result) => {
-        ex_progress.value = parseFloat(result);
+        ex_progress.value = result.percentage;
+        running.value = result.running;
     })
     .catch((error) => console.error(error));
     
 }
 
-setInterval(extractionStatus, 30000);
+setInterval(extractionStatus, 5000);
 
 
 const downloadCSV = ()=>{
