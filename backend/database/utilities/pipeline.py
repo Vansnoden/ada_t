@@ -175,7 +175,7 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
                 if not ans_check:
                     # and questionnaire.index(question) < 9: #10 question
                     res_format_ok=False
-                    print(f"###>>> FALSE: ANSWER TO QUESTION SHOULDN'T BE ENTY.")
+                    print(f"###>>> FALSE: ANSWER TO QUESTION SHOULDN'T BE EMPTY.")
                 else:
                     res_format_ok=True
                     Answers.append(ans_check)
@@ -186,7 +186,7 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
             finally:
                 continue
     end = datetime.datetime.now()
-    vectorstore.delete_collection()
+    # vectorstore.delete_collection()
     with open(os.path.join(results_path, f"{basename}.json"), "w+") as f:
         seconds_in_day = 24 * 60 * 60
         embedding_time = first_stop - begin

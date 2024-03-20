@@ -88,7 +88,7 @@
                 </v-progress-linear>
             </div>
 
-            <div class="pbar">
+            <div class="pbar" v-if="running">
                 <span>
                     <b>Extraction progress</b> (percentage of extracted documents over all project documents)
                 </span>
@@ -316,7 +316,7 @@ const files = ref(); //files to be uploaded
 const formAddQA = ref();
 formAddQA.value = {} //object to keep form values when creating question
 const running = ref();
-running.value = true;
+running.value = false;
 
 
 

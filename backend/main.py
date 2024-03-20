@@ -364,7 +364,7 @@ def project_extraction_results(project_id: int,
                     merged_results[fname] = parsed_json
             timef = time.strftime("%Y%m%d-%H%M%S")
             with open(f"downloads/{timef}.json", "w+") as f:
-                f.write(json.dumps(merged_results))
+                f.write(json.dumps(merged_results, indent=4))
                 fpath = os.path.abspath(f.name)
                 return FileResponse(path=fpath, filename=os.path.basename(fpath), media_type='application/octet-stream')
         else:
