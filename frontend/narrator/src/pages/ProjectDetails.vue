@@ -111,6 +111,9 @@
                         <v-window-item value="1">
                             <v-data-table :headers="doc_headers" :items="docs" :sort-by="[{ key: 'name', order: 'asc' }]">
                                 <template v-slot:item.actions="{ item }">
+                                    <v-btn size="small" color="info" prepend-icon="mdi-eye" style="margin-right:1em;">
+                                        View
+                                    </v-btn>
                                     <v-btn size="small" color="red" prepend-icon="mdi-delete" v-bind="activatorProps"
                                         @click="deleteDoc(item.server_path)">
                                         Delete
@@ -187,6 +190,12 @@
                                     </v-toolbar>
                                 </template>
                                 <template v-slot:item.actions="{ item }">
+                                    <v-btn size="small" color="info" prepend-icon="mdi-eye" style="margin-right:1em;">
+                                        View
+                                    </v-btn>
+                                    <v-btn size="small" color="warning" prepend-icon="mdi-pencil" style="margin-right:1em;">
+                                        Edit
+                                    </v-btn>
                                     <v-btn size="small" color="red" prepend-icon="mdi-delete"
                                         @click="deleteQA(item.id)">
                                         Delete
@@ -316,7 +325,7 @@ const files = ref(); //files to be uploaded
 const formAddQA = ref();
 formAddQA.value = {} //object to keep form values when creating question
 const running = ref();
-running.value = false;
+running.value = project.is_running;
 
 
 
