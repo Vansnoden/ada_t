@@ -337,7 +337,7 @@ def project_extraction_progress(project_id: int,
                 "running": project.is_running
             }
             if res_count:
-                result["percentage"] = ( doc_count / res_count ) * 100 
+                result["percentage"] = ( res_count / doc_count ) * 100 
             return result
         else:
             raise HTTPException(status_code=404, detail="Project not found")

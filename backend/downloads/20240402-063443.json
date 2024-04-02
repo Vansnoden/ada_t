@@ -1,26 +1,23 @@
 {
     "2003-the-problem-with-unstructured-data": [
         {
-            "title": "The Problem with Unstructured Data"
+            "title": "The Problem With Unstructured Data"
         },
         [
             {
-                "name": "Robert Blumberg"
-            },
-            {
-                "name": "Shaku Atre"
+                "name": ">Blumberg"
             }
         ],
         {
             "embedding_time": [
-                9,
-                28
+                10,
+                5
             ]
         },
         {
             "extraction_time": [
-                7,
-                55
+                46,
+                47
             ]
         },
         {
@@ -57,13 +54,13 @@
         {
             "embedding_time": [
                 9,
-                33
+                32
             ]
         },
         {
             "extraction_time": [
-                8,
-                43
+                9,
+                39
             ]
         },
         {
