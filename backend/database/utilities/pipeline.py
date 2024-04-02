@@ -172,14 +172,14 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
             ans = ans.replace("\".", "\"")
             try:
                 ans_check = json.loads(str(ans))
-                if not ans_check:
-                    # and questionnaire.index(question) < 9: #10 question
-                    res_format_ok=False
-                    print(f"###>>> FALSE: ANSWER TO QUESTION SHOULDN'T BE EMPTY.")
-                else:
-                    res_format_ok=True
-                    Answers.append(ans_check)
-                    print(f"###>>> TRUE: ANSWER TO QUESTION {questionnaire.index(question) + 1} IS A VALID JSON.")
+                # if not ans_check:
+                #     # and questionnaire.index(question) < 9: #10 question
+                #     res_format_ok=False
+                #     print(f"###>>> FALSE: ANSWER TO QUESTION SHOULDN'T BE EMPTY.")
+                # else:
+                res_format_ok=True
+                Answers.append(ans_check)
+                print(f"###>>> TRUE: ANSWER TO QUESTION {questionnaire.index(question) + 1} IS A VALID JSON.")
             except Exception as e:
                 print(f"###>>> FALSE: ANSWER TO QUESTION {questionnaire.index(question) + 1} IS NOT A VALID JSON.")
                 res_format_ok=False

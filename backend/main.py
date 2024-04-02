@@ -307,9 +307,15 @@ def run_project(project_id: int,
     if user:
         if project:
             documents = walkpath_get_files(project.documents_location)
+            results = walkpath_get_files(project.extraction_results_location, extension=".json")
             questions = crud.get_project_questions(db, project_id)
             project.is_running = True
             db.commit()
+            for res in results:
+                bname = os.path.basename(res).split(".")[0]
+                for doc in documents:
+                    if bname + ".pdf" in doc:
+                        documents.remove(doc)
             if run_exp(documents, questions):
                 project.is_running = False
                 db.commit()
