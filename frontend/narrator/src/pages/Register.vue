@@ -1,8 +1,8 @@
 <template>
     <div class="registration">
-        <video autoplay muted loop id="myVideo">
+        <!-- <video autoplay muted loop id="myVideo">
             <source src="../assets/deepdive.mp4" type="video/mp4">
-        </video>
+        </video> -->
         <v-container class="mctn">
             <v-row>
                 <v-col cols="12" sm="10" md="6" lg="4">
@@ -89,17 +89,17 @@ export default {
     .mcard{
         padding: 1em!important;
     }
-    #myVideo {
-        position: fixed;
-        right: 0;
-        bottom: 0;
-        min-width: 100%;
-        min-height: 100%;
-        z-index: 1;
-    }
-    .title{
-        color:#fff;
-    }
+    // #myVideo {
+    //     position: fixed;
+    //     right: 0;
+    //     bottom: 0;
+    //     min-width: 100%;
+    //     min-height: 100%;
+    //     z-index: 1;
+    // }
+    // .title{
+    //     color:#fff;
+    // }
     .mtitle{
         font-weight: 1.5rem;
         margin-bottom: 1em;
