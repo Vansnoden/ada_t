@@ -1,0 +1,271 @@
+{
+    "26": [
+        {
+            "title": " Malaria in a low endemic area: a study from the Philippines"
+        },
+        {
+            "country": " Philippines"
+        },
+        {
+            "publish date": "/code/database/resources/1/documents/13_ext/text.txt"
+        },
+        {
+            "embedding_time": [
+                5,
+                34
+            ]
+        },
+        {
+            "extraction_time": [
+                10,
+                22
+            ]
+        },
+        {
+            "pdf_id": "26"
+        }
+    ],
+    "197": [
+        {
+            "country": " Philippines"
+        },
+        {
+            "publish date": "/code/database/resources/1/documents/13_ext/text.txt"
+        },
+        {
+            "embedding_time": [
+                6,
+                59
+            ]
+        },
+        {
+            "extraction_time": [
+                44,
+                20
+            ]
+        },
+        {
+            "pdf_id": "197"
+        }
+    ],
+    "12": [
+        {
+            "title": " Malaria Control Through Understanding why Low Endemic Malaria is Stable"
+        },
+        {
+            "country": " Philippines"
+        },
+        {
+            "publish date": "/code/database/resources/1/documents/13_ext/text.txt"
+        },
+        {
+            "embedding_time": [
+                9,
+                18
+            ]
+        },
+        {
+            "extraction_time": [
+                36,
+                1
+            ]
+        },
+        {
+            "pdf_id": "12"
+        }
+    ],
+    "22": [
+        {
+            "title": " Malaria in a Low-EEndemicity Area: A Study in the Philippines"
+        },
+        {
+            "country": " Philippines"
+        },
+        {
+            "publish date": "/code/database/resources/1/documents/13_ext/text.txt"
+        },
+        {
+            "embedding_time": [
+                5,
+                8
+            ]
+        },
+        {
+            "extraction_time": [
+                10,
+                39
+            ]
+        },
+        {
+            "pdf_id": "22"
+        }
+    ],
+    "16": [
+        {
+            "title": "Malaria in a Low Endemicity Area: A Study from Rural Laos"
+        },
+        {
+            "country": " Philippines"
+        },
+        {
+            "publish date": "/code/database/resources/1/documents/13_ext/text.txt"
+        },
+        {
+            "embedding_time": [
+                1,
+                6
+            ]
+        },
+        {
+            "extraction_time": [
+                9,
+                32
+            ]
+        },
+        {
+            "pdf_id": "16"
+        }
+    ],
+    "196": [
+        {
+            "title": "Malaria Research in a Low-Endemic Area of the Philippines."
+        },
+        {
+            "country": " Philippines"
+        },
+        {
+            "publish date": "/code/database/resources/1/documents/13_ext/text.txt"
+        },
+        {
+            "embedding_time": [
+                9,
+                25
+            ]
+        },
+        {
+            "extraction_time": [
+                27,
+                42
+            ]
+        },
+        {
+            "pdf_id": "196"
+        }
+    ],
+    "14": [
+        {
+            "title": " Malaria in a low endemic area of the Philippines"
+        },
+        {
+            "country": " Philippines"
+        },
+        {
+            "publish date": ">2010"
+        },
+        {
+            "embedding_time": [
+                9,
+                32
+            ]
+        },
+        {
+            "extraction_time": [
+                10,
+                35
+            ]
+        },
+        {
+            "pdf_id": "14"
+        }
+    ],
+    "13": [
+        {
+            "title": "Malaria in low-endemic areas: an analysis of its nature, including a case study from the Philippines"
+        },
+        {
+            "country": " Philippines"
+        },
+        {
+            "publish date": "/code/database/resources/1/documents/13_ext/text.txt"
+        },
+        {
+            "embedding_time": [
+                3,
+                42
+            ]
+        },
+        {
+            "extraction_time": [
+                18,
+                27
+            ]
+        },
+        {
+            "pdf_id": "13"
+        }
+    ],
+    "19": [
+        {
+            "title": "Molecular epidemiology of Plasmodium ovale infection in Southeast Asia."
+        },
+        [
+            {
+                "name": ">FUMIHIKOKAWAMOTO"
+            },
+            {
+                "name": ">HIROFUMIMIYAKE"
+            },
+            {
+                "name": ">OSAMUKANEKO"
+            },
+            {
+                "name": ">MASATSUGUKIMURA"
+            },
+            {
+                "name": ">NGUYENTHIDUNG"
+            },
+            {
+                "name": ">NGUYENTHEDUNG"
+            },
+            {
+                "name": ">QINGLIU"
+            },
+            {
+                "name": ">MIANZHOU"
+            },
+            {
+                "name": ">LEDUCDAO"
+            },
+            {
+                "name": ">SHINTAROKAWAI"
+            },
+            {
+                "name": ">SHINISOMURA"
+            },
+            {
+                "name": ">ANDYUSUKEWATAYA2"
+            }
+        ],
+        {
+            "country": ")Vietnam"
+        },
+        {
+            "publish date": ")1996"
+        },
+        {
+            "embedding_time": [
+                8,
+                41
+            ]
+        },
+        {
+            "extraction_time": [
+                14,
+                51
+            ]
+        },
+        {
+            "pdf_id": "19"
+        }
+    ]
+}

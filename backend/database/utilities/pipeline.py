@@ -157,6 +157,7 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
     vectorstore, retriever = build_retriever(embedding_fn, file_path, chunk_size=1024, chunk_overlap=10)
     # os.remove(f"{basename}.txt")
     first_stop = datetime.datetime.now()
+    max_loop = 3
     # 2. extract informations based on questionnaire
     for question in tqdm(questionnaire, position=0, leave=True):
         res_format_ok = False
@@ -165,18 +166,23 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
         # llm = refresh_gramma()
         # data_extraction_prompt_template
         chain = setchain(prompt_template, retriever, gllm)
-        while not res_format_ok:
+        loop_done = 0
+        while not res_format_ok and loop_done < max_loop :
             ans = chain.invoke(question.label)
             ans = ans.replace(",}","}")
-            ans = ans.replace("\":\":", "\":")
+            ans = ans.replace("\":\":", "\":\"")
             ans = ans.replace("\".", "\"")
             try:
                 ans_check = json.loads(str(ans))
-                if not ans_check:
+                if not ans_check and loop_done < max_loop:
                     # and questionnaire.index(question) < 9: #10 question
                     res_format_ok=False
                     print(f"###>>> FALSE: ANSWER TO QUESTION SHOULDN'T BE EMPTY.")
-                else:
+                elif loop_done >= max_loop: 
+                    res_format_ok=True
+                    Answers.append(ans_check)
+                    print(f"###>>> TRUE: ANSWER TO QUESTION {questionnaire.index(question) + 1} IS A VALID JSON.")
+                elif ans_check:
                     res_format_ok=True
                     Answers.append(ans_check)
                     print(f"###>>> TRUE: ANSWER TO QUESTION {questionnaire.index(question) + 1} IS A VALID JSON.")
@@ -184,9 +190,10 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
                 print(f"###>>> FALSE: ANSWER TO QUESTION {questionnaire.index(question) + 1} IS NOT A VALID JSON.")
                 res_format_ok=False
             finally:
+                loop_done += 1
                 continue
     end = datetime.datetime.now()
-    # vectorstore.delete_collection()
+    vectorstore.delete_collection()
     with open(os.path.join(results_path, f"{basename}.json"), "w+") as f:
         seconds_in_day = 24 * 60 * 60
         embedding_time = first_stop - begin
