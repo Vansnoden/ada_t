@@ -1,14 +1,14 @@
 <template>
     <v-navigation-drawer>
-        <v-list-item title="Narrator" subtitle="automatic data abstraction tool"></v-list-item>
+        <v-list-item title="ADA.T" subtitle="Automatic Data Abstraction Tool"></v-list-item>
         <v-divider></v-divider>
-        <v-list-item link active title="projects" to="/projects"></v-list-item>
-        <v-list-item link title="account settings"></v-list-item>
-        <v-list-item link title="userguide"></v-list-item>
-        <v-list-item link title="help?"></v-list-item>
+        <v-list-item link active title="Projects" to="/projects"></v-list-item>
+        <v-list-item link title="Account settings"></v-list-item>
+        <v-list-item link title="Userguide"></v-list-item>
+        <v-list-item link title="Help?"></v-list-item>
         <v-spacer></v-spacer>
         <v-divider></v-divider>
-        <v-list-item link title="logout" @click="logout"></v-list-item>
+        <v-list-item link title="Logout" @click="logout"></v-list-item>
     </v-navigation-drawer>
     <div class="projects">
         <div class="toolbar">

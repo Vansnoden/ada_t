@@ -1,8 +1,12 @@
 <template>
     <div class="login">
+        <video autoplay muted loop id="myVideo">
+            <source src="../assets/deepdive.mp4" type="video/mp4">
+        </video>
         <v-container class="mctn">
             <v-row>
                 <v-col cols="12" sm="10" md="6" lg="4">
+                    <h1 class="title">Welcome to ADA.T <small>(PDF)</small></h1>
                     <v-card class="mcard">
                         <v-sheet>
                             <v-form @submit.prevent="login">
@@ -75,6 +79,17 @@ export default {
     justify-content: center;
     align-items: center;
     color: #000;
+    .title{
+        color:#fff;
+    }
+    #myVideo {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        min-width: 100%;
+        min-height: 100%;
+        z-index: 1;
+    }
     .mcard{
         padding: 1em!important;
     }
@@ -85,12 +100,12 @@ export default {
     }
     .mctn{
         margin: auto!important;
-        background-color: skyblue;
         height:100%;
         display: flex!important;
         flex-direction: row!important;
         justify-content: center!important;
         align-items: center!important;
+        z-index: 5;
     }
     .info-box{
         padding:1em;
