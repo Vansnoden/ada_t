@@ -15,11 +15,14 @@ from langchain_core.runnables import RunnableParallel, RunnablePassthrough
 
 from database.schemas import Question
 from .pdf_preprocessing import *
+# import multiprocessing
+# from joblib import Parallel, delayed
 
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 parent_dir = Path(dir_path).parent
 MODEL_PATH = os.path.join(parent_dir, 'utilities/ai_model/ggml-model-f16.gguf')
+
 
 
 class CustomLlamaCppEmbeddings(LlamaCppEmbeddings):
@@ -51,6 +54,7 @@ def build_retriever(embedding_fn, file_path, chunk_size=3000, chunk_overlap=30):
     docs = loader.load()
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap, add_start_index=True)
     splits = text_splitter.split_documents(docs)
+    # Parallel(n_jobs=4)(delayed(embed_data)([item], embedding_fn, vectorstore) for item in splits)
     vectorstore, ellapsed = embed_data(splits, embedding_fn)
     with open("embedding.log.csv", "a+") as f:
         f.write(f"\n{os.path.getsize(file_path)},{ellapsed}")
@@ -145,8 +149,9 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
     begin = datetime.datetime.now()
     # 1. clean and embed text
     if not os.path.exists(file_path):
-        print(f"### text file not found: {file_path}")
+        print(f"#### TEXT FILE NOT FOUND: {file_path}")
         extract_pdf_text(pdf_path=pdf_path)
+        print(f"#### TEXT EXTRACTION COMPLETED")
     m_text = inline_text(file_path).encode("utf8").decode("utf8")
     try:
         with open(file_path, "w+", encoding='utf-8') as f:
@@ -155,6 +160,7 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
         with open(file_path, "w+", encoding='latin1') as f:
             f.write(m_text)
     vectorstore, retriever = build_retriever(embedding_fn, file_path, chunk_size=1024, chunk_overlap=10)
+    print(f"#### RETRIEVER AND VECTORSTORE INITIALIZED")
     # os.remove(f"{basename}.txt")
     first_stop = datetime.datetime.now()
     max_loop = 3
@@ -194,6 +200,7 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
                 continue
     end = datetime.datetime.now()
     vectorstore.delete_collection()
+    print(f"####VECTORSTORE CLEANNED")
     with open(os.path.join(results_path, f"{basename}.json"), "w+") as f:
         seconds_in_day = 24 * 60 * 60
         embedding_time = first_stop - begin
