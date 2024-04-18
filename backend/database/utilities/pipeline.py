@@ -16,7 +16,7 @@ from langchain_core.runnables import RunnableParallel, RunnablePassthrough
 from database.schemas import Question
 from .pdf_preprocessing import *
 # import multiprocessing
-# from joblib import Parallel, delayed
+from joblib import Parallel, delayed
 
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -33,7 +33,10 @@ class CustomLlamaCppEmbeddings(LlamaCppEmbeddings):
         Returns:
             List of embeddings, one for each text.
         """
-        embeddings = [self.client.embed(text) for text in tqdm(texts, position=0, leave=True)]
+        # embeddings = [self.client.embed(text) for text in tqdm(texts, position=0, leave=True)]
+        print("##### ATTEMPTING EMBEDDING ...")
+        embeddings = Parallel(n_jobs=8)(delayed(self.client.embed)(text) for text in tqdm(texts, position=0, leave=True))
+        print("##### EMBEDDING COMPLETED ...")
         return [list(map(float, e)) for e in embeddings]
 
 
@@ -149,9 +152,7 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
     begin = datetime.datetime.now()
     # 1. clean and embed text
     if not os.path.exists(file_path):
-        print(f"#### TEXT FILE NOT FOUND: {file_path}")
         extract_pdf_text(pdf_path=pdf_path)
-        print(f"#### TEXT EXTRACTION COMPLETED")
     m_text = inline_text(file_path).encode("utf8").decode("utf8")
     try:
         with open(file_path, "w+", encoding='utf-8') as f:
