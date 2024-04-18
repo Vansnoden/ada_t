@@ -15,7 +15,6 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 # add your model's MetaData object here
-# for 'autogenerate' support
 from database.database import Base
 from database.models import Project, Question, User
 target_metadata = Base.metadata

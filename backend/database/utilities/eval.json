@@ -1,0 +1,62 @@
+{
+    "11.pdf": {
+        "title": 1.0,
+        "authors": 0.9999999999999999,
+        "country": 1.0,
+        "publish_year": 1.0
+    },
+    "12.pdf": {
+        "title": 0.9999999999999999,
+        "authors": 1.0000000000000002,
+        "country": 1.0,
+        "publish_year": 1.0
+    },
+    "13.pdf": {
+        "title": 0.40824829046386296,
+        "authors": 0.9999999999999999,
+        "country": 1.0,
+        "publish_year": 0.0
+    },
+    "14.pdf": {
+        "title": 0.9316949906249125,
+        "authors": 1.0000000000000002,
+        "country": 1.0,
+        "publish_year": 1.0
+    },
+    "16.pdf": {
+        "title": 0.9999999999999998,
+        "authors": 0.9999999999999998,
+        "country": 1.0,
+        "publish_year": 1.0
+    },
+    "19.pdf": {
+        "title": 0.42640143271122083,
+        "authors": 1.0000000000000002,
+        "country": 1.0,
+        "publish_year": 1.0
+    },
+    "196.pdf": {
+        "title": 0.9999999999999998,
+        "authors": 1.0,
+        "country": 1.0,
+        "publish_year": 1.0
+    },
+    "197.pdf": {
+        "title": 1.0,
+        "authors": 1.0000000000000002,
+        "country": 1.0,
+        "publish_year": 1.0
+    },
+    "22.pdf": {
+        "title": 0.9999999999999999,
+        "authors": 1.0,
+        "country": 1.0,
+        "publish_year": 1.0
+    },
+    "26.pdf": {
+        "title": 0.4592793267718459,
+        "authors": 1.0,
+        "country": 1.0,
+        "publish_year": 1.0
+    }
+}

@@ -32,6 +32,7 @@ class FileBase(BaseModel):
 class Project(ProjectBase):
     id: int
     is_active: bool
+    is_running: bool
     create_uid: int
     create_date: datetime
     documents_location: str

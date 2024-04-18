@@ -11,14 +11,15 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 parent_dir = Path(dir_path).parent
 MODEL_PATH = os.path.join(parent_dir, 'utilities/ai_model/ggml-model-f16.gguf')
 
+# Summarize the provided context in english then answer the question based only your summary.
+
 data_extraction_prompt_template = """
+    Answer to the question based only on the provided context, as valid JSON objects with " as delimiter and no comma after the last item.
+
     {context}
     
-    [INST] 
-    Summarize the provided context in english then answer the question based only your summary.
-    Format your answers in valid JSON objects.
-    
-    Question: {question} [/INST]"""
+    [INST]{question}[/INST]
+    """
 
 # set of 15 question th paper is to be evaluated on
 questionnaire = [

@@ -1,14 +1,14 @@
 <template>
     <v-navigation-drawer>
-        <v-list-item title="Narrator" subtitle="automatic data abstraction tool"></v-list-item>
+        <v-list-item title="ADA.T" subtitle="Automatic Data Abstraction Tool"></v-list-item>
         <v-divider></v-divider>
-        <v-list-item link active title="projects" to="/projects"></v-list-item>
-        <v-list-item link title="account settings"></v-list-item>
-        <v-list-item link title="userguide"></v-list-item>
-        <v-list-item link title="help?"></v-list-item>
+        <v-list-item link active title="Projects" to="/projects"></v-list-item>
+        <v-list-item link title="Account settings"></v-list-item>
+        <v-list-item link title="Userguide"></v-list-item>
+        <v-list-item link title="Help?"></v-list-item>
         <v-spacer></v-spacer>
         <v-divider></v-divider>
-        <v-list-item link title="logout" @click="logout"></v-list-item>
+        <v-list-item link title="Logout" @click="logout"></v-list-item>
     </v-navigation-drawer>
     <div class="project_page">
         <div class="toolbar">
@@ -77,6 +77,30 @@
             </v-menu>
         </div>
         <div class="content">
+            
+            <div class="pbar"  v-if="running">
+                <span>
+                    <b style="color:red">RUNNING!!!</b>
+                </span>
+                <v-progress-linear
+                    color="cyan"
+                    indeterminate>
+                </v-progress-linear>
+            </div>
+
+            <div class="pbar" v-if="running">
+                <span>
+                    <b>Extraction progress</b> (percentage of extracted documents over all project documents)
+                </span>
+                <v-progress-linear
+                    v-model="ex_progress"
+                    color="blue-grey"
+                    height="25"
+                    >
+                    <strong>{{ Math.ceil(ex_progress) }}%</strong>
+                </v-progress-linear>
+            </div>
+            
             <v-card>
                 <v-tabs v-model="tab" bg-color="secondary" align-tabs="center">
                     <v-tab value="1">Documents</v-tab>
@@ -87,6 +111,9 @@
                         <v-window-item value="1">
                             <v-data-table :headers="doc_headers" :items="docs" :sort-by="[{ key: 'name', order: 'asc' }]">
                                 <template v-slot:item.actions="{ item }">
+                                    <v-btn size="small" color="info" prepend-icon="mdi-eye" style="margin-right:1em;">
+                                        View
+                                    </v-btn>
                                     <v-btn size="small" color="red" prepend-icon="mdi-delete" v-bind="activatorProps"
                                         @click="deleteDoc(item.server_path)">
                                         Delete
@@ -163,6 +190,12 @@
                                     </v-toolbar>
                                 </template>
                                 <template v-slot:item.actions="{ item }">
+                                    <v-btn size="small" color="info" prepend-icon="mdi-eye" style="margin-right:1em;">
+                                        View
+                                    </v-btn>
+                                    <v-btn size="small" color="warning" prepend-icon="mdi-pencil" style="margin-right:1em;">
+                                        Edit
+                                    </v-btn>
                                     <v-btn size="small" color="red" prepend-icon="mdi-delete"
                                         @click="deleteQA(item.id)">
                                         Delete
@@ -273,6 +306,8 @@ const decrement_keynum = () => {
 }
 
 const tab = ref('tab');
+const ex_progress = ref('ex_progress');
+ex_progress.value = 0;
 const fu_dialog = ref('fu_dialog');
 fu_dialog.value = false;
 const da_dialog = ref('da_dialog');
@@ -289,6 +324,10 @@ const editedItem = ref('editedItem');
 const files = ref(); //files to be uploaded
 const formAddQA = ref();
 formAddQA.value = {} //object to keep form values when creating question
+const running = ref();
+running.value = project.is_running;
+
+
 
 const closeFU = () => {
     fu_dialog.value = false;
@@ -478,7 +517,43 @@ const uploadFiles = (id) => {
 
 
 const runExtraction = ()=>{
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", token);
+
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        redirect: "follow"
+    };
+
+    running.value = true;
+    fetch(BASE_URL + "/projects/"+route.params.id+"/run", requestOptions)
+    .then((response) => response.text())
+    .then((result) => console.log(result))
+    .catch((error) => console.error(error));
+}
+
+const extractionStatus = ()=>{
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", token);
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        redirect: "follow"
+    };
+    // console.log("getting status...");
+    fetch(BASE_URL + "/projects/"+route.params.id+"/status", requestOptions)
+    .then((response) => response.json())
+    .then((result) => {
+        ex_progress.value = result.percentage;
+        running.value = result.running;
+    })
+    .catch((error) => console.error(error));
     
+}
+
+if(running.value){
+    setInterval(extractionStatus, 5000);
 }
 
 
@@ -488,7 +563,28 @@ const downloadCSV = ()=>{
 
 
 const downloadJSON = ()=>{
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", token);
 
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        redirect: "follow"
+    };
+
+    fetch(BASE_URL + "/projects/"+ route.params.id +"/results", requestOptions)
+    .then((response) => response.json())
+    .then((result) => {
+        const jsonString = JSON.stringify(result);
+        var a = document.createElement("a");
+        a.setAttribute("target", "_blank");
+        a.href = URL.createObjectURL(
+            new Blob([jsonString], {type:"application/json"})
+        )
+        a.download = "results.json"
+        a.click()
+    })
+    .catch((error) => console.error(error));
 }
 
 
@@ -525,6 +621,9 @@ const downloadJSON = ()=>{
 
     .content {
         padding: 1em;
+        .pbar{
+            margin-bottom: 1em!important;
+        }
     }
 
     .hint {

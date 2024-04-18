@@ -51,9 +51,9 @@ def delete_user(db: Session, user_id: int):
 # projects
 def get_projects(db: Session, user_id: int,  skip: int = 0, limit: int = 0):
     if skip and limit:
-        return db.query(models.Project).filter(user_id == user_id).offset(skip).limit(limit).all()
+        return db.query(models.Project).filter(models.Project.create_uid == user_id).offset(skip).limit(limit).all()
     else:
-        return db.query(models.Project).filter(user_id == user_id).all()
+        return db.query(models.Project).filter(models.Project.create_uid == user_id).all()
     
 def get_single_project(db: Session, project_id: int):
     return db.query(models.Project).filter(models.Project.id == project_id).first()

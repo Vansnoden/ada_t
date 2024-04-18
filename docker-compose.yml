@@ -5,16 +5,19 @@ services:
     build: ./backend
     container_name: ada-t-backend
     volumes:
-      - ./backend/database/utilities/ai_model:/code/database/utilities/ai_model
-      - ./backend/alembic:/code/alembic
-      - ./backend/alembic.ini:/code/alembic.ini
+      - ./backend:/code
+      # - ./backend/database/utilities/ai_model:/code/database/utilities/ai_model
+      # - ./backend/alembic:/code/alembic
+      # - ./backend/alembic.ini:/code/alembic.ini
     ports:
       - 8000:8000
 
-  ada-t-frontend:
-    build: ./frontend/narrator
-    container_name: ada-t-frontend
-    ports:
-      - 8080:8080
-    links:
-      - ada-t-backend
+  # ada-t-frontend:
+  #   build: ./frontend/narrator
+  #   container_name: ada-t-frontend
+  #   # volumes:
+  #   #   - ./frontend/narrator:/app
+  #   ports:
+  #     - 8080:8080
+  #   links:
+  #     - ada-t-backend

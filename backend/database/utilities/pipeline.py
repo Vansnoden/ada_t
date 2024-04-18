@@ -68,18 +68,19 @@ def inline_text(file_path):
         mfile = open(file_path,"r", encoding="latin1")
     for line in mfile.readlines():
         # exclude document references section and subsequent sections
-        if line.lower().strip().startswith("references"):
+        if line.lower().strip().startswith("references") or line.lower().strip().startswith("acknowledgement"):
             break
-        nline = line.replace("-\n", "")
-        nline = nline.replace("\n", " ")
+        nline = line
+        # nline = line.replace("-\n", "")
+        # nline = nline.replace("\n", " ")
         # nline = nline.replace("| ", "")
         # nline = nline.replace("\'", "")
         # nline = nline.replace("  ", " ")
         # nline = nline.replace("\t", " ")
-        # if nline.lower().strip().startswith("key"):
-        #     nline = "MAIN BODY: \n" + nline
+        if nline.lower().strip().startswith("introduction"):
+            nline = "MAIN BODY: \n" + nline
         res += nline
-    # res = "HEADER: \n" + res 
+    res = "HEADER: \n" + res 
     return res
 
 
@@ -140,7 +141,7 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
     basename = os.path.basename(pdf_path).split(".")[0]
     basename = "_".join(basename.lower().split(" "))
     file_path = os.path.join(Path(pdf_path).parent,f"{basename}_ext/text.txt")
-    results_path = os.path.join(Path(pdf_path).parent, "results")
+    results_path = os.path.join(Path(Path(pdf_path).parent).parent, "results")
     begin = datetime.datetime.now()
     # 1. clean and embed text
     if not os.path.exists(file_path):
@@ -156,6 +157,7 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
     vectorstore, retriever = build_retriever(embedding_fn, file_path, chunk_size=1024, chunk_overlap=10)
     # os.remove(f"{basename}.txt")
     first_stop = datetime.datetime.now()
+    max_loop = 3
     # 2. extract informations based on questionnaire
     for question in tqdm(questionnaire, position=0, leave=True):
         res_format_ok = False
@@ -164,15 +166,23 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
         # llm = refresh_gramma()
         # data_extraction_prompt_template
         chain = setchain(prompt_template, retriever, gllm)
-        while not res_format_ok:
+        loop_done = 0
+        while not res_format_ok and loop_done < max_loop :
             ans = chain.invoke(question.label)
+            ans = ans.replace(",}","}")
+            ans = ans.replace("\":\":", "\":\"")
+            ans = ans.replace("\".", "\"")
             try:
                 ans_check = json.loads(str(ans))
-                if not ans_check:
+                if not ans_check and loop_done < max_loop:
                     # and questionnaire.index(question) < 9: #10 question
                     res_format_ok=False
-                    print(f"###>>> FALSE: ANSWER TO QUESTION SHOULDN'T BE ENTY.")
-                else:
+                    print(f"###>>> FALSE: ANSWER TO QUESTION SHOULDN'T BE EMPTY.")
+                elif loop_done >= max_loop: 
+                    res_format_ok=True
+                    Answers.append(ans_check)
+                    print(f"###>>> TRUE: ANSWER TO QUESTION {questionnaire.index(question) + 1} IS A VALID JSON.")
+                elif ans_check:
                     res_format_ok=True
                     Answers.append(ans_check)
                     print(f"###>>> TRUE: ANSWER TO QUESTION {questionnaire.index(question) + 1} IS A VALID JSON.")
@@ -180,6 +190,7 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
                 print(f"###>>> FALSE: ANSWER TO QUESTION {questionnaire.index(question) + 1} IS NOT A VALID JSON.")
                 res_format_ok=False
             finally:
+                loop_done += 1
                 continue
     end = datetime.datetime.now()
     vectorstore.delete_collection()

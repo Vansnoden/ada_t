@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import timedelta, timezone, datetime
-import os
+import os, json, time
 from pathlib import Path
 from typing import Annotated, List
 from database.utilities.extraction import run_exp
@@ -28,7 +28,7 @@ from fastapi.encoders import jsonable_encoder
 
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 30 * 3600 * 24
 
 app = FastAPI()
 
@@ -47,7 +47,9 @@ origins = [
     "http://localhost:8080",
     "http://localhost:3000",
     "http://localhost:5173",
-    "http://localhost:5173/*"
+    "http://localhost:5173/*",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:5173/*",
 ]
 
 app.add_middleware(
@@ -140,7 +142,7 @@ def validate_user(user: User):
 
 # users
 
-@app.post("/users/", response_model=schemas.User)
+@app.post("/users", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_username(db, username=user.username)
     if db_user:
@@ -305,8 +307,72 @@ def run_project(project_id: int,
     if user:
         if project:
             documents = walkpath_get_files(project.documents_location)
+            results = walkpath_get_files(project.extraction_results_location, extension=".json")
             questions = crud.get_project_questions(db, project_id)
-            run_exp(documents, questions)
+            project.is_running = True
+            db.commit()
+            for res in results:
+                bname = os.path.basename(res).split(".")[0]
+                for doc in documents:
+                    if bname + ".pdf" in doc:
+                        documents.remove(doc)
+            if run_exp(documents, questions):
+                project.is_running = False
+                db.commit()
+        else:
+            raise HTTPException(status_code=404, detail="Project not found")
+    else:
+        raise HTTPException(status_code=403, detail="Unauthorized access")
+
+
+@app.post("/projects/{project_id}/status")
+def project_extraction_progress(project_id: int, 
+    user: Annotated[User, Depends(get_current_active_user)],
+    db: Session = Depends(get_db),
+    ):
+    """get precentage of processed project documents"""
+    project = crud.get_single_project(project_id=project_id, db=db)
+    if user:
+        if project:
+            documents = walkpath_get_files(project.documents_location, extension='.pdf')
+            results = walkpath_get_files(project.extraction_results_location, extension='.json')
+            doc_count = len(documents)
+            res_count = len(results)
+            result = {
+                "percentage": 0,
+                "running": project.is_running
+            }
+            if res_count:
+                result["percentage"] = ( res_count / doc_count ) * 100 
+            return result
+        else:
+            raise HTTPException(status_code=404, detail="Project not found")
+    else:
+        raise HTTPException(status_code=403, detail="Unauthorized access")
+
+
+@app.post("/projects/{project_id}/results")
+def project_extraction_results(project_id: int, 
+    user: Annotated[User, Depends(get_current_active_user)],
+    db: Session = Depends(get_db),
+    ):
+    """get precentage of processed project documents"""
+    project = crud.get_single_project(project_id=project_id, db=db)
+    if user:
+        if project:
+            results = walkpath_get_files(project.extraction_results_location, extension='.json')
+            merged_results = {}
+            for file_path in results:
+                with open(file_path) as user_file:
+                    fname = os.path.basename(file_path).split('.')[0]
+                    file_contents = user_file.read()
+                    parsed_json = json.loads(file_contents)
+                    merged_results[fname] = parsed_json
+            timef = time.strftime("%Y%m%d-%H%M%S")
+            with open(f"downloads/{timef}.json", "w+") as f:
+                f.write(json.dumps(merged_results, indent=4))
+                fpath = os.path.abspath(f.name)
+                return FileResponse(path=fpath, filename=os.path.basename(fpath), media_type='application/octet-stream')
         else:
             raise HTTPException(status_code=404, detail="Project not found")
     else:

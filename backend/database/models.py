@@ -26,6 +26,7 @@ class Project(Base):
     create_uid = Column(Integer, ForeignKey("users.id"), nullable=False)
     create_date = Column(DateTime, default=datetime.datetime.now(), nullable=False)
     is_active = Column(Boolean, default=True, nullable=False)
+    is_running = Column(Boolean, default=0)
     documents_location = Column(String, nullable=False, default='.')
     grammars_location = Column(String, nullable=False, default='.')
     extraction_results_location = Column(String, nullable=False, default='.')
