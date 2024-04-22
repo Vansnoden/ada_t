@@ -1,0 +1,22 @@
+{
+    "sample": [
+        {
+            "Title": " Implications of a literature review for the format of a scientific article"
+        },
+        {
+            "embedding_time": [
+                7,
+                1
+            ]
+        },
+        {
+            "extraction_time": [
+                4,
+                4
+            ]
+        },
+        {
+            "pdf_id": "sample"
+        }
+    ]
+}

@@ -16,7 +16,9 @@ from langchain_core.runnables import RunnableParallel, RunnablePassthrough
 from database.schemas import Question
 from .pdf_preprocessing import *
 # import multiprocessing
-# from joblib import Parallel, delayed
+from joblib import Parallel, delayed, parallel_backend
+import multiprocessing
+
 
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -26,6 +28,10 @@ MODEL_PATH = os.path.join(parent_dir, 'utilities/ai_model/ggml-model-f16.gguf')
 
 
 class CustomLlamaCppEmbeddings(LlamaCppEmbeddings):
+
+    def to_float_list(e):
+        return list(map(float, e))
+
     def embed_documents(self, texts: List[str]) -> List[List[float]]:
         """Embed a list of documents using the Llama model.
         Args:
@@ -34,7 +40,12 @@ class CustomLlamaCppEmbeddings(LlamaCppEmbeddings):
             List of embeddings, one for each text.
         """
         embeddings = [self.client.embed(text) for text in tqdm(texts, position=0, leave=True)]
-        return [list(map(float, e)) for e in embeddings]
+        # with parallel_backend('multiprocessing'):
+        #     embeddings = Parallel(n_jobs=6)(delayed(self.client.embed)(text) for text in texts)
+        # with parallel_backend('multiprocessing'):
+        #     embeddings = Parallel(n_jobs=6)(delayed(self.to_float_list)(e) for e in embeddings)
+        embeddings = [list(map(float, e)) for e in embeddings]
+        return embeddings
 
 
 def embed_data(documents, embedding_fn):
@@ -149,9 +160,7 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
     begin = datetime.datetime.now()
     # 1. clean and embed text
     if not os.path.exists(file_path):
-        print(f"#### TEXT FILE NOT FOUND: {file_path}")
         extract_pdf_text(pdf_path=pdf_path)
-        print(f"#### TEXT EXTRACTION COMPLETED")
     m_text = inline_text(file_path).encode("utf8").decode("utf8")
     try:
         with open(file_path, "w+", encoding='utf-8') as f:

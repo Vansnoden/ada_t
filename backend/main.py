@@ -311,11 +311,13 @@ def run_project(project_id: int,
             questions = crud.get_project_questions(db, project_id)
             project.is_running = True
             db.commit()
-            for res in results:
-                bname = os.path.basename(res).split(".")[0]
-                for doc in documents:
-                    if bname + ".pdf" in doc:
-                        documents.remove(doc)
+            # the below code is to avoid rerunning abstraction of already abstracted file
+            # TODO: add a parameter to force extraction of already extracted files
+            # for res in results:
+            #     bname = os.path.basename(res).split(".")[0]
+            #     for doc in documents:
+            #         if bname + ".pdf" in doc:
+            #             documents.remove(doc)
             if run_exp(documents, questions):
                 project.is_running = False
                 db.commit()
