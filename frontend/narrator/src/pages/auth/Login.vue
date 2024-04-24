@@ -3,7 +3,7 @@
         <template v-slot:content>
             <v-container class="login-ctn">
                 <v-row class="mctn">
-                    <v-col cols="12" sm="12" md="3">
+                    <v-col cols="12" sm="6" xs="12" md="3">
                         <v-form @submit.prevent="login">
                             <v-card class="mcard">
                                 <v-card-title>

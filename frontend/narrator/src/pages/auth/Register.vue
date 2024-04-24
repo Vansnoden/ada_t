@@ -3,7 +3,7 @@
         <template v-slot:content>
             <v-container class="registration-ctn">
                 <v-row class="mctn">
-                    <v-col cols="12" sm="12" md="4">
+                    <v-col cols="12" sm="7" xs="12" md="4">
                         <v-form @submit.prevent="signup">
                             <v-card class="mcard">
                                 <v-card-title>

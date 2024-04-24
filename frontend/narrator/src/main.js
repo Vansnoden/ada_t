@@ -15,12 +15,14 @@ import AuthLayout from '@/pages/auth/partials/AuthLayout.vue'
 // Components
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
-import Projects from '@/pages/Projects.vue'
+import ProjectItem from '@/components/ProjectItem.vue'
+import Projects from '@/pages/projects/Projects.vue'
+import ProjectDetails from '@/pages/projects/ProjectDetails.vue'
+import DocDetails from '@/pages/projects/DocDetails.vue'
 import Login from '@/pages/auth/Login.vue'
 import Register from '@/pages/auth/Register.vue'
-import Account from '@/pages/Account.vue'
-import ProjectItem from '@/components/ProjectItem.vue'
-import ProjectDetails from '@/pages/ProjectDetails.vue'
+import Account from '@/pages/profile/Account.vue'
+import DashboardLayout from '@/layouts/DashboardLayout.vue'
 
 // Composables
 
@@ -37,6 +39,7 @@ const router = createRouter({
     routes: [
         { name: 'projects', path: '/projects', component: Projects},
         { name: 'project_details', path: '/projects/:id', component: ProjectDetails},
+        { name: 'doc_details', path: '/doc', component: DocDetails},
         { name: 'login', path: '/login', component: Login},
         { name: 'register', path: '/register', component: Register}
     ]
@@ -65,5 +68,7 @@ registerPlugins(app)
 
 app.component('AuthLayout', AuthLayout)
 app.component('Header', Header)
+app.component('Footer', Footer)
+app.component('DashboardLayout', DashboardLayout)
 
 app.mount('#app')
