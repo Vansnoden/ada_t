@@ -1,21 +1,30 @@
 <template>
     <div class="pdf-ctn">
         <p>PDF viewer </p>
-        <VuePDF :pdf="pdf"/>
+        <VuePdfEmbed annotation-layer text-layer
+            image-resources-path="https://unpkg.com/pdfjs-dist/web/images/" 
+            :source="{
+                cMapUrl: 'https://unpkg.com/pdfjs-dist/cmaps/',
+                url: doc,
+            }" />
     </div>
 </template>
 
 
 <script setup>
 
-import { VuePDF, usePDF } from '@tato30/vue-pdf'
-import '@tato30/vue-pdf/style.css'
+import VuePdfEmbed, { useVuePdfEmbed } from 'vue-pdf-embed'
+// essential styles
+import 'vue-pdf-embed/dist/style/index.css'
+// optional styles
+import 'vue-pdf-embed/dist/style/annotationLayer.css'
+import 'vue-pdf-embed/dist/style/textLayer.css'
 
-const { pdf } = usePDF("../assets/NLP-D-24-00048.pdf")
-// const { pdf } = usePDF("https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf")
-// console.log(`Document has ${pages} pages`)
-// console.log(`Document info: ${info}`)
-console.log(pdf)
+
+const { doc } = useVuePdfEmbed({
+  source: 'https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf',
+})
+
 
 </script>
 
@@ -26,6 +35,6 @@ console.log(pdf)
     height: 100%;
     min-height: 90vh;
     min-width: 400px;
-    background-color: grey;
+    background-color: lightgray;
 }
 </style>

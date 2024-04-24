@@ -42,5 +42,6 @@ const file_path = route.query.server_path
     height: 93vh;
     box-sizing: border-box;
     padding: 1em;
+    overflow-y: scroll!important;
 }
 </style>
