@@ -7,10 +7,16 @@
             <v-list-item link title="Help?"></v-list-item>
         </template>
         <template v-slot:content>
-            <div class="doc-ctn">
-                <p>Document details</p><br/>
-                {{ file_path }}
-            </div>
+            <v-container fluid class="doc-ctn">
+                <v-row>
+                    <v-col cols="12" md="6" xs="12">
+                        <PDFViewer></PDFViewer>
+                    </v-col>
+                    <v-col cols="12" md="6" xs="12">
+                        <JsonViewer></JsonViewer>
+                    </v-col>
+                </v-row>
+            </v-container>
             <Footer></Footer>
         </template>
     </DashboardLayout>
@@ -19,9 +25,12 @@
 
 <script setup>
 import DashboardLayout from '@/layouts/DashboardLayout.vue';
+import JsonViewer from '@/components/JsonViewer.vue';
 import { ref, computed } from 'vue';
 import { useRoute, useRouter } from "vue-router";
 import { BASE_URL } from "@/stores/contants.js";
+import PDFViewer from '@/components/PDFViewer.vue'
+
 
 const route = useRoute();
 const router = useRouter();

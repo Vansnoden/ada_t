@@ -2,6 +2,8 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
+import JsonEditorVue from 'json-editor-vue'
+import VuePdf from 'vue3-pdfjs'
 
 loadFonts()
 
@@ -11,6 +13,7 @@ import { registerPlugins } from '@/plugins'
 
 // Layouts
 import AuthLayout from '@/pages/auth/partials/AuthLayout.vue'
+import DashboardLayout from '@/layouts/DashboardLayout.vue'
 
 // Components
 import Header from '@/components/Header.vue'
@@ -22,7 +25,8 @@ import DocDetails from '@/pages/projects/DocDetails.vue'
 import Login from '@/pages/auth/Login.vue'
 import Register from '@/pages/auth/Register.vue'
 import Account from '@/pages/profile/Account.vue'
-import DashboardLayout from '@/layouts/DashboardLayout.vue'
+import JsonViewer from '@/components/JsonViewer.vue'
+import PDFViewer from '@/components/PDFViewer.vue'
 
 // Composables
 
@@ -63,6 +67,10 @@ const app = createApp(App)
 app.use(pinia)
 app.use(router)
 app.use(vuetify)
+app.use(JsonEditorVue, {
+// global config
+})
+app.use(VuePdf)
 
 registerPlugins(app)
 
