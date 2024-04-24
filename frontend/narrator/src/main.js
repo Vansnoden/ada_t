@@ -8,12 +8,16 @@ loadFonts()
 // Plugins
 import { registerPlugins } from '@/plugins'
 
+
+// Layouts
+import AuthLayout from '@/pages/auth/partials/AuthLayout.vue'
+
 // Components
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 import Projects from '@/pages/Projects.vue'
-import Login from '@/pages/Login.vue'
-import Register from '@/pages/Register.vue'
+import Login from '@/pages/auth/Login.vue'
+import Register from '@/pages/auth/Register.vue'
 import Account from '@/pages/Account.vue'
 import ProjectItem from '@/components/ProjectItem.vue'
 import ProjectDetails from '@/pages/ProjectDetails.vue'
@@ -58,5 +62,8 @@ app.use(router)
 app.use(vuetify)
 
 registerPlugins(app)
+
+app.component('AuthLayout', AuthLayout)
+app.component('Header', Header)
 
 app.mount('#app')

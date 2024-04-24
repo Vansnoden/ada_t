@@ -1,0 +1,22 @@
+{
+    "sample": [
+        {
+            "Title": " A Study of the IMRAD Format for Scientific Writing"
+        },
+        {
+            "embedding_time": [
+                6,
+                24
+            ]
+        },
+        {
+            "extraction_time": [
+                4,
+                59
+            ]
+        },
+        {
+            "pdf_id": "sample"
+        }
+    ]
+}
