@@ -9,11 +9,11 @@
         <template v-slot:content>
             <v-container fluid class="doc-ctn">
                 <v-row>
-                    <v-col cols="12" md="6" xs="12">
+                    <v-col cols="12" md="7" xs="12">
                         <PDFViewer></PDFViewer>
                     </v-col>
-                    <v-col cols="12" md="6" xs="12">
-                        <JsonViewer></JsonViewer>
+                    <v-col cols="12" md="5" xs="12">
+                        <JsonViewer class="sticky"></JsonViewer>
                     </v-col>
                 </v-row>
             </v-container>
@@ -43,5 +43,9 @@ const file_path = route.query.server_path
     box-sizing: border-box;
     padding: 1em;
     overflow-y: scroll!important;
+
+    .sticky{
+        position: sticky!important;
+    }
 }
 </style>

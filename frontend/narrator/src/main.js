@@ -3,7 +3,6 @@ import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
 import JsonEditorVue from 'json-editor-vue'
-import VuePdf from 'vue3-pdfjs'
 
 loadFonts()
 
@@ -70,7 +69,6 @@ app.use(vuetify)
 app.use(JsonEditorVue, {
 // global config
 })
-app.use(VuePdf)
 
 registerPlugins(app)
 
