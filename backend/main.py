@@ -423,3 +423,36 @@ def delete_project_question(question_id: int, user:Annotated[User, Depends(get_c
         return response
     else:
        raise HTTPException(status_code=403, detail="Unauthorized action")
+    
+
+@app.post("/questions/import/{project_id}")
+def import_project_questions(
+    project_id: int, 
+    user:Annotated[User, Depends(get_current_active_user)], 
+    files: List[UploadFile] = File(...),
+    db: Session = Depends(get_db)):
+    if user:
+        project = crud.get_single_project(project_id=project_id, db=db)
+        if project:
+            for file in files:
+                try:
+                    contents = file.file.read()
+                    qa_data = json.loads(contents)
+                    print(qa_data)
+                    for q_data in qa_data:
+                        crud.add_project_question(
+                            db, 
+                            label=q_data['label'], 
+                            answer_format=json.dumps(q_data['answer_format']), 
+                            project_id=project_id
+                        )
+                except Exception as e:
+                    print(e)
+                    return {"message": "There was an error uploading the file(s)"}
+                finally:
+                    file.file.close()
+            return {"message": f"Successfuly uploaded {[file.filename for file in files]}"}   
+        else:
+            raise HTTPException(status_code=404, detail="Project not found")
+    else:
+        raise HTTPException(status_code=403, detail="Unauthorized access")

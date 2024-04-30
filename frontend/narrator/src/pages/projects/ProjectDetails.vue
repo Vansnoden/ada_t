@@ -129,6 +129,25 @@
                                             <v-toolbar flat>
                                                 <v-toolbar-title></v-toolbar-title>
                                                 <v-spacer></v-spacer>
+                                                <v-dialog v-model="iqa_dialog" max-width="500px">
+                                                    <template v-slot:activator="{ props: activatorProps }">
+                                                        <v-btn size="small" class="default mr-1" color="primary"
+                                                            prepend-icon="mdi-arrow-up" v-bind="activatorProps">
+                                                            Import questionnaire
+                                                        </v-btn>
+                                                        <v-card prepend-icon="mdi-upload" title="New question">
+                                                            <v-card-text>
+                                                                <v-form @submit.prevent="closeImportQA">
+                                                                    <v-file-input required="true" name="files" @change="getJsonQA" show-size
+                                                                        counter multiple label="Upload your JSON questionnaire"
+                                                                        :rules="rules" accept="application/json">
+                                                                    </v-file-input>
+                                                                    <v-btn color="blue-darken-1" variant="text" type="submit">Import</v-btn>
+                                                                </v-form>
+                                                            </v-card-text>
+                                                        </v-card>
+                                                    </template>
+                                                </v-dialog>
                                                 <v-dialog v-model="cqa_dialog" max-width="500px">
                                                     <template v-slot:activator="{ props: activatorProps }">
                                                         <v-btn size="small" class="default mr-1" color="primary"
@@ -318,10 +337,13 @@ const eqa_dialog = ref('eqa_dialog');
 eqa_dialog.value = false;
 const cqa_dialog = ref('cqa_dialog');
 cqa_dialog.value = false;
+const iqa_dialog = ref("iqa_dialog");
+iqa_dialog.value = false;
 const dd_dialog = ref('dd_dialog');
 dd_dialog.value = false;
 const editedItem = ref('editedItem');
 const files = ref(); //files to be uploaded
+const questionnaire = ref(); //json questionnaire to be uploaded
 const formAddQA = ref();
 formAddQA.value = {} //object to keep form values when creating question
 const running = ref();
@@ -398,6 +420,9 @@ const closeEditQA = () => {
     eqa_dialog.value = false;
 }
 
+const closeImportQA = () => {
+    iqa_dialog.value = false;
+}
 
 const closeCreateQA = () => {
     let label = formAddQA.value.label;
@@ -459,6 +484,11 @@ const createQA = (item) => {
 }
 
 
+const importQA = (item) => {
+    iqa_dialog.value = false;
+}
+
+
 const logout = () => {
     userStore.logOut().then(() => {
         router.push('/login');
@@ -480,6 +510,15 @@ const getFileInputValue = (event) => {
     console.log(mfiles);
     //assign it to our reactive reference value 
     files.value = mfiles;
+}
+
+const getJsonQA = (event) => {
+    //get the file input value
+    const mfiles = event.target.files;
+    console.log("M-files");
+    console.log(mfiles);
+    //assign it to our reactive reference value 
+    questionnaire.value = mfiles;
 }
 
 const uploadFiles = (id) => {
