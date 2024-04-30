@@ -135,18 +135,18 @@
                                                             prepend-icon="mdi-arrow-up" v-bind="activatorProps">
                                                             Import questionnaire
                                                         </v-btn>
-                                                        <v-card prepend-icon="mdi-upload" title="New question">
-                                                            <v-card-text>
-                                                                <v-form @submit.prevent="closeImportQA">
-                                                                    <v-file-input required="true" name="files" @change="getJsonQA" show-size
-                                                                        counter multiple label="Upload your JSON questionnaire"
-                                                                        :rules="rules" accept="application/json">
-                                                                    </v-file-input>
-                                                                    <v-btn color="blue-darken-1" variant="text" type="submit">Import</v-btn>
-                                                                </v-form>
-                                                            </v-card-text>
-                                                        </v-card>
                                                     </template>
+                                                    <v-card prepend-icon="mdi-upload" title="Import Questions">
+                                                        <v-card-text>
+                                                            <v-form @submit.prevent="closeImportQA">
+                                                                <v-file-input required="true" name="files" @change="getJsonQA" show-size
+                                                                    counter multiple label="Upload your JSON questionnaire"
+                                                                    :rules="rules" accept="application/json">
+                                                                </v-file-input>
+                                                                <v-btn color="blue-darken-1" variant="text" type="submit">Import</v-btn>
+                                                            </v-form>
+                                                        </v-card-text>
+                                                    </v-card>
                                                 </v-dialog>
                                                 <v-dialog v-model="cqa_dialog" max-width="500px">
                                                     <template v-slot:activator="{ props: activatorProps }">
@@ -422,6 +422,30 @@ const closeEditQA = () => {
 
 const closeImportQA = () => {
     iqa_dialog.value = false;
+    
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", token);
+
+    const formdata = new FormData();
+
+    for (let i = 0; i < questionnaire.value.length; i++) {
+        formdata.append("files", questionnaire.value[i], questionnaire.value[i].name);
+    }
+
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: formdata,
+        redirect: "follow"
+    };
+
+    fetch(BASE_URL + "/questions/import/" + route.params.id, requestOptions)
+        .then((response) => response.text())
+        .then((result) => {
+            console.log(result);
+            initializeQA();
+        })
+        .catch((error) => console.error(error));
 }
 
 const closeCreateQA = () => {
