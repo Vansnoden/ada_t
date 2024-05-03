@@ -14,7 +14,9 @@
                         ></PDFViewer>
                     </v-col>
                     <v-col cols="12" md="5" xs="12">
-                        <JsonViewer class="sticky" v-model="model_answers.data" :data="model_answers.data"></JsonViewer>
+                        <div class="sticky">
+                            <JsonViewer v-model="model_answers.data" :data="model_answers.data"></JsonViewer>
+                        </div>
                     </v-col>
                 </v-row>
             </v-container>
@@ -63,7 +65,9 @@ onMounted(()=>{
     overflow-y: scroll!important;
 
     .sticky{
-        position: sticky!important;
+        position: -webkit-sticky; /* Safari */
+        position: sticky;
+        top: 0;
     }
 }
 </style>
