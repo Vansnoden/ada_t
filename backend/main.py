@@ -381,7 +381,7 @@ def project_extraction_results(project_id: int,
         raise HTTPException(status_code=403, detail="Unauthorized access")
 
 
-@app.post("/download")
+@app.get("/download")
 def main(file_path:str):
     fpath = Path(file_path)
     return FileResponse(path=fpath, filename=os.path.basename(fpath), media_type='application/octet-stream')

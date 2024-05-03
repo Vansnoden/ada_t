@@ -10,7 +10,8 @@
             <v-container fluid class="doc-ctn">
                 <v-row>
                     <v-col cols="12" md="7" xs="12">
-                        <PDFViewer></PDFViewer>
+                        <PDFViewer :url="url"
+                        ></PDFViewer>
                     </v-col>
                     <v-col cols="12" md="5" xs="12">
                         <JsonViewer class="sticky"></JsonViewer>
@@ -29,12 +30,14 @@ import JsonViewer from '@/components/JsonViewer.vue';
 import { ref, computed } from 'vue';
 import { useRoute, useRouter } from "vue-router";
 import { BASE_URL } from "@/stores/contants.js";
-import PDFViewer from '@/components/PDFViewer.vue'
+import PDFViewer from '@/components/PDFViewer.vue';
 
 
 const route = useRoute();
 const router = useRouter();
-const file_path = route.query.server_path
+const file_path = route.query.server_path;
+const url = BASE_URL + "/download?file_path="+file_path;
+
 </script>
 
 <style lang="scss">

@@ -21,7 +21,10 @@ import '@/assets/pdfjs-4.2.67-dist/build/pdf.mjs';
 
 // If absolute URL from the remote server is provided, configure the CORS
 // header on that server.
-const url = 'https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf';
+const props = defineProps(['url']);
+
+const url = props.url;
+//'https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf';
 
 // Loaded via <script> tag, create shortcut to access PDF.js exports.
 const { pdfjsLib } = globalThis;
