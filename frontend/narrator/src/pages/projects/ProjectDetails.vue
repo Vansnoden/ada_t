@@ -108,7 +108,7 @@
                                 <v-window-item value="1">
                                     <v-data-table :headers="doc_headers" :items="docs" :sort-by="[{ key: 'name', order: 'asc' }]">
                                         <template v-slot:item.actions="{ item }">
-                                            <v-btn size="small" color="info" prepend-icon="mdi-eye" style="margin-right:1em;" @click="view_doc(item.server_path)">
+                                            <v-btn size="small" color="info" prepend-icon="mdi-eye" style="margin-right:1em;" @click="view_doc(item.server_path, item.results_path)">
                                                 View
                                             </v-btn>
                                             <v-btn size="small" color="red" prepend-icon="mdi-delete" v-bind="activatorProps"
@@ -579,8 +579,8 @@ const uploadFiles = (id) => {
 }
 
 
-const view_doc = (server_path)=>{
-    router.push('/doc/?server_path='+server_path);
+const view_doc = (server_path, results_path)=>{
+    router.push('/doc/?server_path='+server_path+'&results_path='+results_path);
 }
 
 

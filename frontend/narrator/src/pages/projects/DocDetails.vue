@@ -14,7 +14,7 @@
                         ></PDFViewer>
                     </v-col>
                     <v-col cols="12" md="5" xs="12">
-                        <JsonViewer class="sticky"></JsonViewer>
+                        <JsonViewer class="sticky" v-model="model_answers.data" :data="model_answers.data"></JsonViewer>
                     </v-col>
                 </v-row>
             </v-container>
@@ -27,7 +27,7 @@
 <script setup>
 import DashboardLayout from '@/layouts/DashboardLayout.vue';
 import JsonViewer from '@/components/JsonViewer.vue';
-import { ref, computed } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from "vue-router";
 import { BASE_URL } from "@/stores/contants.js";
 import PDFViewer from '@/components/PDFViewer.vue';
@@ -37,6 +37,21 @@ const route = useRoute();
 const router = useRouter();
 const file_path = route.query.server_path;
 const url = BASE_URL + "/download?file_path="+file_path;
+const model_answers = ref({});
+
+const refreshResults = () => {
+    fetch(BASE_URL + "/download?file_path="+ route.query.results_path)
+    .then(response => response.json())
+    .then((results)=>{
+        model_answers.value.data = results;
+        console.log(results)
+        console.log(model_answers.value.data);
+    });
+}
+
+onMounted(()=>{
+    refreshResults();
+})
 
 </script>
 

@@ -274,9 +274,11 @@ def get_project_files(
                 for filename in filenames:
                     if filename.endswith('.pdf'): 
                         file_path = os.sep.join([dirpath, filename])
+                        results_path = os.path.join(project.extraction_results_location, filename.split(".")[0]+".json")
                         file_obj = {
                             "name": filename,
-                            "server_path": file_path.replace("\\","/")
+                            "server_path": file_path.replace("\\","/"),
+                            "results_path": results_path if os.path.exists(results_path) else "",
                         }
                         files.append(file_obj)
             return JSONResponse(content=jsonable_encoder(files))
