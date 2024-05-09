@@ -274,9 +274,11 @@ def get_project_files(
                 for filename in filenames:
                     if filename.endswith('.pdf'): 
                         file_path = os.sep.join([dirpath, filename])
+                        results_path = os.path.join(project.extraction_results_location, filename.split(".")[0]+".json")
                         file_obj = {
                             "name": filename,
-                            "server_path": file_path.replace("\\","/")
+                            "server_path": file_path.replace("\\","/"),
+                            "results_path": results_path if os.path.exists(results_path) else "",
                         }
                         files.append(file_obj)
             return JSONResponse(content=jsonable_encoder(files))
@@ -381,7 +383,7 @@ def project_extraction_results(project_id: int,
         raise HTTPException(status_code=403, detail="Unauthorized access")
 
 
-@app.post("/download")
+@app.get("/download")
 def main(file_path:str):
     fpath = Path(file_path)
     return FileResponse(path=fpath, filename=os.path.basename(fpath), media_type='application/octet-stream')
@@ -423,3 +425,69 @@ def delete_project_question(question_id: int, user:Annotated[User, Depends(get_c
         return response
     else:
        raise HTTPException(status_code=403, detail="Unauthorized action")
+    
+
+@app.post("/questions/import/{project_id}")
+def import_project_questions(
+    project_id: int, 
+    user:Annotated[User, Depends(get_current_active_user)], 
+    files: List[UploadFile] = File(...),
+    db: Session = Depends(get_db)):
+    if user:
+        project = crud.get_single_project(project_id=project_id, db=db)
+        if project:
+            for file in files:
+                try:
+                    contents = file.file.read()
+                    qa_data = json.loads(contents)
+                    print(qa_data)
+                    for q_data in qa_data:
+                        crud.add_project_question(
+                            db, 
+                            label=q_data['label'], 
+                            answer_format=json.dumps(q_data['answer_format']), 
+                            project_id=project_id
+                        )
+                except Exception as e:
+                    print(e)
+                    return {"message": "There was an error uploading the file(s)"}
+                finally:
+                    file.file.close()
+            return {"message": f"Successfuly uploaded {[file.filename for file in files]}"}   
+        else:
+            raise HTTPException(status_code=404, detail="Project not found")
+    else:
+        raise HTTPException(status_code=403, detail="Unauthorized access")
+
+
+@app.post("/evaluation/create")
+def create_evaluation(
+    user:Annotated[User, Depends(get_current_active_user)], 
+    evaluation: schemas.EvaluationBase,
+    db: Session = Depends(get_db)):
+    if user:
+        if evaluation.document_location and evaluation.qid:
+            return crud.add_evaluation(
+                db, 
+                qid=evaluation.qid, 
+                document_location=evaluation.document_location, 
+                evaluation=evaluation.evaluation
+                )
+        else:
+            raise HTTPException(status_code=400, detail="Missing required fields")
+    else:
+        raise HTTPException(status_code=403, detail="Unauthorized access")
+    
+
+
+@app.get("/evaluation/doc")
+def get_doc_evaluations(doc_path: str, user:Annotated[User, Depends(get_current_active_user)], 
+    db: Session = Depends(get_db)):
+    if user:
+        if doc_path:
+            evaluations = crud.get_doc_evaluations(db, doc_path)
+            return evaluations
+        else:
+            raise HTTPException(status_code=400, detail="Missing required parameter: doc_path")
+    else:
+        raise HTTPException(status_code=403, detail="Unauthorized access")

@@ -86,12 +86,12 @@ def inline_text(file_path):
         if line.lower().strip().startswith("references") or line.lower().strip().startswith("acknowledgement"):
             break
         nline = line
-        # nline = line.replace("-\n", "")
-        # nline = nline.replace("\n", " ")
-        # nline = nline.replace("| ", "")
-        # nline = nline.replace("\'", "")
-        # nline = nline.replace("  ", " ")
-        # nline = nline.replace("\t", " ")
+        nline = line.replace("-\n", "")
+        nline = nline.replace("\n", " ")
+        nline = nline.replace("| ", "")
+        nline = nline.replace("\'", "")
+        nline = nline.replace("  ", " ")
+        nline = nline.replace("\t", " ")
         if nline.lower().strip().startswith("introduction"):
             nline = "MAIN BODY: \n" + nline
         res += nline
@@ -172,7 +172,7 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
     print(f"#### RETRIEVER AND VECTORSTORE INITIALIZED")
     # os.remove(f"{basename}.txt")
     first_stop = datetime.datetime.now()
-    max_loop = 3
+    max_loop = 50
     # 2. extract informations based on questionnaire
     for question in tqdm(questionnaire, position=0, leave=True):
         res_format_ok = False

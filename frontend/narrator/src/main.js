@@ -2,21 +2,31 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
+import JsonEditorVue from 'json-editor-vue'
 
 loadFonts()
 
 // Plugins
 import { registerPlugins } from '@/plugins'
 
+
+// Layouts
+import AuthLayout from '@/pages/auth/partials/AuthLayout.vue'
+import DashboardLayout from '@/layouts/DashboardLayout.vue'
+
 // Components
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
-import Projects from '@/pages/Projects.vue'
-import Login from '@/pages/Login.vue'
-import Register from '@/pages/Register.vue'
-import Account from '@/pages/Account.vue'
 import ProjectItem from '@/components/ProjectItem.vue'
-import ProjectDetails from '@/pages/ProjectDetails.vue'
+import Projects from '@/pages/projects/Projects.vue'
+import ProjectDetails from '@/pages/projects/ProjectDetails.vue'
+import DocDetails from '@/pages/projects/DocDetails.vue'
+import Login from '@/pages/auth/Login.vue'
+import Register from '@/pages/auth/Register.vue'
+import Account from '@/pages/profile/Account.vue'
+import JsonViewer from '@/components/JsonViewer.vue'
+import PDFViewer from '@/components/PDFViewer.vue'
+import ExtractionEvaluator from '@/components/ExtractionEvaluator.vue'
 
 // Composables
 
@@ -33,6 +43,7 @@ const router = createRouter({
     routes: [
         { name: 'projects', path: '/projects', component: Projects},
         { name: 'project_details', path: '/projects/:id', component: ProjectDetails},
+        { name: 'doc_details', path: '/doc', component: DocDetails},
         { name: 'login', path: '/login', component: Login},
         { name: 'register', path: '/register', component: Register}
     ]
@@ -56,7 +67,15 @@ const app = createApp(App)
 app.use(pinia)
 app.use(router)
 app.use(vuetify)
+app.use(JsonEditorVue, {
+// global config
+})
 
 registerPlugins(app)
+
+app.component('AuthLayout', AuthLayout)
+app.component('Header', Header)
+app.component('Footer', Footer)
+app.component('DashboardLayout', DashboardLayout)
 
 app.mount('#app')

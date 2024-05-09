@@ -16,7 +16,7 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 from database.database import Base
-from database.models import Project, Question, User
+from database.models import Project, Question, User, Evaluation
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,

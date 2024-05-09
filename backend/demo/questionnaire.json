@@ -1,0 +1,39 @@
+[
+    {
+        "label": "what is the title of this study ?",
+        "answer_format": {
+            "title": "string"
+        }
+    },
+    {
+        "label": "who are the authors of this study ?",
+        "answer_format": [
+            {
+                "name": "string"
+            }
+        ]
+    },
+    {
+        "label": "in what year was the study published ?",
+        "answer_format": {
+            "publish_year": "string"
+        }
+    },
+    {
+        "label": "what vector species are studied in this study ?",
+        "answer_format": [
+            {
+                "specie_name": "string"
+            }
+        ]
+    },
+    {
+        "label": "in what country and site or location was the study carried out?",
+        "answer_format": [
+            {
+                "country_name": "string",
+                "location_name": "string"
+            }
+        ]
+    }
+]

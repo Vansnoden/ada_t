@@ -59,3 +59,16 @@ class Question(QuestionBase):
         from_attributes = True
 
 
+class EvaluationBase(BaseModel):
+    qid: str
+    document_location: str
+    evaluation: int
+    
+
+class Evaluation(EvaluationBase):
+    id: int
+    is_active: bool
+    create_date: datetime
+    
+    class Config:
+        from_attributes = True
