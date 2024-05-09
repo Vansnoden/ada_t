@@ -4,7 +4,7 @@
             <v-card-title>
                 <div class="header">
                     <span>Evaluation</span>
-                    <v-btn prepend-icon="mdi-content-save-outline" text="save" color="primary"/>
+                    <v-btn prepend-icon="mdi-content-save-outline" text="save" color="primary" @click="saveEvaluation"/>
                 </div>
             </v-card-title>
             <v-card-text>
@@ -14,10 +14,12 @@
                             {{ question.label }}
                         </td>
                         <td class="put-line">
-                            <v-btn variant="outline" icon="mdi-check" color="green"></v-btn>
+                            <v-btn v-bind:variant="eval_value[question.id.toString()] ? 'elevated' : 'outlined'" 
+                            icon="mdi-check" @click="validateAns(this, question.id)" color="green"></v-btn>
                         </td>
                         <td>
-                            <v-btn variant="outline" icon="mdi-close" color="red"></v-btn>
+                            <v-btn v-bind:variant="!eval_value[question.id.toString()] ? 'elevated' : 'outlined'"
+                            icon="mdi-close" @click="invalidateAns(question.id)" color="red"></v-btn>
                         </td>
                     </tr>
                 </table>
@@ -27,9 +29,30 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 const props = defineProps(['path', 'questions']);
 // questions is a json list
 // path is just a string
+const eval_value = ref({})
+const button_models = ref({})
+
+const validateAns = (el, qid) => {
+    eval_value.value[""+qid] = true;
+    console.log(eval_value.value);
+}
+
+const invalidateAns = (qid) => {
+    eval_value.value[""+qid] = false;
+    console.log(eval_value.value);
+}
+
+const saveEvaluation = () => {
+    if(confirm("Are you sure?")){
+        console.log("doing stuff ...");
+        console.log(props.path);
+    }
+}
+
 
 </script>
 
