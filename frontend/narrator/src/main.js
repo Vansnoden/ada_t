@@ -26,6 +26,7 @@ import Register from '@/pages/auth/Register.vue'
 import Account from '@/pages/profile/Account.vue'
 import JsonViewer from '@/components/JsonViewer.vue'
 import PDFViewer from '@/components/PDFViewer.vue'
+import ExtractionEvaluator from '@/components/ExtractionEvaluator.vue'
 
 // Composables
 
