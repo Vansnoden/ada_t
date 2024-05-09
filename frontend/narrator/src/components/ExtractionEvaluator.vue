@@ -30,11 +30,16 @@
 
 <script setup>
 import { ref } from 'vue';
+import { BASE_URL } from "@/stores/contants.js";
+import { useUserStore } from "@/stores/UserStore";
+
 const props = defineProps(['path', 'questions']);
 // questions is a json list
 // path is just a string
+const userStore = useUserStore();
+const token = userStore.getToken;
 const eval_value = ref({})
-const button_models = ref({})
+
 
 const validateAns = (el, qid) => {
     eval_value.value[""+qid] = true;
@@ -50,6 +55,30 @@ const saveEvaluation = () => {
     if(confirm("Are you sure?")){
         console.log("doing stuff ...");
         console.log(props.path);
+
+        for (let [qid, value] of Object.entries(eval_value.value)) {
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Authorization", token);
+
+            const raw = JSON.stringify({
+                "qid": qid,
+                "document_location": props.path,
+                "evaluation": value
+            });
+
+            const requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: raw,
+                redirect: "follow"
+            };
+
+            fetch( BASE_URL + "/evaluation/create", requestOptions)
+            .then((response) => response.text())
+            .then((result) => console.log(result))
+            .catch((error) => console.error(error));  
+        }
     }
 }
 
