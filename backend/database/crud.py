@@ -136,3 +136,31 @@ def delete_question(db: Session, id: int):
         db.commit()
         return res
     return 0
+
+
+def add_evaluation(db: Session, qid: int, document_location:str, evaluation:int):
+    # question = db.query(models.Question).filter(models.Question.id == id).first()
+    # if question:
+    db_eval = models.Evaluation(
+            qid=qid,
+            document_location=document_location,
+            evaluation=evaluation
+        )
+    db.add(db_eval)
+    db.commit()
+    db.refresh(db_eval)
+    return db_eval
+
+
+def get_evaluations(db: Session):
+    return db.query(models.Evaluation).all()
+
+
+def get_doc_evaluations(db: Session, doc_path: str):
+    return db.query(models.Evaluation).filter(models.Evaluation.document_location == doc_path).all()
+
+
+def delete_evaluation(db:Session, id: int):
+    res = db.query(models.Evaluation).filter(models.Evaluation.id == id).delete()
+    db.commit()
+    return res

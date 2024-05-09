@@ -458,3 +458,36 @@ def import_project_questions(
             raise HTTPException(status_code=404, detail="Project not found")
     else:
         raise HTTPException(status_code=403, detail="Unauthorized access")
+
+
+@app.post("/evaluation/create")
+def create_evaluation(
+    user:Annotated[User, Depends(get_current_active_user)], 
+    evaluation: schemas.EvaluationBase,
+    db: Session = Depends(get_db)):
+    if user:
+        if evaluation.document_location and evaluation.qid:
+            return crud.add_evaluation(
+                db, 
+                qid=evaluation.qid, 
+                document_location=evaluation.document_location, 
+                evaluation=evaluation.evaluation
+                )
+        else:
+            raise HTTPException(status_code=400, detail="Missing required fields")
+    else:
+        raise HTTPException(status_code=403, detail="Unauthorized access")
+    
+
+
+@app.get("/evaluation/doc")
+def get_doc_evaluations(doc_path: str, user:Annotated[User, Depends(get_current_active_user)], 
+    db: Session = Depends(get_db)):
+    if user:
+        if doc_path:
+            evaluations = crud.get_doc_evaluations(db, doc_path)
+            return evaluations
+        else:
+            raise HTTPException(status_code=400, detail="Missing required parameter: doc_path")
+    else:
+        raise HTTPException(status_code=403, detail="Unauthorized access")

@@ -46,8 +46,6 @@ const refreshResults = () => {
     .then(response => response.json())
     .then((results)=>{
         model_answers.value.data = results;
-        console.log(results)
-        console.log(model_answers.value.data);
     });
 }
 

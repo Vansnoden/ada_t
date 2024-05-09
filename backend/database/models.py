@@ -44,3 +44,12 @@ class Question(Base):
     is_active = Column(Boolean, default=True, nullable=False)
     anwser_grammar = Column(String, default=".", nullable=True)
     
+
+class Evaluation(Base):
+    __tablename__ = 'evaluations'
+    id = Column(Integer, primary_key=True)
+    document_location = Column(String, nullable=False, default='.')
+    qid = Column(Integer, ForeignKey("questions.id"), nullable=False)
+    evaluation = Column(Boolean, nullable=False, default=False)
+    create_date = Column(DateTime, default=datetime.datetime.now(), nullable=False)
+    is_active = Column(Boolean, default=True, nullable=False)
