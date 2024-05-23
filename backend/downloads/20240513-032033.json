@@ -1,0 +1,3093 @@
+{
+    "33": [
+        {
+            "title": "HEADER:"
+        },
+        {
+            "publish_year": "2022."
+        },
+        {
+            "embedding_time": [
+                0,
+                39
+            ]
+        },
+        {
+            "extraction_time": [
+                7,
+                5
+            ]
+        },
+        {
+            "pdf_id": "33"
+        }
+    ],
+    "54": [
+        {
+            "title": "SGHAIER ET AL. Molecular Characterization of a Novel Bovine Viral Diarrhea Virus Strain from Tunisia"
+        },
+        [
+            {
+                "name": "Ghailene ,"
+            }
+        ],
+        {
+            "publish_year": "2007"
+        },
+        [
+            {
+                "specie_name": "BTV"
+            },
+            {
+                "specie_name": "BTV-3"
+            },
+            {
+                "specie_name": "BTV-3e"
+            },
+            {
+                "specie_name": "BTV-3w"
+            },
+            {
+                "specie_name": "BTV-4"
+            },
+            {
+                "specie_name": "BTV-8"
+            },
+            {
+                "specie_name": "BTV-16"
+            },
+            {
+                "specie_name": "BTV24"
+            }
+        ],
+        {
+            "embedding_time": [
+                13,
+                39
+            ]
+        },
+        {
+            "extraction_time": [
+                47,
+                34
+            ]
+        },
+        {
+            "pdf_id": "54"
+        }
+    ],
+    "26": [
+        {
+            "title": " Combined LSDV-BTV4 Vaccine: A Promising Tool for Control of Two Major Bovine Diseases"
+        },
+        {
+            "publish_year": ">2020"
+        },
+        [
+            {
+                "specie_name": " virus"
+            }
+        ],
+        {
+            "embedding_time": [
+                20,
+                37
+            ]
+        },
+        {
+            "extraction_time": [
+                14,
+                36
+            ]
+        },
+        {
+            "pdf_id": "26"
+        }
+    ],
+    "58": [
+        {
+            "title": " Vector-borne diseases in sub-Saharan Africa: a complex challenge"
+        },
+        [
+            {
+                "name": " Lucy Tusting"
+            },
+            {
+                "name": " Samir Bhatt"
+            },
+            {
+                "name": " Ebrima Jatta"
+            },
+            {
+                "name": " Charles Mbogo"
+            }
+        ],
+        {
+            "publish_year": ">2015</publish_year>"
+        },
+        [
+            {
+                "specie_name": "Culex"
+            },
+            {
+                "specie_name": "Triatoma"
+            },
+            {
+                "specie_name": "Rhodnius"
+            },
+            {
+                "specie_name": "Trypanosoma"
+            },
+            {
+                "specie_name": "Indian vector"
+            },
+            {
+                "specie_name": "Aedes"
+            }
+        ],
+        {
+            "embedding_time": [
+                5,
+                40
+            ]
+        },
+        {
+            "extraction_time": [
+                16,
+                8
+            ]
+        },
+        {
+            "pdf_id": "58"
+        }
+    ],
+    "25": [
+        {
+            "title": "Creative Commons License FIGURE 3 The number of months a year that locations fall within the predicted suitable range (probability of ST\u00f0\u00de>0\u22650:975) for the transmission of Plasmodium falciparum by (a) Anopheles stephensi and (b) Anopheles gambiae mosquitoes in Africa, and for the transmission of (c) P. falciparum and (d) Plasmodium vivax byA. stephensi mosquitoes in Asia."
+        },
+        [
+            {
+                "name": "Leah R. Johnson"
+            }
+        ],
+        {
+            "publish_year": "2022"
+        },
+        [
+            {
+                "specie_name": " A. gambiae"
+            }
+        ],
+        {
+            "embedding_time": [
+                31,
+                51
+            ]
+        },
+        {
+            "extraction_time": [
+                22,
+                42
+            ]
+        },
+        {
+            "pdf_id": "25"
+        }
+    ],
+    "42": [
+        {
+            "title": " Michael et al. BMC Medicine (2017) 15:176 Page 1 of 23\nHeadER: Mass drug administration for Plasmodium falciparum malaria control in sub-Saharan Africa: a systematic review and meta-analysis"
+        },
+        [
+            {
+                "name": " Michael"
+            },
+            {
+                "name": " D. Liu"
+            },
+            {
+                "name": " M. F. P. G. R. M. van der Stappen"
+            },
+            {
+                "name": " J. M. B. B. K. van der Meeren"
+            },
+            {
+                "name": " A. M. J. R. van der Linden"
+            },
+            {
+                "name": " J. J. M. van der Meer"
+            }
+        ],
+        {
+            "publish_year": ">2017"
+        },
+        {
+            "embedding_time": [
+                15,
+                12
+            ]
+        },
+        {
+            "extraction_time": [
+                46,
+                3
+            ]
+        },
+        {
+            "pdf_id": "42"
+        }
+    ],
+    "12": [
+        {
+            "title": " Land temperature surface completion method steps. (A) Remote-sensing measurements of land temperature contain invalid and/or missing pixels (shown in white). The measurements shown here are from the MYD 11A1v005 data set [78]. In order to estimate the land temperate at these missing pixels, the algorithm first calculates the land temperature average (B) and standard deviation (C), for each pixel, for that day of year .A t each pixel, the temporal Kriging algorithm then produce a Kriging guesses (D) and a Kriging error (E). Combined with the average of the valid landtemperature pixels for that day, a final land temperature surface is constructed"
+        },
+        {
+            "publish_year": "2002"
+        },
+        [
+            {
+                "specie_name": "vector species"
+            },
+            {
+                "specie_name": "vector species"
+            },
+            {
+                "specie_name": "vector species"
+            },
+            {
+                "specie_name": "vector species"
+            }
+        ],
+        {
+            "embedding_time": [
+                29,
+                43
+            ]
+        },
+        {
+            "extraction_time": [
+                80,
+                21
+            ]
+        },
+        {
+            "pdf_id": "12"
+        }
+    ],
+    "43": [
+        {
+            "title": " Michael et al. BMC Medicine (2017) 15:176"
+        },
+        {
+            "publish_year": " 2017"
+        },
+        {
+            "embedding_time": [
+                15,
+                18
+            ]
+        },
+        {
+            "extraction_time": [
+                307,
+                44
+            ]
+        },
+        {
+            "pdf_id": "43"
+        }
+    ],
+    "48": [
+        {
+            "title": "Determinants of intestinal parasite diversity in brown hyaenas, spotted hyenas, and black-backed jackals from southern Africa"
+        },
+        {
+            "publish_year": "2021"
+        },
+        [
+            {
+                "specie_name": "Anaplasmataceae"
+            },
+            {
+                "specie_name": "Rickettsia spp."
+            },
+            {
+                "specie_name": "piroplasms"
+            },
+            {
+                "specie_name": "Hepatozoidae"
+            },
+            {
+                "specie_name": "filarioids"
+            }
+        ],
+        {
+            "embedding_time": [
+                37,
+                34
+            ]
+        },
+        {
+            "extraction_time": [
+                19,
+                26
+            ]
+        },
+        {
+            "pdf_id": "48"
+        }
+    ],
+    "52": [
+        {
+            "title": "Nurturing Emerging African Researchers: A Review of Prominent Funding Mechanisms and Impactful Initiatives in Low and Middle-Income Countries"
+        },
+        [
+            {
+                "name": ">Obame-Nkoghe"
+            }
+        ],
+        {
+            "publish_year": ">2024"
+        },
+        [
+            {
+                "specie_name": ">Sandfly vector"
+            },
+            {
+                "specie_name": ">Mosquito vector"
+            },
+            {
+                "specie_name": ">Ticks vector"
+            }
+        ],
+        {
+            "embedding_time": [
+                19,
+                22
+            ]
+        },
+        {
+            "extraction_time": [
+                21,
+                2
+            ]
+        },
+        {
+            "pdf_id": "52"
+        }
+    ],
+    "39": [
+        {
+            "title": " Vector-borne pathogens in owned dogs in Ibadan, Nigeria: a cross-sectional study"
+        },
+        {
+            "publish_year": "2017"
+        },
+        [
+            {
+                "specie_name": "Piroplasmida"
+            },
+            {
+                "specie_name": "Trypanasomatidae"
+            },
+            {
+                "specie_name": "Filarioidea"
+            },
+            {
+                "specie_name": "Anaplasmataceae"
+            },
+            {
+                "specie_name": "Rickettsia"
+            },
+            {
+                "specie_name": "Bartonella"
+            },
+            {
+                "specie_name": "Borrelia"
+            },
+            {
+                "specie_name": "Hemotropic Mycoplasma"
+            }
+        ],
+        {
+            "embedding_time": [
+                14,
+                47
+            ]
+        },
+        {
+            "extraction_time": [
+                17,
+                44
+            ]
+        },
+        {
+            "pdf_id": "39"
+        }
+    ],
+    "53": [
+        {
+            "title": "'We Believe This Model Can Be Used As An Epidemiological Tool In Planning Control And Surveillance Against Diseases Nationally Or Internationally'.'"
+        },
+        [
+            {
+                "name": "A.A. Drame"
+            }
+        ],
+        {
+            "publish_year": "2022"
+        },
+        [
+            {
+                "specie_name": ">SARS-CoV-2"
+            },
+            {
+                "specie_name": ">African swine fever virus"
+            },
+            {
+                "specie_name": ">Rabies virus"
+            },
+            {
+                "specie_name": ">Avian influenza virus"
+            },
+            {
+                "specie_name": ">Foot-and-mouth disease virus"
+            },
+            {
+                "specie_name": ">Rift Valley fever virus"
+            },
+            {
+                "specie_name": ">Lassa fever virus"
+            },
+            {
+                "specie_name": ">Ebola virus"
+            },
+            {
+                "specie_name": ">Marburg virus"
+            },
+            {
+                "specie_name": ">Measles virus"
+            },
+            {
+                "specie_name": ">HIV"
+            },
+            {
+                "specie_name": ">TB"
+            },
+            {
+                "specie_name": ">Dengue virus"
+            },
+            {
+                "specie_name": ">Yellow fever virus"
+            },
+            {
+                "specie_name": ">Chikungunya virus"
+            },
+            {
+                "specie_name": ">Zika virus"
+            }
+        ],
+        [
+            {
+                "country_name": " Senegal",
+                "location_name": " Dakar"
+            },
+            {
+                "country_name": " Burkina Faso",
+                "location_name": " Ouagadougou"
+            },
+            {
+                "country_name": " Niger",
+                "location_name": " Niamey"
+            },
+            {
+                "country_name": " Nigeria",
+                "location_name": " Abuja"
+            },
+            {
+                "country_name": " Ethiopia",
+                "location_name": " Addis Ababa"
+            },
+            {
+                "country_name": " Sudan",
+                "location_name": " Khartoum"
+            },
+            {
+                "country_name": " Somalia",
+                "location_name": " Mogadishu"
+            },
+            {
+                "country_name": " South Africa",
+                "location_name": " Pretoria"
+            },
+            {
+                "country_name": " Zimbabwe",
+                "location_name": " Harare"
+            },
+            {
+                "country_name": " Madagascar",
+                "location_name": " Antananarivo"
+            },
+            {
+                "country_name": " Malawi",
+                "location_name": " Lilongwe"
+            }
+        ],
+        {
+            "embedding_time": [
+                12,
+                9
+            ]
+        },
+        {
+            "extraction_time": [
+                23,
+                53
+            ]
+        },
+        {
+            "pdf_id": "53"
+        }
+    ],
+    "23": [
+        {
+            "title": "Ecological Characteristics of Plague in East Africa and Predictive Modeling of Plague Cases in Arua and Zombo Districts of Uganda"
+        },
+        {
+            "publish_year": "2002"
+        },
+        [
+            {
+                "specie_name": "States Agency for International Development (www.usaid.gov) through an Interagency Agreement with the National Science Foundation (www.nsf.gov). National Center for Atmospheric Research (NCAR) is funded by the U.S. National Science Foundation"
+            }
+        ],
+        {
+            "embedding_time": [
+                26,
+                29
+            ]
+        },
+        {
+            "extraction_time": [
+                64,
+                42
+            ]
+        },
+        {
+            "pdf_id": "23"
+        }
+    ],
+    "22": [
+        {
+            "title": " Climate Factors Impact on Cutaneous Leishmaniasis in Northwest Tunisia"
+        },
+        [
+            {
+                "name": "Toumi Amine"
+            },
+            {
+                "name": "Hamza Ali"
+            },
+            {
+                "name": "Afif A"
+            }
+        ],
+        {
+            "publish_year": "2000"
+        },
+        [
+            {
+                "specie_name": "Psammomys obesus"
+            },
+            {
+                "specie_name": "Meriones shawi"
+            },
+            {
+                "specie_name": "Meriones libycus"
+            },
+            {
+                "specie_name": "Psammomys obesus"
+            },
+            {
+                "specie_name": "Meriones shawi"
+            },
+            {
+                "specie_name": "Meriones libycus"
+            }
+        ],
+        [
+            {
+                "country_name": " Tunisia",
+                "location_name": " The study was conducted in various locations within Tunisia."
+            }
+        ],
+        {
+            "embedding_time": [
+                16,
+                39
+            ]
+        },
+        {
+            "extraction_time": [
+                22,
+                14
+            ]
+        },
+        {
+            "pdf_id": "22"
+        }
+    ],
+    "24": [
+        {
+            "title": "Social determinants of health are of importance Case managementIntegrated vector managementEffective surveillanceSocial mobilisationOperational research Socioeconomic context and positionHealthcare system (national level)Healthcare system (national level)Healthcare system (national level)Healthcare system (national level)PovertyHealthcare system (national level) Differential exposure Poverty Sociocultural factors and genderMigration Sociocultural factors and genderHousing and clustering Sociocultural factors and genderHousing and clusteringMigration Migration Migration Differential vulnerabilityPoverty Poverty Migration Poverty Poverty Sociocultural factors and genderSociocultural factors and genderHealthcare system (local level)Sociocultural factors and genderHealthcare system (local level) Migration Migration Differential healthcare outcomesPoverty Healthcare system (local level)Sociocultural factors and genderPoverty Poverty Migration Migration Sociocultural factors"
+        },
+        {
+            "publish_year": ">2023"
+        },
+        [
+            {
+                "specie_name": ">Anopheles funestus"
+            },
+            {
+                "specie_name": ">Culex quinquefasciatus"
+            },
+            {
+                "specie_name": ">Aedes aegypti"
+            },
+            {
+                "specie_name": ">Aedes albopictus"
+            },
+            {
+                "specie_name": ">Mosquito vectors"
+            },
+            {
+                "specie_name": ">Rodrigues Island"
+            },
+            {
+                "specie_name": ">Reunion Island"
+            },
+            {
+                "specie_name": ">Madagascar"
+            },
+            {
+                "specie_name": ">Africa"
+            },
+            {
+                "specie_name": ">Asia"
+            },
+            {
+                "specie_name": ">Australia"
+            }
+        ],
+        [
+            {
+                "country_name": "",
+                "location_name": ""
+            },
+            {
+                "country_name": "",
+                "location_name": ""
+            },
+            {
+                "country_name": "",
+                "location_name": ""
+            },
+            {
+                "country_name": "",
+                "location_name": ""
+            },
+            {
+                "country_name": "",
+                "location_name": ""
+            }
+        ],
+        {
+            "embedding_time": [
+                15,
+                36
+            ]
+        },
+        {
+            "extraction_time": [
+                14,
+                56
+            ]
+        },
+        {
+            "pdf_id": "24"
+        }
+    ],
+    "32": [
+        {
+            "title": " Vector-Borne Rickettsioses in North Africa"
+        },
+        [
+            {
+                "name": " Kernif"
+            },
+            {
+                "name": " M. A. B. Kernif"
+            },
+            {
+                "name": " Kernif et al"
+            },
+            {
+                "name": "  M. A. B. Kernif et al"
+            }
+        ],
+        {
+            "publish_year": "/code/database/resources/1/documents/32_ext/text.txt"
+        },
+        [
+            {
+                "specie_name": "Rhipicephalus evertasi"
+            },
+            {
+                "specie_name": "Rhipicephalus pulchellus"
+            },
+            {
+                "specie_name": "Rhipicephalus turanicus"
+            },
+            {
+                "specie_name": "Ixodes ricinus"
+            },
+            {
+                "specie_name": "Ixodes canariensis"
+            },
+            {
+                "specie_name": "Haemaphysalis punctata"
+            },
+            {
+                "specie_name": "Haemaphysalis schweinitzi"
+            },
+            {
+                "specie_name": "Dermacentor marginatus"
+            },
+            {
+                "specie_name": "Dermacentor variabilis"
+            },
+            {
+                "specie_name": "Acari"
+            },
+            {
+                "specie_name": "Araneae"
+            },
+            {
+                "specie_name": "Culicoides"
+            },
+            {
+                "specie_name": "Culex"
+            }
+        ],
+        [
+            {
+                "country_name": "North Africa",
+                "location_name": "Tahar Kernif"
+            }
+        ],
+        {
+            "embedding_time": [
+                30,
+                15
+            ]
+        },
+        {
+            "extraction_time": [
+                26,
+                12
+            ]
+        },
+        {
+            "pdf_id": "32"
+        }
+    ],
+    "38": [
+        {
+            "title": " Repositioning Parasitic and Vector-Borne Diseases Control in a Globalized World: Lessons from COVID-19 Pandemic and Beyond"
+        },
+        [
+            {
+                "name": " M. Muthee"
+            },
+            {
+                "name": " R. M. M. Mwingirwa"
+            },
+            {
+                "name": " A. M. Mwangi"
+            },
+            {
+                "name": " E. M. M. Mwangi"
+            },
+            {
+                "name": " F. M. M. Mwangi"
+            },
+            {
+                "name": " J. M. M. Mwangi"
+            }
+        ],
+        {
+            "publish_year": ")2021"
+        },
+        [
+            {
+                "specie_name": " mosquitoes"
+            },
+            {
+                "specie_name": " tsetse flies"
+            },
+            {
+                "specie_name": " sand flies"
+            },
+            {
+                "specie_name": " black flies"
+            },
+            {
+                "specie_name": " fleas"
+            },
+            {
+                "specie_name": " lice"
+            },
+            {
+                "specie_name": " ticks"
+            },
+            {
+                "specie_name": " leeches"
+            },
+            {
+                "specie_name": " fungi"
+            },
+            {
+                "specie_name": " bacteria"
+            },
+            {
+                "specie_name": " viruses"
+            }
+        ],
+        {
+            "embedding_time": [
+                30,
+                6
+            ]
+        },
+        {
+            "extraction_time": [
+                55,
+                59
+            ]
+        },
+        {
+            "pdf_id": "38"
+        }
+    ],
+    "15": [
+        {
+            "title": "'Impact of Extreme Weather Events on Global Agriculture: A Review'.'"
+        },
+        {
+            "publish_year": "2015"
+        },
+        [
+            {
+                "specie_name": " Anopheles"
+            }
+        ],
+        [
+            {
+                "country_name": "Russia",
+                "location_name": "Volga District"
+            },
+            {
+                "country_name": "South Africa",
+                "location_name": "Maize Triangle"
+            }
+        ],
+        {
+            "embedding_time": [
+                18,
+                1
+            ]
+        },
+        {
+            "extraction_time": [
+                24,
+                35
+            ]
+        },
+        {
+            "pdf_id": "15"
+        }
+    ],
+    "50": [
+        {
+            "title": " Increased funding for malaria control and elimination: A call for action"
+        },
+        [
+            {
+                "name": "Infectious Diseases of Poverty"
+            },
+            {
+                "name": "Ren"
+            },
+            {
+                "name": "World Health Organization"
+            },
+            {
+                "name": "WHO"
+            },
+            {
+                "name": "African Union"
+            },
+            {
+                "name": "United Nations"
+            },
+            {
+                "name": "AIDS"
+            },
+            {
+                "name": "HIV"
+            },
+            {
+                "name": "SDGs"
+            },
+            {
+                "name": "USD"
+            },
+            {
+                "name": "WHO"
+            },
+            {
+                "name": "Abuja Declaration"
+            },
+            {
+                "name": "2030 Agenda for Sustainable Development"
+            },
+            {
+                "name": "RTS,S/AS01"
+            },
+            {
+                "name": "Universal Health Coverage"
+            }
+        ],
+        {
+            "publish_year": "2019"
+        },
+        [
+            {
+                "specie_name": "Plasmodium vivax"
+            }
+        ],
+        {
+            "embedding_time": [
+                9,
+                29
+            ]
+        },
+        {
+            "extraction_time": [
+                17,
+                58
+            ]
+        },
+        {
+            "pdf_id": "50"
+        }
+    ],
+    "2": [
+        {
+            "title": "Future risk of vector-borne disease transmission: a multidisciplinary analysis"
+        },
+        [
+            {
+                "name": "Ryan"
+            },
+            {
+                "name": "Mendenhall"
+            },
+            {
+                "name": "Carlson"
+            },
+            {
+                "name": "Ryan et al."
+            },
+            {
+                "name": "SJR"
+            },
+            {
+                "name": "NSF"
+            },
+            {
+                "name": "NIH"
+            }
+        ],
+        {
+            "publish_year": "2017"
+        },
+        [
+            {
+                "specie_name": " Aedes"
+            }
+        ],
+        {
+            "embedding_time": [
+                13,
+                9
+            ]
+        },
+        {
+            "extraction_time": [
+                15,
+                50
+            ]
+        },
+        {
+            "pdf_id": "2"
+        }
+    ],
+    "41": [
+        {
+            "title": " Epidemic Models to Data: A Non-Parametric Approach for Critical Slowing Down Detection in Mosquito-Borne Diseases"
+        },
+        {
+            "publish_year": ")2016"
+        },
+        [
+            {
+                "specie_name": " Malaria"
+            },
+            {
+                "specie_name": " yellow fever"
+            },
+            {
+                "specie_name": " Mosquito"
+            },
+            {
+                "specie_name": " keeling"
+            },
+            {
+                "specie_name": " rohani"
+            },
+            {
+                "specie_name": " nyarango"
+            },
+            {
+                "specie_name": " giardina"
+            },
+            {
+                "specie_name": " read"
+            },
+            {
+                "specie_name": " lawpoolsri"
+            },
+            {
+                "specie_name": " tusting"
+            },
+            {
+                "specie_name": " goodman"
+            }
+        ],
+        {
+            "embedding_time": [
+                37,
+                43
+            ]
+        },
+        {
+            "extraction_time": [
+                92,
+                42
+            ]
+        },
+        {
+            "pdf_id": "41"
+        }
+    ],
+    "34": [
+        {
+            "title": "Combined Mosquito and Livestock Population Model in the Presence of Infection"
+        },
+        {
+            "publish_year": ">2024"
+        },
+        [
+            {
+                "specie_name": "Aedes"
+            },
+            {
+                "specie_name": "Culex"
+            },
+            {
+                "specie_name": "both"
+            },
+            {
+                "specie_name": "mosquitos"
+            },
+            {
+                "specie_name": "livestock"
+            },
+            {
+                "specie_name": "other animals"
+            },
+            {
+                "specie_name": "neighbor areas"
+            }
+        ],
+        {
+            "embedding_time": [
+                36,
+                10
+            ]
+        },
+        {
+            "extraction_time": [
+                40,
+                46
+            ]
+        },
+        {
+            "pdf_id": "34"
+        }
+    ],
+    "9": [
+        {
+            "title": "Scaling up: The Rraploa method"
+        },
+        {
+            "publish_year": "2000"
+        },
+        [
+            {
+                "specie_name": "Loa loa"
+            }
+        ],
+        [
+            {
+                "country_name": ">Cameroon",
+                "location_name": ">94 villages"
+            },
+            {
+                "country_name": ">West and central African countries",
+                "location_name": ">more than 100 villages"
+            },
+            {
+                "country_name": ">Cameroon",
+                "location_name": ">14,225 individuals from 94 villages"
+            },
+            {
+                "country_name": ">West and central African countries",
+                "location_name": ">14,305 individuals sampled from more than 100 villages"
+            }
+        ],
+        {
+            "embedding_time": [
+                15,
+                35
+            ]
+        },
+        {
+            "extraction_time": [
+                16,
+                14
+            ]
+        },
+        {
+            "pdf_id": "9"
+        }
+    ],
+    "49": [
+        {
+            "title": "Climate drivers of vector-borne diseases in Africa and their relevance to control programmes"
+        },
+        [
+            {
+                "name": " Madeleine C. Thomson"
+            },
+            {
+                "name": " \u00c1ngel G. Mu\u00f1oz"
+            },
+            {
+                "name": " Remi Cousin"
+            },
+            {
+                "name": " Joy Shumake-Guillemot"
+            },
+            {
+                "name": " World Health Organization (WHO)"
+            },
+            {
+                "name": " International Research Institute for Climate and Society (IRI)"
+            },
+            {
+                "name": " National Oceanic and Atmospheric Administration (NOAA)"
+            },
+            {
+                "name": " Tropical Disease Research (TDR)"
+            },
+            {
+                "name": " World Meteorological Organization (WMO)"
+            }
+        ],
+        {
+            "publish_year": "2018"
+        },
+        {
+            "embedding_time": [
+                29,
+                49
+            ]
+        },
+        {
+            "extraction_time": [
+                16,
+                17
+            ]
+        },
+        {
+            "pdf_id": "49"
+        }
+    ],
+    "17": [
+        {
+            "title": " Two-Host, Two-Vector Basic Reproduction Ratio (R0) for Bluetongue"
+        },
+        [
+            {
+                "name": "Turner J"
+            }
+        ],
+        {
+            "publish_year": "2013"
+        },
+        [
+            {
+                "specie_name": " Culicoides imicola"
+            },
+            {
+                "specie_name": " Culicoides bolitinos"
+            },
+            {
+                "specie_name": " Culicoides pulicaris"
+            },
+            {
+                "specie_name": " Culicoides obsoletus"
+            }
+        ],
+        {
+            "embedding_time": [
+                27,
+                15
+            ]
+        },
+        {
+            "extraction_time": [
+                162,
+                31
+            ]
+        },
+        {
+            "pdf_id": "17"
+        }
+    ],
+    "4": [
+        {
+            "title": "'Ecological and Evolutionary Factors Driving the Emergence of Vector-Borne Diseases'"
+        },
+        {
+            "publish_year": ""
+        },
+        [
+            {
+                "specie_name": " vector-borne zoonotic infectious disease (VBZD) has been a growing concern globally, particularly in tropical and subtropical regions. While most reported cases are emerging in the northern latitudes, after correcting for sampling bias, Africa is clearly a region with the greatest share of emerging VBZD. We highlight critical gaps in our understanding of VBZD emergence and emphasize the importance of interdisciplinary research and consideration of deeper evolutionary processes to improve our capacity for anticipating where and how such diseases have and will continue to emerge."
+            }
+        ],
+        {
+            "embedding_time": [
+                20,
+                33
+            ]
+        },
+        {
+            "extraction_time": [
+                18,
+                9
+            ]
+        },
+        {
+            "pdf_id": "4"
+        }
+    ],
+    "20": [
+        {
+            "title": "Vector Biology: A Worldwide Unique Portal Is Urgently Needed To Guide Students Of Many Different Backgrounds And Expectations"
+        },
+        [
+            {
+                "name": " J\u00e9r\u00f4me Casas et al."
+            },
+            {
+                "name": "M. J. M. van der Meulen et al."
+            },
+            {
+                "name": "A. M. J. Schall et al."
+            },
+            {
+                "name": "K. R. Murphy et al."
+            },
+            {
+                "name": "J. M. C. R. Kershaw et al."
+            },
+            {
+                "name": "S. J. B. Brown et al."
+            },
+            {
+                "name": "M. P. R. G. M. van der Linden et al."
+            },
+            {
+                "name": "R. S. P. T. M. van der Meulen et al."
+            },
+            {
+                "name": "S. J. C. M. van der Meulen et al."
+            },
+            {
+                "name": "A. J. M. A. Schall et al."
+            },
+            {
+                "name": "J. M. C. R. Kershaw et al."
+            },
+            {
+                "name": "M. P. R. G. M. van der Linden et al."
+            },
+            {
+                "name": "R. S. P. T. M. van der Meulen et al."
+            }
+        ],
+        {
+            "publish_year": "*2018.*"
+        },
+        [
+            {
+                "specie_name": "Arthropods"
+            },
+            {
+                "specie_name": "Insects"
+            },
+            {
+                "specie_name": "Mosquitoes"
+            },
+            {
+                "specie_name": "Ticks"
+            },
+            {
+                "specie_name": "Tsetse"
+            },
+            {
+                "specie_name": "Trypanosomiasis"
+            },
+            {
+                "specie_name": "Dengue"
+            },
+            {
+                "specie_name": "Malaria"
+            },
+            {
+                "specie_name": "Chikungunya"
+            },
+            {
+                "specie_name": "Schistosomiasis"
+            },
+            {
+                "specie_name": "Bugs"
+            }
+        ],
+        {
+            "embedding_time": [
+                6,
+                11
+            ]
+        },
+        {
+            "extraction_time": [
+                70,
+                38
+            ]
+        },
+        {
+            "pdf_id": "20"
+        }
+    ],
+    "55": [
+        {
+            "title": "Pathway to Deployment of Gene Drive Mosquitoes as a Potential Biocontrol Tool for Elimination of Malaria in Sub-Saharan Africa: Recommendations of a Scientific Working Group"
+        },
+        [
+            {
+                "name": "Natasha Hamilton"
+            },
+            {
+                "name": "Katharine Vincent"
+            },
+            {
+                "name": "John M. K. Thompson"
+            },
+            {
+                "name": "Natalie C. L. Day"
+            },
+            {
+                "name": "Lucas A. C. M. van der Meer"
+            },
+            {
+                "name": "Jos\u00e9 A. Mu\u00f1oz"
+            },
+            {
+                "name": "Jonathan M. Day"
+            },
+            {
+                "name": "Julian C. Rayner"
+            },
+            {
+                "name": "Olivier P. J. J. M. Renson"
+            },
+            {
+                "name": "Lucas R. J. M. van der Velden"
+            },
+            {
+                "name": "Patrick G. F. J. M. D\u00fcrr"
+            },
+            {
+                "name": "Sarah J. P. M. H. van der Linden"
+            },
+            {
+                "name": "Katie E. J. M. G. M. van der Meer"
+            },
+            {
+                "name": "J. M. B. M. van der Meer"
+            }
+        ],
+        {
+            "publish_year": ">2018"
+        },
+        [
+            {
+                "specie_name": " Anopheles"
+            }
+        ],
+        [
+            {
+                "country_name": " United States",
+                "location_name": " Washington DC"
+            }
+        ],
+        {
+            "embedding_time": [
+                12,
+                9
+            ]
+        },
+        {
+            "extraction_time": [
+                163,
+                10
+            ]
+        },
+        {
+            "pdf_id": "55"
+        }
+    ],
+    "47": [
+        {
+            "title": "Feline Hepatozoonosis in the Cape Verde Archipelago: Phylogenetic Analysis of H. felis Genotypes and Host Distribution"
+        },
+        {
+            "publish_year": "/code/database/resources/1/documents/47_ext/text.txt"
+        },
+        [
+            {
+                "specie_name": " Rhipicephalus sanguineus (sensu lato)"
+            },
+            {
+                "specie_name": " H. felis"
+            },
+            {
+                "specie_name": " H. canis"
+            },
+            {
+                "specie_name": " H. silvestris"
+            },
+            {
+                "specie_name": " Hepatozoon spp."
+            },
+            {
+                "specie_name": " Cape Verde cats"
+            }
+        ],
+        {
+            "embedding_time": [
+                14,
+                37
+            ]
+        },
+        {
+            "extraction_time": [
+                61,
+                29
+            ]
+        },
+        {
+            "pdf_id": "47"
+        }
+    ],
+    "5": [
+        {
+            "title": "Zoonotic Bartonella spp. in rodents and shrews ectoparasites from Tanzania"
+        },
+        [
+            {
+                "name": "G.Mhamphi"
+            },
+            {
+                "name": "Venance T. Msoffe"
+            },
+            {
+                "name": "Charles M. Lyimo"
+            },
+            {
+                "name": "Abdul S. Katakweba"
+            },
+            {
+                "name": "Apia W. Massawe"
+            },
+            {
+                "name": "Erick V. G. Komba"
+            },
+            {
+                "name": "Ladslaus L. Mnyone"
+            }
+        ],
+        {
+            "publish_year": ") 2021"
+        },
+        {
+            "embedding_time": [
+                20,
+                45
+            ]
+        },
+        {
+            "extraction_time": [
+                259,
+                57
+            ]
+        },
+        {
+            "pdf_id": "5"
+        }
+    ],
+    "60": [
+        {
+            "title": "Core components, concepts and strategies for parasitic and vector-borne disease elimination with a focus on schistosomiasis: A landscape analysis"
+        },
+        {
+            "publish_year": "2020"
+        },
+        [
+            {
+                "specie_name": "Schistosoma"
+            }
+        ],
+        {
+            "embedding_time": [
+                5,
+                56
+            ]
+        },
+        {
+            "extraction_time": [
+                75,
+                41
+            ]
+        },
+        {
+            "pdf_id": "60"
+        }
+    ],
+    "16": [
+        {
+            "title": " Detection of Tick-borne Pathogens in Nigeria PLOS Neglected Tropical Diseases www.plosntds.org 3 March 2013 Volume 7 Issue 3 e2108"
+        },
+        [
+            {
+                "name": " Shapumili"
+            },
+            {
+                "name": " P. M. N. R. R. Kumar"
+            },
+            {
+                "name": " P. V. V. Prasad"
+            },
+            {
+                "name": " R. S. Seshadri"
+            },
+            {
+                "name": " S. S. Iyengar"
+            }
+        ],
+        {
+            "publish_year": "2013"
+        },
+        {
+            "embedding_time": [
+                23,
+                21
+            ]
+        },
+        {
+            "extraction_time": [
+                104,
+                25
+            ]
+        },
+        {
+            "pdf_id": "16"
+        }
+    ],
+    "51": [
+        {
+            "title": " Infectious Diseases of Poverty"
+        },
+        [
+            {
+                "name": " Scalway et al."
+            },
+            {
+                "name": " United Nations"
+            },
+            {
+                "name": " Department for International Development (DFID)"
+            },
+            {
+                "name": " International Development Research Centre (IDRC)"
+            },
+            {
+                "name": " Socioecological systems (SES)"
+            },
+            {
+                "name": " Special Programme for Research and Training in Tropical Diseases (TDR)"
+            },
+            {
+                "name": " Vectorborne disease (VBD)"
+            },
+            {
+                "name": " Infectious Diseases of Poverty"
+            },
+            {
+                "name": " WHO"
+            }
+        ],
+        {
+            "publish_year": "2019"
+        },
+        [
+            {
+                "specie_name": "tsetse flies"
+            },
+            {
+                "specie_name": "schistosomiasis"
+            },
+            {
+                "specie_name": "vectorborne disease"
+            }
+        ],
+        {
+            "embedding_time": [
+                10,
+                20
+            ]
+        },
+        {
+            "extraction_time": [
+                13,
+                27
+            ]
+        },
+        {
+            "pdf_id": "51"
+        }
+    ],
+    "11": [
+        {
+            "title": "Rift Valley Fever Suitability in North Africa E. Arsevska et al."
+        },
+        {
+            "publish_year": ">2015"
+        },
+        [
+            {
+                "specie_name": "Rift Valley Fever"
+            },
+            {
+                "specie_name": "Rift Valley Fever"
+            },
+            {
+                "specie_name": "Rift Valley Fever"
+            },
+            {
+                "specie_name": "Rift Valley Fever"
+            },
+            {
+                "specie_name": "Rift Valley Fever"
+            },
+            {
+                "specie_name": "Rift Valley Fever"
+            },
+            {
+                "specie_name": "Rift Valley Fever"
+            },
+            {
+                "specie_name": "Rift Valley Fever"
+            },
+            {
+                "specie_name": "Rift Valley Fever"
+            },
+            {
+                "specie_name": "Rift Valley Fever"
+            },
+            {
+                "specie_name": "Rift Valley Fever"
+            }
+        ],
+        {
+            "embedding_time": [
+                28,
+                20
+            ]
+        },
+        {
+            "extraction_time": [
+                21,
+                36
+            ]
+        },
+        {
+            "pdf_id": "11"
+        }
+    ],
+    "27": [
+        {
+            "title": " Health, environmental change and adaptive capacity; mapping, examining and anticipating future risks of water-related vector-borne diseases in eastern Africa"
+        },
+        [
+            {
+                "name": " Leedale,"
+            },
+            {
+                "name": " Taylor"
+            },
+            {
+                "name": " David Taylor"
+            },
+            {
+                "name": " Leedale et al."
+            },
+            {
+                "name": " Taylor and colleagues"
+            },
+            {
+                "name": " Leedale and colleagues"
+            },
+            {
+                "name": " Taylor and co-workers"
+            },
+            {
+                "name": " Leedale and co-workers"
+            }
+        ],
+        {
+            "publish_year": "2016"
+        },
+        [
+            {
+                "specie_name": "vector-borne diseases"
+            }
+        ],
+        [
+            {
+                "country_name": " Burundi",
+                "location_name": " Bujumbura"
+            }
+        ],
+        {
+            "embedding_time": [
+                10,
+                41
+            ]
+        },
+        {
+            "extraction_time": [
+                39,
+                39
+            ]
+        },
+        {
+            "pdf_id": "27"
+        }
+    ],
+    "56": [
+        {
+            "title": "Transboundary and Emerging Diseases"
+        },
+        [
+            {
+                "name": ">El-Harrak"
+            },
+            {
+                "name": ">Campbell"
+            },
+            {
+                "name": ">Centers for Disease Control and Prevention (CDC)"
+            },
+            {
+                "name": ">French"
+            },
+            {
+                "name": ">Tunisian"
+            },
+            {
+                "name": ">World Health Organization (WHO)"
+            },
+            {
+                "name": ">Blackwell Verlag GmbH"
+            },
+            {
+                "name": ">Transboundary and Emerging Diseases"
+            },
+            {
+                "name": ">F. Cito et al."
+            },
+            {
+                "name": ">Public Health and Veterinary Authorities of six EU countries"
+            },
+            {
+                "name": ">World Health Organization (WHO)"
+            },
+            {
+                "name": ">International network for capacity building for the control of emerging viral vector-borne zoonotic diseases (the arbo-zoonet project)"
+            }
+        ],
+        {
+            "publish_year": "2013"
+        },
+        [
+            {
+                "specie_name": "mosquito species"
+            }
+        ],
+        [
+            {
+                "country_name": " Italy",
+                "location_name": " migratory birdpopulations"
+            }
+        ],
+        {
+            "embedding_time": [
+                11,
+                25
+            ]
+        },
+        {
+            "extraction_time": [
+                11,
+                20
+            ]
+        },
+        {
+            "pdf_id": "56"
+        }
+    ],
+    "40": [
+        {
+            "title": " Predicting Land Cover Classes from Multispectral Satellite Imagery using Random Forest Ensemble: A Case Study of Dar es Salaam and Kampala Cities in Tanzania and Uganda"
+        },
+        [
+            {
+                "name": "Camille Morlighem"
+            },
+            {
+                "name": "Celia'"
+            },
+            {
+                "name": "Linard"
+            },
+            {
+                "name": "Wolff"
+            },
+            {
+                "name": "Dujardin"
+            },
+            {
+                "name": "Van de Walle"
+            },
+            {
+                "name": "van Lipzig"
+            },
+            {
+                "name": "Brousse"
+            },
+            {
+                "name": "Georganos"
+            },
+            {
+                "name": "Chaiban"
+            },
+            {
+                "name": "Morlighem"
+            }
+        ],
+        {
+            "publish_year": ">2022"
+        },
+        [
+            {
+                "specie_name": "malaria"
+            }
+        ],
+        {
+            "embedding_time": [
+                23,
+                12
+            ]
+        },
+        {
+            "extraction_time": [
+                16,
+                52
+            ]
+        },
+        {
+            "pdf_id": "40"
+        }
+    ],
+    "7": [
+        {
+            "title": " Prevention of yellow fever transmission in China through integrated vector management (IVM) and rapid detection of vectors"
+        },
+        [
+            {
+                "name": "G. D. Smith"
+            },
+            {
+                "name": "T. J. H. McQuillan"
+            },
+            {
+                "name": "J. M. H. M. van der Meer"
+            },
+            {
+                "name": "A. J. J. Schuitmaker"
+            },
+            {
+                "name": "C. H. B. M. Boersma"
+            },
+            {
+                "name": "R. J. H. P. M. van der Meer"
+            }
+        ],
+        {
+            "publish_year": "2020"
+        },
+        [
+            {
+                "specie_name": "Aedes"
+            },
+            {
+                "specie_name": "Aedes"
+            },
+            {
+                "specie_name": "Aedes"
+            },
+            {
+                "specie_name": "Aedes"
+            },
+            {
+                "specie_name": "Aedes"
+            },
+            {
+                "specie_name": "Aedes"
+            },
+            {
+                "specie_name": "Aedes"
+            }
+        ],
+        {
+            "embedding_time": [
+                8,
+                2
+            ]
+        },
+        {
+            "extraction_time": [
+                28,
+                6
+            ]
+        },
+        {
+            "pdf_id": "7"
+        }
+    ],
+    "8": [
+        {
+            "title": " Main Body: MAIN BODY:"
+        },
+        [
+            {
+                "name": "A. M. Anderson"
+            },
+            {
+                "name": "R. G. Rowe"
+            },
+            {
+                "name": "J. M. H. M. van der Meer"
+            },
+            {
+                "name": "J. C. F. Stanton"
+            },
+            {
+                "name": "M. A. S. H. M. van der Velden"
+            },
+            {
+                "name": "H. J. M. de Vries"
+            },
+            {
+                "name": "J. J. M. van der Meer"
+            }
+        ],
+        {
+            "publish_year": "/code/database/resources/1/documents/8_ext/text.txt"
+        },
+        [
+            {
+                "specie_name": " Anopheline and Culicine mosquitoes"
+            }
+        ],
+        {
+            "embedding_time": [
+                19,
+                54
+            ]
+        },
+        {
+            "extraction_time": [
+                14,
+                23
+            ]
+        },
+        {
+            "pdf_id": "8"
+        }
+    ],
+    "18": [
+        {
+            "title": "The Discovery of Human RNA Viruses: A Global Analysis Using a Boosted Regression Tree Model."
+        },
+        {
+            "publish_year": "/code/database/resources/1/documents/18_ext/text.txt"
+        },
+        [
+            {
+                "specie_name": " Mosquito"
+            }
+        ],
+        [
+            {
+                "country_name": "Australia",
+                "location_name": "Queensland"
+            }
+        ],
+        {
+            "embedding_time": [
+                24,
+                58
+            ]
+        },
+        {
+            "extraction_time": [
+                16,
+                25
+            ]
+        },
+        {
+            "pdf_id": "18"
+        }
+    ],
+    "3": [
+        {
+            "title": " Trends in ParasitologyTREPAR 2068"
+        },
+        [
+            {
+                "name": "Ashepet, Mercy Gloria"
+            },
+            {
+                "name": "Jacobs, Liesbet"
+            },
+            {
+                "name": "Van Oudheusden, Michiel"
+            },
+            {
+                "name": "Huyse, Tine"
+            }
+        ],
+        {
+            "publish_year": "2068"
+        },
+        [
+            {
+                "specie_name": " Trichuris trichiura"
+            },
+            {
+                "specie_name": " Anopheles gambiae"
+            },
+            {
+                "specie_name": " Aedes aegypti"
+            },
+            {
+                "specie_name": " Culex quinquefasciatus"
+            },
+            {
+                "specie_name": " Rattus rattus"
+            },
+            {
+                "specie_name": " Mus musculus"
+            },
+            {
+                "specie_name": " Pan strongylus"
+            },
+            {
+                "specie_name": " Schistosoma mansoni"
+            },
+            {
+                "specie_name": " Onchocerca volvulus"
+            },
+            {
+                "specie_name": " Loa loa"
+            },
+            {
+                "specie_name": " Wuchereria bancrofti"
+            },
+            {
+                "specie_name": " Brugia malayi"
+            },
+            {
+                "specie_name": " Dirofilaria repens"
+            },
+            {
+                "specie_name": " Fasciola hepatica"
+            },
+            {
+                "specie_name": " Schistosoma haematobium"
+            }
+        ],
+        {
+            "embedding_time": [
+                7,
+                3
+            ]
+        },
+        {
+            "extraction_time": [
+                59,
+                43
+            ]
+        },
+        {
+            "pdf_id": "3"
+        }
+    ],
+    "44": [
+        {
+            "title": " profile of imported infectious diseases among foreign travelers to China, 2014-2018"
+        },
+        [
+            {
+                "name": "Xu et al."
+            }
+        ],
+        {
+            "publish_year": "2022"
+        },
+        [
+            {
+                "specie_name": ">Chikungunya fever"
+            },
+            {
+                "specie_name": ">Tsutsugamushi disease"
+            },
+            {
+                "specie_name": ">Rabies"
+            },
+            {
+                "specie_name": ">Neisseria gonorrhoeae infection"
+            },
+            {
+                "specie_name": ">Chlamydia infection of genitourinary tract"
+            },
+            {
+                "specie_name": ">Trichomoniasis"
+            },
+            {
+                "specie_name": ">Hepatitis B"
+            },
+            {
+                "specie_name": ">Hepatitis C"
+            },
+            {
+                "specie_name": ">Enterovirus infection"
+            },
+            {
+                "specie_name": ">Trachoma"
+            },
+            {
+                "specie_name": ">Neonatal tetanus"
+            },
+            {
+                "specie_name": ">Herpes"
+            },
+            {
+                "specie_name": ">Acute hemorrhagic conjunctivitis"
+            }
+        ],
+        {
+            "embedding_time": [
+                17,
+                56
+            ]
+        },
+        {
+            "extraction_time": [
+                40,
+                20
+            ]
+        },
+        {
+            "pdf_id": "44"
+        }
+    ],
+    "14": [
+        {
+            "title": " Tropical Disease Prevalence by Climatic and Vegetative Zones"
+        },
+        [
+            {
+                "name": "K"
+            },
+            {
+                "name": "M"
+            },
+            {
+                "name": "A"
+            },
+            {
+                "name": "S"
+            },
+            {
+                "name": "M"
+            },
+            {
+                "name": "B"
+            },
+            {
+                "name": "G"
+            },
+            {
+                "name": "L"
+            },
+            {
+                "name": "P"
+            }
+        ],
+        {
+            "publish_year": "2016"
+        },
+        [
+            {
+                "specie_name": "vector"
+            }
+        ],
+        {
+            "embedding_time": [
+                19,
+                5
+            ]
+        },
+        {
+            "extraction_time": [
+                13,
+                33
+            ]
+        },
+        {
+            "pdf_id": "14"
+        }
+    ],
+    "13": [
+        {
+            "title": " Aedes aegypti Genetic Diversity in North America: A Challenge for Public Health Vector Control"
+        },
+        [
+            {
+                "name": " Brown et al."
+            }
+        ],
+        {
+            "publish_year": "2014"
+        },
+        [
+            {
+                "specie_name": ">Aedes aegypti"
+            },
+            {
+                "specie_name": ">Aedes albopictus"
+            },
+            {
+                "specie_name": ">Culex quinquefasciatus"
+            },
+            {
+                "specie_name": ">Mosquito"
+            }
+        ],
+        [
+            {
+                "country_name": " United States",
+                "location_name": " Arizona and northern Mexico"
+            }
+        ],
+        {
+            "embedding_time": [
+                12,
+                32
+            ]
+        },
+        {
+            "extraction_time": [
+                10,
+                48
+            ]
+        },
+        {
+            "pdf_id": "13"
+        }
+    ],
+    "sample": [
+        {
+            "title": "Getting started: things to do before you write a word"
+        },
+        [
+            {
+                "name": ">Fiona Ecarnot"
+            },
+            {
+                "name": ">M-F Seronde"
+            },
+            {
+                "name": ">R Chopard"
+            },
+            {
+                "name": ">Francois Schiele"
+            },
+            {
+                "name": ">Nicolas Meneveau"
+            }
+        ],
+        {
+            "publish_year": "2015"
+        },
+        [
+            {
+                "specie_name": "Scientific publications"
+            }
+        ],
+        [
+            {
+                "country_name": " France",
+                "location_name": " University of Franche-Comte"
+            }
+        ],
+        {
+            "embedding_time": [
+                4,
+                19
+            ]
+        },
+        {
+            "extraction_time": [
+                24,
+                8
+            ]
+        },
+        {
+            "pdf_id": "sample"
+        }
+    ],
+    "31": [
+        {
+            "title": "Current knowledge ofvector-borne zoonotic pathogens inZambia: Aclarion calltoscaling-up \u201cOne Health\u201d research inthewake of emerging andre-emerging infectious diseases"
+        },
+        {
+            "publish_year": "2022"
+        },
+        [
+            {
+                "specie_name": " Culex"
+            },
+            {
+                "specie_name": " Anopheles"
+            },
+            {
+                "specie_name": " Aedes"
+            },
+            {
+                "specie_name": " Rickettsia"
+            }
+        ],
+        {
+            "embedding_time": [
+                32,
+                10
+            ]
+        },
+        {
+            "extraction_time": [
+                58,
+                18
+            ]
+        },
+        {
+            "pdf_id": "31"
+        }
+    ],
+    "1": [
+        {
+            "title": " Vector-borne diseases causing 25% of annual deaths worldwide are Chikungunya virus (CHIKV) and Zika virus (ZIKV). Since its emergence in 2005 in the Indian Ocean, Chikungunya virus made a breakthrough in new regions, following the worldwide expansion of the Asian tiger mosquito Aedes albopictus. This species has contributed to the selection of a mutation in the viral genome favouring the transmission of Chikungunya virus."
+        },
+        [
+            {
+                "name": ","
+            }
+        ],
+        {
+            "publish_year": "2007"
+        },
+        [
+            {
+                "specie_name": "] Aedes aegypti["
+            }
+        ],
+        {
+            "embedding_time": [
+                30,
+                49
+            ]
+        },
+        {
+            "extraction_time": [
+                21,
+                23
+            ]
+        },
+        {
+            "pdf_id": "1"
+        }
+    ],
+    "30": [
+        {
+            "title": " The Emerging Threat of Vector-Borne Diseases: A Key Challenge for Global Health in the Future"
+        },
+        {
+            "publish_year": "2015"
+        },
+        [
+            {
+                "specie_name": " Anopheles"
+            }
+        ],
+        {
+            "embedding_time": [
+                4,
+                37
+            ]
+        },
+        {
+            "extraction_time": [
+                37,
+                31
+            ]
+        },
+        {
+            "pdf_id": "30"
+        }
+    ],
+    "19": [
+        {
+            "title": " Analyses of Spatial Distribution of Viruses Discovered in Humans Over a Period of 118 Years Reveal Key Explanatory Factors for Emergence and Future Discovery"
+        },
+        {
+            "publish_year": "2019"
+        },
+        [
+            {
+                "specie_name": " Aedes"
+            },
+            {
+                "specie_name": " Culex"
+            },
+            {
+                "specie_name": " Anopheles"
+            },
+            {
+                "specie_name": " Ixodes"
+            },
+            {
+                "specie_name": " Rhipicephalus"
+            },
+            {
+                "specie_name": " Amblyomma"
+            },
+            {
+                "specie_name": " Rhodnius"
+            },
+            {
+                "specie_name": " Phlebotomus"
+            },
+            {
+                "specie_name": " Larroussetia"
+            },
+            {
+                "specie_name": " Leishmania"
+            }
+        ],
+        {
+            "embedding_time": [
+                24,
+                58
+            ]
+        },
+        {
+            "extraction_time": [
+                23,
+                7
+            ]
+        },
+        {
+            "pdf_id": "19"
+        }
+    ],
+    "37": [
+        {
+            "title": " Epidemiology and dynamics of Rift Valley fever in Africa"
+        },
+        [
+            {
+                "name": "N. Chitnis"
+            },
+            {
+                "name": "M. J. Ferguson"
+            },
+            {
+                "name": "A. M. Stroud"
+            },
+            {
+                "name": "C. F. A. B. M. Booth"
+            },
+            {
+                "name": "S. J. R. G. C. B. P. H. M. Boots"
+            },
+            {
+                "name": "J. M. B. S. F. C. M. Dye"
+            },
+            {
+                "name": "P. J. G. M. H. M. van der Meer"
+            },
+            {
+                "name": "R. M. T. M. G. R. M. Andrade"
+            },
+            {
+                "name": "K. L. E. M. M. T. M. T. N. M. H. M. J. M. P. M. A. S. M. T. M. M. M. M. M. M."
+            }
+        ],
+        {
+            "publish_year": "2003"
+        },
+        [
+            {
+                "specie_name": ">vector species are studied in this study</i>} ,{"
+            }
+        ],
+        {
+            "embedding_time": [
+                50,
+                18
+            ]
+        },
+        {
+            "extraction_time": [
+                125,
+                10
+            ]
+        },
+        {
+            "pdf_id": "37"
+        }
+    ],
+    "35": [
+        {
+            "title": "Climate Variables Associated With Plague In East Africa: A Spatial Analysis Of Case And Control Locations In Tanzania And Kenya"
+        },
+        [
+            {
+                "name": "MacMillan"
+            },
+            {
+                "name": "Roberts"
+            },
+            {
+                "name": "Sas Institute"
+            },
+            {
+                "name": "Cary"
+            },
+            {
+                "name": "Nc"
+            },
+            {
+                "name": "Jmp Version 9"
+            },
+            {
+                "name": "Sas Institute"
+            },
+            {
+                "name": "Cary"
+            },
+            {
+                "name": "Nc"
+            },
+            {
+                "name": "Jmp Version 9"
+            }
+        ],
+        {
+            "publish_year": "2007"
+        },
+        [
+            {
+                "specie_name": "vector-borne"
+            },
+            {
+                "specie_name": "zoonotic"
+            },
+            {
+                "specie_name": "plague"
+            },
+            {
+                "specie_name": "cases"
+            },
+            {
+                "specie_name": "control"
+            }
+        ],
+        [
+            {
+                "country_name": " United States",
+                "location_name": " Arkansas"
+            }
+        ],
+        {
+            "embedding_time": [
+                20,
+                53
+            ]
+        },
+        {
+            "extraction_time": [
+                36,
+                16
+            ]
+        },
+        {
+            "pdf_id": "35"
+        }
+    ],
+    "29": [
+        {
+            "title": " Anopheles gambiae mortality (or even modified to incorporate temperature dependence), or, equivalently, that senescence does not play a large role in driving vector mortality, may be erroneous or, at the very least, a serious underestimation. Nonetheless, this result requires further research and confirmation, both from more detailed vector mortality data collected the field, additional experimental data from the laboratory (e.g., on other mosquito species), and further modelling studies of both the mosquito populations themselves and the diseases they transmit: in the case of malaria and other VBDs, since the inclusion of senescence in models of mosquito abundance appears to enable more accurate and reliable predictions of the population dynamics of a key malaria vector in sub-Saharan Africa, this may have important implications for VBD modelling."
+        },
+        {
+            "publish_year": ">2015"
+        },
+        [
+            {
+                "specie_name": "Anopheles gambiae"
+            }
+        ],
+        {
+            "embedding_time": [
+                33,
+                14
+            ]
+        },
+        {
+            "extraction_time": [
+                87,
+                53
+            ]
+        },
+        {
+            "pdf_id": "29"
+        }
+    ],
+    "21": [
+        {
+            "title": " Advection -deposition- survival model to assess the risk of introduction of bluetongue virus in Spain"
+        },
+        [
+            {
+                "name": "Eduardo Ferna ndez-Carrio n"
+            },
+            {
+                "name": "Benjamin Ivorra"
+            },
+            {
+                "name": " Angel Manuel Ramos"
+            },
+            {
+                "name": "Beatriz Martinez-Lopez"
+            },
+            {
+                "name": "Jose Manuel Sanchez-Vizcaino"
+            }
+        ],
+        {
+            "publish_year": "2018"
+        },
+        [
+            {
+                "specie_name": "Culicoides"
+            }
+        ],
+        {
+            "embedding_time": [
+                25,
+                35
+            ]
+        },
+        {
+            "extraction_time": [
+                15,
+                37
+            ]
+        },
+        {
+            "pdf_id": "21"
+        }
+    ],
+    "10": [
+        {
+            "title": "Malaria-Resistant Mosquitoes: A Comprehensive Review"
+        },
+        [
+            {
+                "name": "Kigali"
+            },
+            {
+                "name": "Rwanda"
+            },
+            {
+                "name": "East Africa"
+            },
+            {
+                "name": "Lodwar"
+            },
+            {
+                "name": "Kenya"
+            },
+            {
+                "name": "South Africa"
+            }
+        ],
+        {
+            "publish_year": "1990"
+        },
+        {
+            "embedding_time": [
+                54,
+                26
+            ]
+        },
+        {
+            "extraction_time": [
+                37,
+                5
+            ]
+        },
+        {
+            "pdf_id": "10"
+        }
+    ],
+    "46": [
+        {
+            "title": "Entomological surveillance of Aedes albopictus in Pantelleria Island (Italy) during 2015"
+        },
+        [
+            {
+                "name": " Department of Infectious Diseases, Unit of Vectorborne Diseases, Istituto Superiore di Sanit\u00e0, Rome, Italy."
+            },
+            {
+                "name": " Department of Veterinary Prevention, Unit of Animal Health Service, ASP Trapani, Pantelleria, Italy."
+            },
+            {
+                "name": " Istituto Zooprofilattico Sperimentale della Sicilia, Laboratory of Entomology and Environmental Vectors Control, Palermo, Italy."
+            },
+            {
+                "name": " City Council of Pantelleria, Italy."
+            }
+        ],
+        {
+            "publish_year": "2015"
+        },
+        {
+            "embedding_time": [
+                18,
+                56
+            ]
+        },
+        {
+            "extraction_time": [
+                20,
+                57
+            ]
+        },
+        {
+            "pdf_id": "46"
+        }
+    ],
+    "28": [
+        {
+            "title": " Risk analysis of introduction of infectious diseases through transportation routes from countries in North Africa and the Middle East to the European Union."
+        },
+        {
+            "publish_year": "2019"
+        },
+        [
+            {
+                "specie_name": "birds"
+            },
+            {
+                "specie_name": "vectors"
+            },
+            {
+                "specie_name": "winds"
+            },
+            {
+                "specie_name": "entry"
+            },
+            {
+                "specie_name": "migration"
+            },
+            {
+                "specie_name": "bluetongue"
+            },
+            {
+                "specie_name": "North Africa"
+            },
+            {
+                "specie_name": "Middle East"
+            },
+            {
+                "specie_name": "Morocco"
+            },
+            {
+                "specie_name": "Algeria"
+            },
+            {
+                "specie_name": "Tunisia"
+            },
+            {
+                "specie_name": "Libya"
+            },
+            {
+                "specie_name": "Greece"
+            },
+            {
+                "specie_name": "Italy"
+            },
+            {
+                "specie_name": "Switzerland"
+            }
+        ],
+        {
+            "embedding_time": [
+                29,
+                38
+            ]
+        },
+        {
+            "extraction_time": [
+                58,
+                27
+            ]
+        },
+        {
+            "pdf_id": "28"
+        }
+    ],
+    "36": [
+        {
+            "title": "The Role of Vector Control in Shrinking the Map of Vector-Borne Diseases: A Call for Action"
+        },
+        {
+            "publish_year": "2020"
+        },
+        [
+            {
+                "specie_name": ">Anopheles gambiae s.l."
+            }
+        ],
+        {
+            "embedding_time": [
+                4,
+                18
+            ]
+        },
+        {
+            "extraction_time": [
+                23,
+                34
+            ]
+        },
+        {
+            "pdf_id": "36"
+        }
+    ],
+    "57": [
+        {
+            "title": "Re-parameterization of a mathematical model of African horse sickness virus using data from a systematic literature search"
+        },
+        {
+            "publish_year": "*2021.*"
+        },
+        [
+            {
+                "specie_name": ",Culicoides spp."
+            },
+            {
+                "specie_name": ",Culicoides imicola"
+            },
+            {
+                "specie_name": ",other vector species"
+            },
+            {
+                "specie_name": ",zebras"
+            },
+            {
+                "specie_name": ",horses"
+            },
+            {
+                "specie_name": ",mules"
+            },
+            {
+                "specie_name": ",donkeys"
+            }
+        ],
+        {
+            "embedding_time": [
+                4,
+                51
+            ]
+        },
+        {
+            "extraction_time": [
+                23,
+                34
+            ]
+        },
+        {
+            "pdf_id": "57"
+        }
+    ],
+    "45": [
+        {
+            "title": " Seroprevalence, prevalence of infection, and prevalence of tick infection with Anaplasmataceae in rural dogs, Uganda, 2011"
+        },
+        {
+            "publish_year": "*2015$"
+        },
+        [
+            {
+                "specie_name": "Rickettsia conorii"
+            },
+            {
+                "specie_name": "Ehrlichia canis"
+            },
+            {
+                "specie_name": "H. leachi"
+            },
+            {
+                "specie_name": "Ctenocephalides felis"
+            },
+            {
+                "specie_name": "Echidnophaga gallinacea"
+            },
+            {
+                "specie_name": "Pulex irritans"
+            }
+        ],
+        {
+            "embedding_time": [
+                21,
+                22
+            ]
+        },
+        {
+            "extraction_time": [
+                76,
+                24
+            ]
+        },
+        {
+            "pdf_id": "45"
+        }
+    ],
+    "6": [
+        {
+            "title": "> Mathematical Biosciences and Engineering V olume 18, Issue 6, 7301\u20137317. 7305 G0={x\u2208R7 +:x2>B1,x3>B2}, G1={x\u2208G0:x1+x2+x3+x4\u2264K/\u00b5,x5+x6+x7\u2264V0}, with V0=L \u03b8+\u03b30. Theorem 1 . (a) B1+B2\u2264(K1+K2\u2212K3)/\u00b5."
+        },
+        {
+            "publish_year": ">2021"
+        },
+        [
+            {
+                "specie_name": "vector"
+            },
+            {
+                "specie_name": "vector"
+            },
+            {
+                "specie_name": "vector"
+            },
+            {
+                "specie_name": "vector"
+            }
+        ],
+        {
+            "embedding_time": [
+                18,
+                46
+            ]
+        },
+        {
+            "extraction_time": [
+                42,
+                40
+            ]
+        },
+        {
+            "pdf_id": "6"
+        }
+    ]
+}
