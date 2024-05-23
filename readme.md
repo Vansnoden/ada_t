@@ -16,18 +16,25 @@ run migrations : alembic upgrade head
 #### Docker
 
 initialize alembic
+
 ```docker exec -it <backend-container>  alembic init alembic```
 
 update alembic env to import all models
 
 ``` from database.database import Base
     from database.models import Project, Question, User
-    target_metadata = Base.metadata ```
+    target_metadata = Base.metadata 
+```
 
 create migrations:
 
-```alembic revision --autogenerate -m "db initialization"```
+```alembic revision --autogenerate -m "db initialization" ```
 
 run migrations:
 
 ```alembic upgrade head```
+
+
+#### Tool overview
+
+<img src="pics/figure7.png"/>
