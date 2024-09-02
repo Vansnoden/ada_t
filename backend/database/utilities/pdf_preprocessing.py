@@ -127,15 +127,15 @@ def extract_pdf_text(pdf_path, output_path=None):
         else:
             out_directory = Path(output_path)
         os.makedirs(out_directory, exist_ok=True)
-        pdf_nature=get_pdf_nature(pdf_path)
-        if pdf_nature == "scanned":
-            text = extract_tesseract(pdf_path)
-            with open(os.path.join(out_directory,"text.txt"), "w", encoding="utf-8") as output_file:
-                output_file.write(text)
-        elif pdf_nature == "digital":
-            text = extract_pypdf(pdf_path)
-            with open(os.path.join(out_directory,"text.txt"), "w", encoding="utf-8") as output_file:
-                output_file.write(text)
+        # pdf_nature=get_pdf_nature(pdf_path)
+        # if pdf_nature == "scanned":
+        text = extract_tesseract(pdf_path)
+        with open(os.path.join(out_directory,"text.txt"), "w", encoding="utf-8") as output_file:
+            output_file.write(text)
+        # elif pdf_nature == "digital":
+        #     text = extract_pypdf(pdf_path)
+        #     with open(os.path.join(out_directory,"text.txt"), "w", encoding="utf-8") as output_file:
+        #         output_file.write(text)
         return True      
     except Exception as e:
         print(e)

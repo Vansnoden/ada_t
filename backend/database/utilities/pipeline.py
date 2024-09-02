@@ -1,3 +1,4 @@
+import traceback
 from langchain.prompts import PromptTemplate
 from langchain.document_loaders import TextLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -6,6 +7,7 @@ from langchain_core.runnables import RunnablePassthrough
 from langchain.embeddings import LlamaCppEmbeddings
 import time, os, datetime, json
 from langchain.callbacks.manager import CallbackManager
+from langchain.callbacks.base import BaseCallbackHandler
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.llms import LlamaCpp
 from tqdm import tqdm
@@ -18,7 +20,8 @@ from .pdf_preprocessing import *
 # import multiprocessing
 from joblib import Parallel, delayed, parallel_backend
 import multiprocessing
-
+import chromadb
+from . import pipeline
 
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -39,6 +42,10 @@ class CustomLlamaCppEmbeddings(LlamaCppEmbeddings):
         Returns:
             List of embeddings, one for each text.
         """
+        # pool = multiprocessing.Pool() 
+        # pool = multiprocessing.Pool(processes=6) 
+        # inputs = embeddings #[0,1,2,3,4] 
+        # embeddings = pool.map(self.client.embed, tqdm(texts, position=0, leave=True)) 
         embeddings = [self.client.embed(text) for text in tqdm(texts, position=0, leave=True)]
         # with parallel_backend('multiprocessing'):
         #     embeddings = Parallel(n_jobs=6)(delayed(self.client.embed)(text) for text in texts)
@@ -46,14 +53,55 @@ class CustomLlamaCppEmbeddings(LlamaCppEmbeddings):
         #     embeddings = Parallel(n_jobs=6)(delayed(self.to_float_list)(e) for e in embeddings)
         embeddings = [list(map(float, e)) for e in embeddings]
         return embeddings
+    
+    def __call__(self, input):
+        return self.embed_documents(input) 
 
 
-def embed_data(documents, embedding_fn):
+def set_collection(embedding_function):
+    try:
+        pass
+        client = chromadb.Client()
+        collection = client.get_or_create_collection("DATA", embedding_function=embedding_function)
+        return collection
+    except Exception as e:
+        print(traceback.format_exc())
+        return None
+
+
+def push_to_store(doc_id:str, doc:str, collection) -> bool:
+    try:
+        collection.add(
+            documents=[
+                doc
+            ],
+            ids=[doc_id]
+        )
+        return True
+    except Exception as e:
+        print(traceback.format_exc())
+        return False
+
+
+def generate_doc_id(filename, split_index):
+    return f"{filename}_{split_index}"
+
+
+def embed_data(fname, documents, embedding_fn):
     tic = time.process_time()
-    vectorstore = Chroma.from_documents(documents=documents, embedding=embedding_fn)
+
+    vectorstore = set_collection(embedding_function=embedding_fn)
+    for document in documents:
+        print("PUSHING DATA TO STORE +++++++++++++++>>>>>>")
+        push_to_store(generate_doc_id(fname, documents.index(document)), document, vectorstore)
+
+    # for document in documents:  
+
+    # vectorstore = Chroma.from_documents(documents=documents, embedding=embedding_fn)
+
     toc = time.process_time()
     stop = toc - tic
-    print(f"Embedding completed in {stop/60} s") 
+    # print(f"Embedding completed in {stop/60} s") 
     return vectorstore, stop
 
 
@@ -65,8 +113,8 @@ def build_retriever(embedding_fn, file_path, chunk_size=3000, chunk_overlap=30):
     docs = loader.load()
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap, add_start_index=True)
     splits = text_splitter.split_documents(docs)
-    # Parallel(n_jobs=4)(delayed(embed_data)([item], embedding_fn, vectorstore) for item in splits)
-    vectorstore, ellapsed = embed_data(splits, embedding_fn)
+    # vectorstore, ellapsed = Parallel(n_jobs=4)(delayed(embed_data)([item], embedding_fn) for item in splits)
+    vectorstore, ellapsed = embed_data(os.path.basename(file_path).split(".")[0], splits, embedding_fn)
     with open("embedding.log.csv", "a+") as f:
         f.write(f"\n{os.path.getsize(file_path)},{ellapsed}")
     retriever = vectorstore.as_retriever()
@@ -86,16 +134,16 @@ def inline_text(file_path):
         if line.lower().strip().startswith("references") or line.lower().strip().startswith("acknowledgement"):
             break
         nline = line
-        nline = line.replace("-\n", "")
-        nline = nline.replace("\n", " ")
-        nline = nline.replace("| ", "")
-        nline = nline.replace("\'", "")
-        nline = nline.replace("  ", " ")
-        nline = nline.replace("\t", " ")
-        if nline.lower().strip().startswith("introduction"):
-            nline = "MAIN BODY: \n" + nline
+        # nline = line.replace("-\n", "")
+        # nline = nline.replace("\n", " ")
+        # nline = nline.replace("| ", "")
+        # nline = nline.replace("\'", "")
+        # nline = nline.replace("  ", " ")
+        # nline = nline.replace("\t", " ")
+        # if nline.lower().strip().startswith("introduction"):
+        #     nline = "MAIN BODY: \n" + nline
         res += nline
-    res = "HEADER: \n" + res 
+    # res = "TITLE: \n" + res 
     return res
 
 
@@ -112,7 +160,8 @@ def setchain(prompt_template, retriever, llm):
 
 
 def refresh_gramma(grammar_path=None):
-    callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
+    # callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
+    callback_manager = CallbackManager([BaseCallbackHandler()])
     n_gpu_layers = 10  # Metal set to 1 is enough.
     n_batch = 512  # Should be between 1 and n_ctx, consider the amount of RAM of your Apple Silicon Chip.
     # Make sure the model path is correct for your system!
@@ -124,8 +173,8 @@ def refresh_gramma(grammar_path=None):
             n_batch=n_batch,
             n_ctx=4096,
             f16_kv=True,  # MUST set to True, otherwise you will run into problem after a couple of calls
-            callback_manager=callback_manager,
-            verbose=True,  # Verbose is required to pass to the callback manager
+            # callback_manager=callback_manager,
+            # verbose=True,  # Verbose is required to pass to the callback manager
             grammar_path=grammar_path,
             # return_full_text=False, # to not repeat the question, set to False
             # top_k=10, # default=10
@@ -140,8 +189,8 @@ def refresh_gramma(grammar_path=None):
             n_batch=n_batch,
             n_ctx=4096,
             f16_kv=True,  # MUST set to True, otherwise you will run into problem after a couple of calls
-            callback_manager=callback_manager,
-            verbose=True,  # Verbose is required to pass to the callback manager
+            # callback_manager=callback_manager,
+            # verbose=True,  # Verbose is required to pass to the callback manager
             # grammar_path=grammar_path,
             # return_full_text=False, # to not repeat the question, set to False
             # top_k=10, # default=10
@@ -172,7 +221,7 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
     print(f"#### RETRIEVER AND VECTORSTORE INITIALIZED")
     # os.remove(f"{basename}.txt")
     first_stop = datetime.datetime.now()
-    max_loop = 50
+    max_loop = 5
     # 2. extract informations based on questionnaire
     for question in tqdm(questionnaire, position=0, leave=True):
         res_format_ok = False

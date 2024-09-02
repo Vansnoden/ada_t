@@ -348,7 +348,8 @@ const formAddQA = ref();
 formAddQA.value = {} //object to keep form values when creating question
 const running = ref();
 running.value = project.is_running;
-
+const interval = ref();
+interval.value = false; 
 
 
 const closeFU = () => {
@@ -615,13 +616,17 @@ const extractionStatus = ()=>{
     .then((result) => {
         ex_progress.value = result.percentage;
         running.value = result.running;
+        if (result.percentage == 100){
+            running.value = 0;
+            clearInterval(interval.value)
+        }
     })
     .catch((error) => console.error(error));
     
 }
 
 if(running.value){
-    setInterval(extractionStatus, 5000);
+    interval.value = setInterval(extractionStatus, 5000);
 }
 
 

@@ -5,7 +5,7 @@ import os, json, time
 from pathlib import Path
 from typing import Annotated, List
 from database.utilities.extraction import run_exp
-from database.utils import walkpath_get_files
+from database.utils import walkpath_delete_files, walkpath_get_files
 
 from fastapi import Depends, FastAPI, HTTPException, status, File, UploadFile
 from fastapi.security import OAuth2PasswordBearer
@@ -309,8 +309,8 @@ def run_project(project_id: int,
     if user:
         if project:
             documents = walkpath_get_files(project.documents_location)
-            results = walkpath_get_files(project.extraction_results_location, extension=".json")
             questions = crud.get_project_questions(db, project_id)
+            walkpath_delete_files(project.extraction_results_location, extension='.json')
             project.is_running = True
             db.commit()
             # the below code is to avoid rerunning abstraction of already abstracted file

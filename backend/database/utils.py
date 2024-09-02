@@ -9,3 +9,12 @@ def walkpath_get_files(parent_path, extension=".pdf"):
             if file.endswith(extension):
                 res.append(os.path.join(parent_path, file))
     return res
+
+
+def walkpath_delete_files(parent_path, extension=".pdf"):
+    res = []
+    files = None
+    for (root,dirs,files) in os.walk(parent_path, topdown=True): 
+        for file in files:
+            os.remove(os.path.join(parent_path, file))
+    return res
