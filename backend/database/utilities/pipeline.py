@@ -1,3 +1,4 @@
+import asyncio
 import traceback
 from langchain.prompts import PromptTemplate
 from langchain.document_loaders import TextLoader
@@ -18,9 +19,10 @@ from langchain_core.runnables import RunnableParallel, RunnablePassthrough
 from database.schemas import Question
 from .pdf_preprocessing import *
 # import multiprocessing
-from joblib import Parallel, delayed, parallel_backend
+from joblib import Parallel, delayed, parallel_backend, parallel_config
 import multiprocessing
 import chromadb
+import uuid
 from . import pipeline
 
 
@@ -28,6 +30,16 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 parent_dir = Path(dir_path).parent
 MODEL_PATH = os.path.join(parent_dir, 'utilities/ai_model/ggml-model-f16.gguf')
 
+
+# parallelising
+def background(f):
+    def wrapped(*args, **kwargs):
+        # loop = asyncio.get_event_loop()
+        # if not loop:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        return loop.run_in_executor(None, f, *args, **kwargs)
+    return wrapped
 
 
 class CustomLlamaCppEmbeddings(LlamaCppEmbeddings):
@@ -63,20 +75,21 @@ def set_collection(embedding_function):
         pass
         client = chromadb.Client()
         collection = client.get_or_create_collection("DATA", embedding_function=embedding_function)
-        return collection
+        return client, collection
     except Exception as e:
         print(traceback.format_exc())
         return None
 
 
-def push_to_store(doc_id:str, doc:str, collection) -> bool:
+# @background
+def push_to_store(**data) -> bool:
     try:
-        collection.add(
-            documents=[
-                doc
-            ],
-            ids=[doc_id]
-        )
+        print("\n ATTEMPT TO PUSH DOCUMENT TO STORE +++++++")
+        vectorstore = data["vectorstore"]
+        document = data["document"]
+        my_uuid = str(uuid.uuid4())
+        vectorstore.add_documents(documents=[document], ids=[my_uuid])
+        print("\n DOCUMENT PUSHED TO STORE +++++++")
         return True
     except Exception as e:
         print(traceback.format_exc())
@@ -87,18 +100,37 @@ def generate_doc_id(filename, split_index):
     return f"{filename}_{split_index}"
 
 
-def embed_data(fname, documents, embedding_fn):
+def embed_data(documents, embedding_fn):
     tic = time.process_time()
 
-    vectorstore = set_collection(embedding_function=embedding_fn)
-    for document in documents:
-        print("PUSHING DATA TO STORE +++++++++++++++>>>>>>")
-        push_to_store(generate_doc_id(fname, documents.index(document)), document, vectorstore)
+    # client, vectorstore = set_collection(embedding_function=embedding_fn) 
+    vectorstore = Chroma(
+        collection_name="aie_collection",
+        embedding_function=embedding_fn,
+        persist_directory="./chroma_langchain_db",  # Where to save data locally, remove if not neccesary
+    )
+
+    # with parallel_config(backend='threading', n_jobs=-1):
+    # Parallel(n_jobs=-1, prefer="threads")(delayed(push_to_store)(
+    #     generate_doc_id(fname, documents.index(document)), 
+    #     document, 
+    #     vectorstore) 
+    #     for document in documents)
+    
+    pool = multiprocessing.Pool() 
+    inputs = []
+    for doc in documents:
+        inputs.append({
+            "document": doc,
+            "vectorstore": vectorstore
+        })
+    pool.map_async(push_to_store, inputs)
+
+    # for document in documents:
+    #     push_to_store(generate_doc_id(fname, documents.index(document)), document, vectorstore)
 
     # for document in documents:  
-
     # vectorstore = Chroma.from_documents(documents=documents, embedding=embedding_fn)
-
     toc = time.process_time()
     stop = toc - tic
     # print(f"Embedding completed in {stop/60} s") 
@@ -113,8 +145,9 @@ def build_retriever(embedding_fn, file_path, chunk_size=3000, chunk_overlap=30):
     docs = loader.load()
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap, add_start_index=True)
     splits = text_splitter.split_documents(docs)
+    # split_to_texts = [ item.page_content for item in splits]
     # vectorstore, ellapsed = Parallel(n_jobs=4)(delayed(embed_data)([item], embedding_fn) for item in splits)
-    vectorstore, ellapsed = embed_data(os.path.basename(file_path).split(".")[0], splits, embedding_fn)
+    vectorstore, ellapsed = embed_data(splits, embedding_fn)
     with open("embedding.log.csv", "a+") as f:
         f.write(f"\n{os.path.getsize(file_path)},{ellapsed}")
     retriever = vectorstore.as_retriever()

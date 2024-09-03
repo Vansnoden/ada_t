@@ -1,0 +1,22 @@
+{
+    "39": [
+        {
+            "title": "This Study"
+        },
+        {
+            "embedding_time": [
+                0,
+                1
+            ]
+        },
+        {
+            "extraction_time": [
+                1,
+                31
+            ]
+        },
+        {
+            "pdf_id": "39"
+        }
+    ]
+}
