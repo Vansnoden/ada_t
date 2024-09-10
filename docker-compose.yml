@@ -1,8 +1,22 @@
 version: '3'
 services:
 
+  postgres:
+    image: postgres:12.3-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: adat_db
+    volumes:
+      - postgresdb:/var/lib/postgresql/data
+    ports:
+      - 8001:5432
+
   ada-t-backend:
     build: ./backend
+    depends_on:
+      - postgres
     container_name: ada-t-backend
     volumes:
       - ./backend:/code
@@ -10,7 +24,7 @@ services:
       # - ./backend/alembic:/code/alembic
       # - ./backend/alembic.ini:/code/alembic.ini
     ports:
-      - 8000:8000
+      - 8002:8000
 
   # ada-t-frontend:
   #   build: ./frontend/narrator
@@ -21,3 +35,6 @@ services:
   #     - 8080:8080
   #   links:
   #     - ada-t-backend
+
+volumes:
+  postgresdb:

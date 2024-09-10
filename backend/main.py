@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Annotated, List
 from database.utilities.extraction import run_exp
 from database.utils import walkpath_delete_files, walkpath_get_files
+import multiprocessing as mp
 
 from fastapi import Depends, FastAPI, HTTPException, status, File, UploadFile
 from fastapi.security import OAuth2PasswordBearer
@@ -29,6 +30,11 @@ from fastapi.encoders import jsonable_encoder
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30 * 3600 * 24
+
+import platform
+if platform.system() != "Linux":
+    from multiprocessing import set_start_method
+    set_start_method("fork")
 
 app = FastAPI()
 
@@ -491,3 +497,4 @@ def get_doc_evaluations(doc_path: str, user:Annotated[User, Depends(get_current_
             raise HTTPException(status_code=400, detail="Missing required parameter: doc_path")
     else:
         raise HTTPException(status_code=403, detail="Unauthorized access")
+    

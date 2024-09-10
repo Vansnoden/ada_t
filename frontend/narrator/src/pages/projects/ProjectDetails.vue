@@ -626,7 +626,7 @@ const extractionStatus = ()=>{
 }
 
 if(running.value){
-    interval.value = setInterval(extractionStatus, 5000);
+    interval.value = setInterval(extractionStatus, 60000);
 }
 
 

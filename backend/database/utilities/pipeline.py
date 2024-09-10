@@ -24,6 +24,14 @@ import multiprocessing
 import chromadb
 import uuid
 from . import pipeline
+from multiprocessing import Pool, Process
+import os
+
+
+import platform
+if platform.system() != "Linux":
+    from multiprocessing import set_start_method
+    set_start_method("fork")
 
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -54,15 +62,7 @@ class CustomLlamaCppEmbeddings(LlamaCppEmbeddings):
         Returns:
             List of embeddings, one for each text.
         """
-        # pool = multiprocessing.Pool() 
-        # pool = multiprocessing.Pool(processes=6) 
-        # inputs = embeddings #[0,1,2,3,4] 
-        # embeddings = pool.map(self.client.embed, tqdm(texts, position=0, leave=True)) 
         embeddings = [self.client.embed(text) for text in tqdm(texts, position=0, leave=True)]
-        # with parallel_backend('multiprocessing'):
-        #     embeddings = Parallel(n_jobs=6)(delayed(self.client.embed)(text) for text in texts)
-        # with parallel_backend('multiprocessing'):
-        #     embeddings = Parallel(n_jobs=6)(delayed(self.to_float_list)(e) for e in embeddings)
         embeddings = [list(map(float, e)) for e in embeddings]
         return embeddings
     
@@ -81,59 +81,23 @@ def set_collection(embedding_function):
         return None
 
 
-# @background
-def push_to_store(**data) -> bool:
+def push_to_store(vectorstore, document) -> bool:
+    """generte and id for document and push it to store"""
     try:
-        print("\n ATTEMPT TO PUSH DOCUMENT TO STORE +++++++")
-        vectorstore = data["vectorstore"]
-        document = data["document"]
         my_uuid = str(uuid.uuid4())
         vectorstore.add_documents(documents=[document], ids=[my_uuid])
-        print("\n DOCUMENT PUSHED TO STORE +++++++")
         return True
     except Exception as e:
         print(traceback.format_exc())
         return False
 
 
-def generate_doc_id(filename, split_index):
-    return f"{filename}_{split_index}"
-
-
 def embed_data(documents, embedding_fn):
     tic = time.process_time()
-
-    # client, vectorstore = set_collection(embedding_function=embedding_fn) 
-    vectorstore = Chroma(
-        collection_name="aie_collection",
-        embedding_function=embedding_fn,
-        persist_directory="./chroma_langchain_db",  # Where to save data locally, remove if not neccesary
-    )
-
-    # with parallel_config(backend='threading', n_jobs=-1):
-    # Parallel(n_jobs=-1, prefer="threads")(delayed(push_to_store)(
-    #     generate_doc_id(fname, documents.index(document)), 
-    #     document, 
-    #     vectorstore) 
-    #     for document in documents)
-    
-    pool = multiprocessing.Pool() 
-    inputs = []
-    for doc in documents:
-        inputs.append({
-            "document": doc,
-            "vectorstore": vectorstore
-        })
-    pool.map_async(push_to_store, inputs)
-
-    # for document in documents:
-    #     push_to_store(generate_doc_id(fname, documents.index(document)), document, vectorstore)
-
-    # for document in documents:  
-    # vectorstore = Chroma.from_documents(documents=documents, embedding=embedding_fn)
+    vectorstore = Chroma.from_documents(documents=documents, embedding=embedding_fn)
     toc = time.process_time()
     stop = toc - tic
-    # print(f"Embedding completed in {stop/60} s") 
+    print(f"Embedding completed in {stop/60} s") 
     return vectorstore, stop
 
 
@@ -145,8 +109,6 @@ def build_retriever(embedding_fn, file_path, chunk_size=3000, chunk_overlap=30):
     docs = loader.load()
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=chunk_overlap, add_start_index=True)
     splits = text_splitter.split_documents(docs)
-    # split_to_texts = [ item.page_content for item in splits]
-    # vectorstore, ellapsed = Parallel(n_jobs=4)(delayed(embed_data)([item], embedding_fn) for item in splits)
     vectorstore, ellapsed = embed_data(splits, embedding_fn)
     with open("embedding.log.csv", "a+") as f:
         f.write(f"\n{os.path.getsize(file_path)},{ellapsed}")
@@ -154,9 +116,8 @@ def build_retriever(embedding_fn, file_path, chunk_size=3000, chunk_overlap=30):
     return vectorstore, retriever
 
 
-def inline_text(file_path):
+def get_file_text(file_path):
     res = ""
-    _switch = False # switch from writting all on the same line to writting as in file.
     mfile = None
     try:
         mfile = open(file_path,"r", encoding="utf-8")
@@ -166,17 +127,7 @@ def inline_text(file_path):
         # exclude document references section and subsequent sections
         if line.lower().strip().startswith("references") or line.lower().strip().startswith("acknowledgement"):
             break
-        nline = line
-        # nline = line.replace("-\n", "")
-        # nline = nline.replace("\n", " ")
-        # nline = nline.replace("| ", "")
-        # nline = nline.replace("\'", "")
-        # nline = nline.replace("  ", " ")
-        # nline = nline.replace("\t", " ")
-        # if nline.lower().strip().startswith("introduction"):
-        #     nline = "MAIN BODY: \n" + nline
-        res += nline
-    # res = "TITLE: \n" + res 
+        res += f"\n {line}"
     return res
 
 
@@ -233,6 +184,35 @@ def refresh_gramma(grammar_path=None):
         return gllm
     
 
+def answer_question(question, prompt_template, retriever, max_loop=2):
+    res_format_ok = False
+    grammar_path=question.anwser_grammar
+    gllm = refresh_gramma(grammar_path)
+    chain = setchain(prompt_template, retriever, gllm)
+    loop_done = 0
+    while not res_format_ok and loop_done < max_loop :
+        ans = chain.invoke(question.label)
+        ans = ans.replace(",}","}")
+        ans = ans.replace("\":\":", "\":\"")
+        ans = ans.replace("\".", "\"")
+        try:
+            ans_check = json.loads(str(ans))
+            if not ans_check and loop_done < max_loop:
+                # and questionnaire.index(question) < 9: #10 question
+                res_format_ok=False
+            elif loop_done >= max_loop: 
+                res_format_ok=True
+                return ans
+            elif ans_check:
+                res_format_ok=True
+                return ans
+        except Exception as e:
+            res_format_ok=False
+        finally:
+            loop_done += 1
+            continue
+
+
 def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:List[Question]):
     Answers = []
     basename = os.path.basename(pdf_path).split(".")[0]
@@ -243,7 +223,7 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
     # 1. clean and embed text
     if not os.path.exists(file_path):
         extract_pdf_text(pdf_path=pdf_path)
-    m_text = inline_text(file_path).encode("utf8").decode("utf8")
+    m_text = get_file_text(file_path)
     try:
         with open(file_path, "w+", encoding='utf-8') as f:
             f.write(m_text)
@@ -251,47 +231,20 @@ def data_auto_extract(pdf_path, embedding_fn, prompt_template, questionnaire:Lis
         with open(file_path, "w+", encoding='latin1') as f:
             f.write(m_text)
     vectorstore, retriever = build_retriever(embedding_fn, file_path, chunk_size=1024, chunk_overlap=10)
-    print(f"#### RETRIEVER AND VECTORSTORE INITIALIZED")
     # os.remove(f"{basename}.txt")
     first_stop = datetime.datetime.now()
-    max_loop = 5
     # 2. extract informations based on questionnaire
+    # inputs = []
+    # for question in questionnaire:
+    #     inputs.append((question, prompt_template, retriever, 2))
+    # with Pool(len(questionnaire)) as p:
+    #     Answers = p.map(answer_question, [inputs])
+    # print(f"**** ANSWERS **** : {Answers} ")
     for question in tqdm(questionnaire, position=0, leave=True):
-        res_format_ok = False
-        grammar_path=question.anwser_grammar
-        gllm = refresh_gramma(grammar_path)
-        # llm = refresh_gramma()
-        # data_extraction_prompt_template
-        chain = setchain(prompt_template, retriever, gllm)
-        loop_done = 0
-        while not res_format_ok and loop_done < max_loop :
-            ans = chain.invoke(question.label)
-            ans = ans.replace(",}","}")
-            ans = ans.replace("\":\":", "\":\"")
-            ans = ans.replace("\".", "\"")
-            try:
-                ans_check = json.loads(str(ans))
-                if not ans_check and loop_done < max_loop:
-                    # and questionnaire.index(question) < 9: #10 question
-                    res_format_ok=False
-                    print(f"###>>> FALSE: ANSWER TO QUESTION SHOULDN'T BE EMPTY.")
-                elif loop_done >= max_loop: 
-                    res_format_ok=True
-                    Answers.append(ans_check)
-                    print(f"###>>> TRUE: ANSWER TO QUESTION {questionnaire.index(question) + 1} IS A VALID JSON.")
-                elif ans_check:
-                    res_format_ok=True
-                    Answers.append(ans_check)
-                    print(f"###>>> TRUE: ANSWER TO QUESTION {questionnaire.index(question) + 1} IS A VALID JSON.")
-            except Exception as e:
-                print(f"###>>> FALSE: ANSWER TO QUESTION {questionnaire.index(question) + 1} IS NOT A VALID JSON.")
-                res_format_ok=False
-            finally:
-                loop_done += 1
-                continue
+        ans = answer_question(question, prompt_template, retriever, max_loop=2)
+        Answers.append(ans)
     end = datetime.datetime.now()
     vectorstore.delete_collection()
-    print(f"####VECTORSTORE CLEANNED")
     with open(os.path.join(results_path, f"{basename}.json"), "w+") as f:
         seconds_in_day = 24 * 60 * 60
         embedding_time = first_stop - begin

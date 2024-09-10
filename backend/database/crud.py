@@ -85,6 +85,7 @@ def delete_project(db: Session, project_id: int):
     db_project_rec = db.query(models.Project).filter(models.Project.id == project_id).first()
     resources_path = Path(db_project_rec.documents_location).parent.absolute()
     shutil.rmtree(resources_path)
+    db.query(models.Question).filter(models.Question.project_id == project_id).delete()
     res = db.query(models.Project).filter(models.Project.id == project_id).delete()
     db.commit()
     return res
@@ -133,6 +134,7 @@ def delete_question(db: Session, id: int):
         os.chmod(db_question_rec.anwser_grammar, 0o777)
         os.remove(db_question_rec.anwser_grammar)
         res = db.query(models.Question).filter(models.Question.id == id).delete()
+        db.query(models.Evaluation).filter(models.Evaluation.qid == id).delete()
         db.commit()
         return res
     return 0
