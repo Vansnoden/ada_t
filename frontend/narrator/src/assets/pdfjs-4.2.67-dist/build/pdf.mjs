@@ -3892,7 +3892,7 @@ class PDFWorker {
       if (this.#mainThreadWorkerMessageHandler) {
         return this.#mainThreadWorkerMessageHandler;
       }
-      const worker = await import( /*webpackIgnore: true*/this.workerSrc);
+      const worker = await import( /* @vite-ignore *//*webpackIgnore: true*/this.workerSrc);
       return worker.WorkerMessageHandler;
     };
     return (0,_shared_util_js__WEBPACK_IMPORTED_MODULE_0__.shadow)(this, "_setupFakeWorkerGlobal", loader());

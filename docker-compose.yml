@@ -11,7 +11,7 @@ services:
     volumes:
       - postgresdb:/var/lib/postgresql/data
     ports:
-      - 8001:5432
+      - 8200:5432
 
   ada-t-backend:
     build: ./backend
@@ -24,7 +24,7 @@ services:
       # - ./backend/alembic:/code/alembic
       # - ./backend/alembic.ini:/code/alembic.ini
     ports:
-      - 8002:8000
+      - 8201:8000
 
   ada-t-frontend:
     build: ./frontend/narrator
@@ -32,7 +32,7 @@ services:
     volumes:
       - ./frontend/narrator:/app
     ports:
-      - 8080:8080
+      - 8202:3000
     links:
       - ada-t-backend
 
