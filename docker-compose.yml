@@ -26,15 +26,15 @@ services:
     ports:
       - 8201:8000
 
-  ada-t-frontend:
-    build: ./frontend/narrator
-    container_name: ada-t-frontend
-    volumes:
-      - ./frontend/narrator:/app
-    ports:
-      - 8202:3000
-    links:
-      - ada-t-backend
+  # ada-t-frontend:
+  #   build: ./frontend/narrator
+  #   container_name: ada-t-frontend
+  #   volumes:
+  #     - ./frontend/narrator:/app
+  #   ports:
+  #     - 8202:3000
+  #   links:
+  #     - ada-t-backend
 
 volumes:
   postgresdb:
